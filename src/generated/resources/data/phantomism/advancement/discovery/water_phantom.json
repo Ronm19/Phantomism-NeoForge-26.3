@@ -1,0 +1,30 @@
+{
+  "parent": "phantomism:discovery/root",
+  "criteria": {
+    "discovered": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.phantomism.discovery.water_phantom.description"
+    },
+    "icon": {
+      "components": {
+        "minecraft:custom_data": {
+          "phantomism_discovery_icon": "water_phantom"
+        }
+      },
+      "id": "phantomism:water_phantom_spawn_egg"
+    },
+    "title": {
+      "translate": "advancements.phantomism.discovery.water_phantom.title"
+    }
+  },
+  "requirements": [
+    [
+      "discovered"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

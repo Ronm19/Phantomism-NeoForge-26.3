@@ -1,0 +1,13 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#phantomism:gold_phantom_spawns",
+  "spawners": {
+    "type": "phantomism:gold_phantom",
+    "count": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 1,
+      "min_inclusive": 1
+    },
+    "weight": 16
+  }
+}

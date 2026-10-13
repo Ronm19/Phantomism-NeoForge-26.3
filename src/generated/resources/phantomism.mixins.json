@@ -1,0 +1,18 @@
+{
+  "client": [
+    "client.GuiGraphicsExtractorMixin"
+  ],
+  "compatibilityLevel": "JAVA_25",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "PowderSnowBlockMixin",
+    "ServerLevelMixin"
+  ],
+  "overwrites": {
+    "requireAnnotations": true
+  },
+  "package": "net.ronm19.phantomism.mixin",
+  "required": true
+}

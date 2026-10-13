@@ -1,0 +1,32 @@
+{
+  "criteria": {
+    "discovered": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:gui/advancements/backgrounds/stone",
+    "description": {
+      "translate": "advancements.phantomism.discovery.root.description"
+    },
+    "icon": {
+      "components": {
+        "minecraft:custom_data": {
+          "phantomism_discovery_icon": "black_phantom"
+        }
+      },
+      "id": "phantomism:black_phantom_spawn_egg"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.phantomism.discovery.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "discovered"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

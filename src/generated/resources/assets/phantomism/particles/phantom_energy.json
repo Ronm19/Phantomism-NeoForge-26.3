@@ -1,0 +1,15 @@
+{
+  "textures": [
+    "phantomism:vfx_glow",
+    "phantomism:vfx_slash",
+    "phantomism:vfx_spark",
+    "phantomism:vfx_ring",
+    "phantomism:vfx_shard",
+    "phantomism:vfx_bolt",
+    "phantomism:vfx_flame",
+    "phantomism:vfx_droplet",
+    "phantomism:vfx_leaf",
+    "phantomism:vfx_grain",
+    "phantomism:vfx_petal"
+  ]
+}
