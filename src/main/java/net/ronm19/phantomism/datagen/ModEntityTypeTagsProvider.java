@@ -27,7 +27,19 @@ public final class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 .add(PhantomismContent.STORM_PHANTOM.key())
                 .add(PhantomismContent.SAND_PHANTOM.key())
                 .add(PhantomismContent.GOLD_PHANTOM.key())
-                .add(PhantomismContent.CHERRY_PHANTOM.key());
+                .add(PhantomismContent.CHERRY_PHANTOM.key())
+                .add(PhantomismContent.PHANTOM_DRAGON.key())
+                .add(PhantomismContent.VIOLET_PHANTOM.key())
+                .add(PhantomismContent.TOXIC_PHANTOM.key())
+                .add(PhantomismContent.SCULK_PHANTOM.key())
+                .add(PhantomismContent.RAVAGER_PHANTOM.key());
+        this.tag(ModTags.EntityTypes.RAVAGER_FEAR_IMMUNE)
+                .add(EntityTypeIds.ENDER_DRAGON).add(EntityTypeIds.WITHER).add(EntityTypeIds.WARDEN).add(EntityTypeIds.ELDER_GUARDIAN)
+                .addOptionalTag(net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.ENTITY_TYPE,
+                        net.minecraft.resources.Identifier.fromNamespaceAndPath("c", "bosses")));
+        this.tag(ModTags.EntityTypes.TOXIC_CONTROL_RESISTANT)
+                .add(EntityTypeIds.ENDER_DRAGON).add(EntityTypeIds.WITHER).add(EntityTypeIds.WARDEN)
+                .add(EntityTypeIds.ELDER_GUARDIAN).add(EntityTypeIds.RAVAGER);
         this.tag(ModTags.EntityTypes.CHERRY_CONTROL_RESISTANT)
                 .add(EntityTypeIds.ENDER_DRAGON).add(EntityTypeIds.WITHER).add(EntityTypeIds.WARDEN)
                 .add(EntityTypeIds.ELDER_GUARDIAN).add(EntityTypeIds.RAVAGER);

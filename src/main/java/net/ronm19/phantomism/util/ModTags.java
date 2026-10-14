@@ -31,6 +31,9 @@ public final class ModTags {
 
     public static final class Blocks {
         public static final TagKey<Block> GOLD_CAVE_CEILINGS = create("gold_cave_ceilings");
+        public static final TagKey<Block> RAVAGER_BULLDOZER_BREAKABLE = create("ravager_bulldozer_breakable");
+        public static final TagKey<Block> RAVAGER_SIEGE_BREAKABLE = create("ravager_siege_breakable");
+        public static final TagKey<Block> RAVAGER_PROTECTED_BLOCKS = create("ravager_protected_blocks");
         private Blocks() {
         }
 
@@ -41,11 +44,13 @@ public final class ModTags {
 
     public static final class EntityTypes {
         public static final TagKey<EntityType<?>> PHANTOMS = create("phantoms");
+        public static final TagKey<EntityType<?>> RAVAGER_FEAR_IMMUNE = create("ravager_fear_immune");
         public static final TagKey<EntityType<?>> FROST_RESISTANT = create("frost_resistant");
         public static final TagKey<EntityType<?>> EARTH_CONTROL_RESISTANT = create("earth_control_resistant");
         public static final TagKey<EntityType<?>> SAND_CONTROL_RESISTANT = create("sand_control_resistant");
         public static final TagKey<EntityType<?>> GOLD_CONTROL_RESISTANT = create("gold_control_resistant");
         public static final TagKey<EntityType<?>> CHERRY_CONTROL_RESISTANT = create("cherry_control_resistant");
+        public static final TagKey<EntityType<?>> TOXIC_CONTROL_RESISTANT = create("toxic_control_resistant");
 
         private EntityTypes() {
         }
@@ -65,6 +70,9 @@ public final class ModTags {
         public static final TagKey<Biome> SAND_PHANTOM_SPAWNS = create("sand_phantom_spawns");
         public static final TagKey<Biome> GOLD_PHANTOM_SPAWNS = create("gold_phantom_spawns");
         public static final TagKey<Biome> CHERRY_PHANTOM_SPAWNS = create("cherry_phantom_spawns");
+        public static final TagKey<Biome> PHANTOM_DRAGON_SPAWNS = create("phantom_dragon_spawns");
+        public static final TagKey<Biome> VIOLET_PHANTOM_SPAWNS = create("violet_phantom_spawns");
+        public static final TagKey<Biome> TOXIC_PHANTOM_SPAWNS = create("toxic_phantom_spawns");
 
         private Biomes() {
         }

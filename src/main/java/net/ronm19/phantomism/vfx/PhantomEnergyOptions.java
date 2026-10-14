@@ -17,6 +17,7 @@ public record PhantomEnergyOptions(int color, int fadeColor, int shape, float sc
     public static final int SHOCKWAVE = 3;
     public static final int AURA = 4;
     public static final int PETAL = 5;
+    public static final int SONIC_RING = 6;
     public static final MapCodec<PhantomEnergyOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.INT.fieldOf("color").forGetter(PhantomEnergyOptions::color),
             Codec.INT.fieldOf("fade_color").forGetter(PhantomEnergyOptions::fadeColor),
@@ -35,7 +36,7 @@ public record PhantomEnergyOptions(int color, int fadeColor, int shape, float sc
     public PhantomEnergyOptions {
         color &= 0xFFFFFF;
         fadeColor &= 0xFFFFFF;
-        shape = Math.clamp(shape, GLOW, PETAL);
+        shape = Math.clamp(shape, GLOW, SONIC_RING);
         scale = Float.isFinite(scale) ? Math.clamp(scale, 0.05F, 8.0F) : 1.0F;
         lifetime = Math.clamp(lifetime, 4, 60);
     }

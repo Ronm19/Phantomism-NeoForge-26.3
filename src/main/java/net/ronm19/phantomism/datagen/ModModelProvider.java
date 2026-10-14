@@ -25,5 +25,10 @@ public final class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(PhantomismContent.SAND_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.GOLD_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.CHERRY_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.PHANTOM_DRAGON_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.VIOLET_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.TOXIC_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.SCULK_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.RAVAGER_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
     }
 }

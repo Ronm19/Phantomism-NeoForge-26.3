@@ -26,6 +26,11 @@ public final class ModItemTagsProvider extends ItemTagsProvider {
                 .add(PhantomismContent.STORM_PHANTOM_SPAWN_EGG.key())
                 .add(PhantomismContent.SAND_PHANTOM_SPAWN_EGG.key())
                 .add(PhantomismContent.GOLD_PHANTOM_SPAWN_EGG.key())
-                .add(PhantomismContent.CHERRY_PHANTOM_SPAWN_EGG.key());
+                .add(PhantomismContent.CHERRY_PHANTOM_SPAWN_EGG.key())
+                .add(PhantomismContent.PHANTOM_DRAGON_SPAWN_EGG.key())
+                .add(PhantomismContent.VIOLET_PHANTOM_SPAWN_EGG.key())
+                .add(PhantomismContent.TOXIC_PHANTOM_SPAWN_EGG.key())
+                .add(PhantomismContent.SCULK_PHANTOM_SPAWN_EGG.key())
+                .add(PhantomismContent.RAVAGER_PHANTOM_SPAWN_EGG.key());
     }
 }

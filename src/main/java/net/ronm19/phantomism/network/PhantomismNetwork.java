@@ -32,6 +32,12 @@ public final class PhantomismNetwork {
     }
 
     public static void registerPayloads(RegisterPayloadHandlersEvent event) {
+        event.registrar("1").playToServer(RiddenSiegeChargePayload.TYPE, RiddenSiegeChargePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player
+                            && player.getVehicle() instanceof net.ronm19.phantomism.entity.RavagerPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateSiegeCharge(player); }
+                }));
         event.registrar("1").playToServer(BlockCommandPayload.TYPE, BlockCommandPayload.STREAM_CODEC,
                 PhantomismNetwork::handleBlockCommand);
         event.registrar("1").playToServer(
@@ -305,5 +311,14 @@ public final class PhantomismNetwork {
         public Type<? extends CustomPacketPayload> type() {
             return TYPE;
         }
+    }
+
+    public record RiddenSiegeChargePayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenSiegeChargePayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_siege_charge"));
+        public static final StreamCodec<ByteBuf, RiddenSiegeChargePayload> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.VAR_INT, RiddenSiegeChargePayload::phantomId, RiddenSiegeChargePayload::new);
+
+        @Override
+        public Type<? extends CustomPacketPayload> type() { return TYPE; }
     }
 }

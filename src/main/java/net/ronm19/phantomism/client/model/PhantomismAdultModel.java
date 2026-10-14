@@ -44,6 +44,14 @@ public class PhantomismAdultModel extends PhantomismModel {
 
         PartDefinition head = root.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -2.0F, -5.0F, 7.0F, 3.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.5F, -3.75F, -8.0F));
 
+        PartDefinition fangs = head.addOrReplaceChild("fangs", CubeListBuilder.create(), PartPose.ZERO);
+        PartDefinition rightFang = fangs.addOrReplaceChild("r_fang", CubeListBuilder.create(), PartPose.offset(-2.5F, 1.2263F, -4.5172F));
+        rightFang.addOrReplaceChild("r_fang_r1", CubeListBuilder.create().texOffs(55, 44)
+                .addBox(-0.5F, -1.0F, -0.5F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0175F, 0.0F, 0.0F));
+        PartDefinition leftFang = fangs.addOrReplaceChild("l_fang", CubeListBuilder.create(), PartPose.offset(1.5F, 1.2263F, -4.5172F));
+        leftFang.addOrReplaceChild("l_fang_r1", CubeListBuilder.create().texOffs(55, 44)
+                .addBox(-0.5F, -1.0F, -0.5F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0175F, 0.0F, 0.0F));
+
         PartDefinition horns = head.addOrReplaceChild("horns", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
 
         horns.addOrReplaceChild("r_horn", CubeListBuilder.create().texOffs(34, 48).addBox(-0.5F, 0.25F, -0.75F, 1.0F, 1.0F, 2.0F, new CubeDeformation(0.0F))

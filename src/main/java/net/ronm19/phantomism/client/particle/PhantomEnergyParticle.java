@@ -25,7 +25,7 @@ public final class PhantomEnergyParticle extends SingleQuadParticle {
 
     private PhantomEnergyParticle(PhantomEnergyOptions options, ClientLevel level, double x, double y, double z,
             double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites, RandomSource random) {
-        super(level, x, y, z, sprites.get(spriteIndex(options), 10));
+        super(level, x, y, z, sprites.get(spriteIndex(options), 13));
         this.options = options;
         this.centerX = x;
         this.centerY = y;
@@ -33,13 +33,17 @@ public final class PhantomEnergyParticle extends SingleQuadParticle {
         this.radius = options.scale() * (0.45D + random.nextDouble() * 0.35D);
         this.angle = random.nextDouble() * Math.PI * 2.0D;
         this.lifetime = options.lifetime();
-        this.quadSize = options.color() == PhantomVfxTheme.CHERRY.color() && options.shape() == PhantomEnergyOptions.AURA
+        this.quadSize = (options.color() == PhantomVfxTheme.CHERRY.color() || options.color() == PhantomVfxTheme.TOXIC.color())
+                && options.shape() == PhantomEnergyOptions.AURA
                 ? Math.min(0.3F, options.scale()) : options.scale();
         this.hasPhysics = false;
         this.alpha = 0.0F;
         this.xd = xSpeed;
         this.yd = ySpeed;
         this.zd = zSpeed;
+        if (options.color() == PhantomVfxTheme.TOXIC.color() && options.shape() == PhantomEnergyOptions.SPARK) {
+            this.yd = -Math.min(0.26D, 6.0D / this.lifetime);
+        }
         this.roll = options.shape() == PhantomEnergyOptions.SLASH || options.shape() == PhantomEnergyOptions.SPARK || options.shape() == PhantomEnergyOptions.PETAL
                 ? random.nextFloat() * (float) Math.PI : 0.0F;
         this.initialRoll = this.roll;
@@ -67,6 +71,11 @@ public final class PhantomEnergyParticle extends SingleQuadParticle {
             this.setPos(this.centerX + Math.cos(this.angle) * this.radius,
                     this.centerY + Math.sin(this.angle * 1.5D) * this.radius * 0.45D,
                     this.centerZ + Math.sin(this.angle) * this.radius);
+        } else if (this.options.color() == PhantomVfxTheme.TOXIC.color() && this.options.shape() == PhantomEnergyOptions.SPARK) {
+            this.setPos(this.x + this.xd, this.y + this.yd, this.z + this.zd);
+            this.yd -= 0.8D / (this.lifetime * this.lifetime);
+            this.xd *= 0.96D;
+            this.zd *= 0.96D;
         } else if (this.options.shape() == PhantomEnergyOptions.PETAL
                 || this.options.shape() == PhantomEnergyOptions.SPARK && this.options.color() == PhantomVfxTheme.CHERRY.color()) {
             this.angle += 0.08D;
@@ -104,6 +113,11 @@ public final class PhantomEnergyParticle extends SingleQuadParticle {
     }
 
     private static int spriteIndex(PhantomEnergyOptions options) {
+        if (options.shape() == PhantomEnergyOptions.SONIC_RING) { return 13; }
+        if (options.color() == PhantomVfxTheme.TOXIC.color()) {
+            if (options.shape() == PhantomEnergyOptions.SPARK) { return 11; }
+            if (options.shape() == PhantomEnergyOptions.AURA) { return 12; }
+        }
         if (options.shape() == PhantomEnergyOptions.PETAL || options.color() == PhantomVfxTheme.CHERRY.color()
                 && (options.shape() == PhantomEnergyOptions.SPARK || options.shape() == PhantomEnergyOptions.AURA)) {
             return 10;
@@ -120,7 +134,7 @@ public final class PhantomEnergyParticle extends SingleQuadParticle {
     @Override
     public float getQuadSize(float partialTick) {
         float progress = Mth.clamp((this.age + partialTick) / this.lifetime, 0.0F, 1.0F);
-        float growth = this.options.shape() == PhantomEnergyOptions.SHOCKWAVE ? 0.2F + progress * 1.6F
+        float growth = this.options.shape() == PhantomEnergyOptions.SHOCKWAVE || this.options.shape() == PhantomEnergyOptions.SONIC_RING ? 0.2F + progress * 1.6F
                 : this.options.shape() == PhantomEnergyOptions.SLASH ? 0.85F + progress * 0.25F : 0.6F + smoothStep(progress) * 0.55F;
         return this.quadSize * growth;
     }

@@ -17,6 +17,7 @@ public final class ModDataGenerators {
     @SubscribeEvent
     public static void gatherRegistryEntries(GatherDataRegistryEntriesEvent event) {
         event.add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, new ModBiomeModifierProvider())
+                .add(NeoForgeRegistries.Keys.STRUCTURE_MODIFIERS, new ModStructureModifierProvider())
                 .recipe(ModRecipeProvider::new)
                 .add(Registries.LOOT_TABLE, new ModLootTableProvider());
     }
@@ -29,6 +30,11 @@ public final class ModDataGenerators {
         event.addProvider(new ModPhantomAnimationProvider(event.getGenerator().getPackOutput()));
         event.addProvider(new ModGoldAnimationProvider(event.getGenerator().getPackOutput()));
         event.addProvider(new ModCherryAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModDragonAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModVioletAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModToxicAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModSculkAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModRavagerAnimationProvider(event.getGenerator().getPackOutput()));
         event.addProvider(new ModParticleProvider(event.getGenerator().getPackOutput()));
     }
 

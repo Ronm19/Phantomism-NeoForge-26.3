@@ -72,6 +72,11 @@ public class Phantomism {
         event.put(PhantomismContent.SAND_PHANTOM.get(), SandPhantom.createAttributes().build());
         event.put(PhantomismContent.GOLD_PHANTOM.get(), GoldPhantom.createAttributes().build());
         event.put(PhantomismContent.CHERRY_PHANTOM.get(), CherryPhantom.createAttributes().build());
+        event.put(PhantomismContent.PHANTOM_DRAGON.get(), net.ronm19.phantomism.entity.PhantomDragon.createAttributes().build());
+        event.put(PhantomismContent.VIOLET_PHANTOM.get(), net.ronm19.phantomism.entity.VioletPhantom.createAttributes().build());
+        event.put(PhantomismContent.TOXIC_PHANTOM.get(), net.ronm19.phantomism.entity.ToxicPhantom.createAttributes().build());
+        event.put(PhantomismContent.SCULK_PHANTOM.get(), net.ronm19.phantomism.entity.SculkPhantom.createAttributes().build());
+        event.put(PhantomismContent.RAVAGER_PHANTOM.get(), net.ronm19.phantomism.entity.RavagerPhantom.createAttributes().build());
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

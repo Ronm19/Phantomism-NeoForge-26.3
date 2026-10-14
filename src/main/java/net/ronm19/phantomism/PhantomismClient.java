@@ -92,6 +92,17 @@ public class PhantomismClient {
     }
 
     @SubscribeEvent
+    static void onMountedChargeKey(InputEvent.Key event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (event.getAction() == InputConstants.PRESS
+                && (event.getKey() == InputConstants.KEY_LCONTROL || event.getKey() == InputConstants.KEY_RCONTROL)
+                && minecraft.gui.screen() == null && minecraft.player != null
+                && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.RavagerPhantom phantom) {
+            ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenSiegeChargePayload(phantom.getId()));
+        }
+    }
+
+    @SubscribeEvent
     static void registerParticleProviders(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticles.SANDSTORM_DUST.get(), SandDustParticle.Provider::new);
         event.registerSpriteSet(ModParticles.PHANTOM_ENERGY.get(), net.ronm19.phantomism.client.particle.PhantomEnergyParticle.Provider::new);
@@ -319,6 +330,22 @@ public class PhantomismClient {
                 net.ronm19.phantomism.client.renderer.CherryPhantomRenderer::new);
         event.registerEntityRenderer(PhantomismContent.PETAL_PROJECTILE.get(),
                 context -> new ThrownItemRenderer<>(context, 0.45F, true));
+        event.registerEntityRenderer(PhantomismContent.PHANTOM_DRAGON.get(),
+                net.ronm19.phantomism.client.renderer.PhantomDragonRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.DRAGON_FIREBALL.get(),
+                context -> new ThrownItemRenderer<>(context, 0.8F, true));
+        event.registerEntityRenderer(PhantomismContent.VIOLET_PHANTOM.get(),
+                net.ronm19.phantomism.client.renderer.VioletPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.VIOLET_LANCE.get(),
+                context -> new ThrownItemRenderer<>(context, 0.55F, true));
+        event.registerEntityRenderer(PhantomismContent.TOXIC_PHANTOM.get(),
+                net.ronm19.phantomism.client.renderer.ToxicPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.SCULK_PHANTOM.get(),
+                net.ronm19.phantomism.client.renderer.SculkPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.RAVAGER_PHANTOM.get(),
+                net.ronm19.phantomism.client.renderer.RavagerPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.ACID_PROJECTILE.get(),
+                context -> new ThrownItemRenderer<>(context, 0.55F, true));
         event.registerEntityRenderer(PhantomismContent.STORM_PROJECTILE.get(),
                 context -> new ThrownItemRenderer<>(context, 0.7F, true));
         event.registerEntityRenderer(PhantomismContent.WATER_PROJECTILE.get(),

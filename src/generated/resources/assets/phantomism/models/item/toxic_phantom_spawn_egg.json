@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "phantomism:item/toxic_phantom_spawn_egg"
+  }
+}

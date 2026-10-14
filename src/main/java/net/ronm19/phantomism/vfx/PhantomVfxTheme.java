@@ -17,7 +17,12 @@ public enum PhantomVfxTheme {
     STORM(0xDDEBFF, 0x9964FF),
     SAND(0xFFE171, 0xC48630),
     GOLD(0xFFF7B0, 0xE3A51A),
-    CHERRY(0xFFE4EC, 0xCE7491);
+    CHERRY(0xFFE4EC, 0xCE7491),
+    DRAGON(0xE2B8FF, 0x532573),
+    VIOLET(0xF0B3FF, 0x7820DB),
+    TOXIC(0xD1FF59, 0x50791D),
+    SCULK(0x64F4FF, 0x006E86),
+    RAVAGER(0xFFD19A, 0xA84A2C);
 
     private final int color;
     private final int fadeColor;
@@ -36,6 +41,11 @@ public enum PhantomVfxTheme {
     }
 
     public static PhantomVfxTheme of(AbstractPhantom phantom) {
+        if (phantom instanceof net.ronm19.phantomism.entity.RavagerPhantom) { return RAVAGER; }
+        if (phantom instanceof net.ronm19.phantomism.entity.SculkPhantom) { return SCULK; }
+        if (phantom instanceof net.ronm19.phantomism.entity.ToxicPhantom) { return TOXIC; }
+        if (phantom instanceof net.ronm19.phantomism.entity.VioletPhantom) { return VIOLET; }
+        if (phantom instanceof net.ronm19.phantomism.entity.PhantomDragon) { return DRAGON; }
         if (phantom instanceof net.ronm19.phantomism.entity.CherryPhantom) { return CHERRY; }
         if (phantom instanceof net.ronm19.phantomism.entity.GoldPhantom) { return GOLD; }
         return phantom instanceof FirePhantom ? FIRE : phantom instanceof FrostPhantom ? FROST

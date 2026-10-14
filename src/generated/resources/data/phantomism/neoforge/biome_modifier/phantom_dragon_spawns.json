@@ -1,0 +1,13 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#phantomism:phantom_dragon_spawns",
+  "spawners": {
+    "type": "phantomism:phantom_dragon",
+    "count": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 1,
+      "min_inclusive": 1
+    },
+    "weight": 16
+  }
+}

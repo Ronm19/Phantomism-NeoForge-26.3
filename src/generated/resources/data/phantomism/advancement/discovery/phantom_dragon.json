@@ -1,0 +1,31 @@
+{
+  "parent": "phantomism:discovery/root",
+  "criteria": {
+    "discovered": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.phantomism.discovery.phantom_dragon.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "components": {
+        "minecraft:custom_data": {
+          "phantomism_discovery_icon": "phantom_dragon"
+        }
+      },
+      "id": "phantomism:phantom_dragon_spawn_egg"
+    },
+    "title": {
+      "translate": "advancements.phantomism.discovery.phantom_dragon.title"
+    }
+  },
+  "requirements": [
+    [
+      "discovered"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

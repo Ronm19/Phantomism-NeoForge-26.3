@@ -11,6 +11,7 @@ public abstract class PhantomismModel extends EntityModel<PhantomismRenderState>
     private final ModelPart horns;
     private final ModelPart tendrils;
     private final ModelPart halo;
+    private final ModelPart fangs;
     private final ModelPart leftWing;
     private final ModelPart leftWingTip;
     private final ModelPart rightWing;
@@ -29,6 +30,8 @@ public abstract class PhantomismModel extends EntityModel<PhantomismRenderState>
         this.horns = head.getChild("horns");
         this.tendrils = head.getChild("tendrils");
         this.halo = head.getChild("halo");
+        this.fangs = head.getChild("fangs");
+        this.fangs.visible = false;
         this.leftWing = creatureRoot.getChild("left_wing");
         this.leftWingTip = this.leftWing.getChild("left_wing_tip");
         this.rightWing = creatureRoot.getChild("right_wing");
@@ -48,6 +51,7 @@ public abstract class PhantomismModel extends EntityModel<PhantomismRenderState>
         this.horns.visible = accessories.horns();
         this.tendrils.visible = accessories.tendrils();
         this.halo.visible = accessories.halo();
+        this.fangs.visible = accessories.fangs();
         this.leftWing.visible = accessories.wings();
         this.leftWingTip.visible = accessories.wings();
         this.rightWing.visible = accessories.wings();

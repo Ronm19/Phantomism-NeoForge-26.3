@@ -52,6 +52,21 @@ public final class ModSpawnPlacements {
         event.register(PhantomismContent.CHERRY_PHANTOM.get(), SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.ronm19.phantomism.entity.CherryPhantom::checkSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(PhantomismContent.PHANTOM_DRAGON.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.ronm19.phantomism.entity.PhantomDragon::checkSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(PhantomismContent.VIOLET_PHANTOM.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.ronm19.phantomism.entity.VioletPhantom::checkSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(PhantomismContent.TOXIC_PHANTOM.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.ronm19.phantomism.entity.ToxicPhantom::checkSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(PhantomismContent.SCULK_PHANTOM.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.ronm19.phantomism.entity.SculkPhantom::checkSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(PhantomismContent.RAVAGER_PHANTOM.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, net.ronm19.phantomism.entity.RavagerPhantom::checkSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 
     private static boolean checkBlackSpawnRules(EntityType<BlackPhantom> type, ServerLevelAccessor level,

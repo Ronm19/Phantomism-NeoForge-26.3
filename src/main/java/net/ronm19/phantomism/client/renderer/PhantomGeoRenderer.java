@@ -121,6 +121,7 @@ public class PhantomGeoRenderer<T extends AbstractPhantom> extends GeoEntityRend
         visibility(snapshots, "horns", flags.horns());
         visibility(snapshots, "tendrils", flags.tendrils());
         visibility(snapshots, "halo", flags.halo());
+        visibility(snapshots, "fangs", flags.fangs());
         visibility(snapshots, "left_wing", flags.wings());
         visibility(snapshots, "right_wing", flags.wings());
         visibility(snapshots, "tail", flags.tail());

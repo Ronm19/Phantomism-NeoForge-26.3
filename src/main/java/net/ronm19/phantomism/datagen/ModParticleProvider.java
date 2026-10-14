@@ -35,7 +35,7 @@ public final class ModParticleProvider implements DataProvider {
     public static JsonObject phantomEnergy() {
         JsonArray textures = new JsonArray();
         for (String name : new String[]{"vfx_glow", "vfx_slash", "vfx_spark", "vfx_ring", "vfx_shard", "vfx_bolt",
-                "vfx_flame", "vfx_droplet", "vfx_leaf", "vfx_grain", "vfx_petal"}) {
+                "vfx_flame", "vfx_droplet", "vfx_leaf", "vfx_grain", "vfx_petal", "vfx_acid_drop", "vfx_toxic_mist", "vfx_sonic_ring"}) {
             textures.add("phantomism:" + name);
         }
         JsonObject definition = new JsonObject();

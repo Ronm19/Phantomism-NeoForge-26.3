@@ -336,6 +336,10 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
         return false;
     }
 
+    protected int getFlightTurnRate() {
+        return 10;
+    }
+
     public final boolean activateRiddenProjectileAbility(Player rider) {
         if (!(this.level() instanceof ServerLevel serverLevel)
                 || rider != this.getControllingPassenger()
@@ -727,8 +731,20 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
         return false;
     }
 
+    protected boolean prepareCombatApproach(ServerLevel level, LivingEntity target) {
+        return false;
+    }
+
+    protected boolean prepareSpeciesCombatAction(ServerLevel level, LivingEntity target) {
+        return false;
+    }
+
     protected final boolean isDivingStrike() {
         return this.divingStrike;
+    }
+
+    protected final boolean isDiveInProgress() {
+        return this.diveTicks > 0;
     }
 
     @Override
@@ -1139,6 +1155,10 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
             this.attackCooldown--;
         }
 
+        if (this.prepareSpeciesCombatAction(level, target)) {
+            return;
+        }
+
         if (this.diveTicks > 0) {
             this.moveControl.setWantedPosition(target.getX(), target.getY(0.5D), target.getZ(), 1.75D);
             if (this.getBoundingBox().inflate(0.25D).intersects(target.getBoundingBox())) {
@@ -1163,11 +1183,6 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
             return;
         }
 
-        if (this.prefersRangedCombat() && this.distanceToSqr(target) > 9.0D) {
-            this.moveToOrbitPoint(target, 8.0D, 4.0D, 1.1D);
-            return;
-        }
-
         if (this.recoveryTicks > 0) {
             this.recoveryTicks--;
             this.moveToOrbitPoint(target, 8.0D, 7.0D, 1.25D);
@@ -1177,6 +1192,15 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
         if (this.circleTicks > 0 || this.attackCooldown > 0) {
             this.circleTicks = Math.max(0, this.circleTicks - 1);
             this.moveToOrbitPoint(target, 6.0D, 5.0D, 1.1D);
+            return;
+        }
+
+        if (this.prefersRangedCombat() && this.distanceToSqr(target) > 9.0D) {
+            this.moveToOrbitPoint(target, 8.0D, 4.0D, 1.1D);
+            return;
+        }
+
+        if (this.prepareCombatApproach(level, target)) {
             return;
         }
 
@@ -1250,7 +1274,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
 
     private static final class ForestAwareFlyingMoveControl extends FlyingMoveControl<AbstractPhantom> {
         private ForestAwareFlyingMoveControl(AbstractPhantom phantom) {
-            super(phantom, 10, true);
+            super(phantom, phantom.getFlightTurnRate(), true);
         }
 
         @Override

@@ -40,6 +40,12 @@ public final class ModBiomeModifierProvider implements SingleRegistryBootstrap<B
                 PhantomismContent.GOLD_PHANTOM.get(), PhantomDiscovery.GOLD.rarity().spawnWeight());
         addSpawns(context, "cherry_phantom_spawns", ModTags.Biomes.CHERRY_PHANTOM_SPAWNS,
                 PhantomismContent.CHERRY_PHANTOM.get(), PhantomDiscovery.CHERRY.rarity().spawnWeight());
+        addSpawns(context, "phantom_dragon_spawns", ModTags.Biomes.PHANTOM_DRAGON_SPAWNS,
+                PhantomismContent.PHANTOM_DRAGON.get(), PhantomDiscovery.DRAGON.rarity().spawnWeight());
+        addSpawns(context, "violet_phantom_spawns", ModTags.Biomes.VIOLET_PHANTOM_SPAWNS,
+                PhantomismContent.VIOLET_PHANTOM.get(), PhantomDiscovery.VIOLET.rarity().spawnWeight());
+        addSpawns(context, "toxic_phantom_spawns", ModTags.Biomes.TOXIC_PHANTOM_SPAWNS,
+                PhantomismContent.TOXIC_PHANTOM.get(), PhantomDiscovery.TOXIC.rarity().spawnWeight());
     }
 
     private static void addSpawns(BootstrapContext<BiomeModifier> context, String name, TagKey<Biome> biomes,
@@ -49,6 +55,6 @@ public final class ModBiomeModifierProvider implements SingleRegistryBootstrap<B
         context.register(key, BiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(
                 context.lookup(Registries.BIOME).getOrThrow(biomes),
                 new Weighted<>(new MobSpawnSettings.SpawnerData(type, UniformInt.of(1,
-                        type == PhantomismContent.GOLD_PHANTOM.get() ? 1 : 2)), weight)));
+                        type == PhantomismContent.GOLD_PHANTOM.get() || type == PhantomismContent.PHANTOM_DRAGON.get() ? 1 : 2)), weight)));
     }
 }

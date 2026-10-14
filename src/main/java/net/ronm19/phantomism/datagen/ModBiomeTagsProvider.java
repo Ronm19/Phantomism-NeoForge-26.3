@@ -39,5 +39,9 @@ public final class ModBiomeTagsProvider extends BiomeTagsProvider {
         this.tag(ModTags.Biomes.GOLD_PHANTOM_SPAWNS)
                 .add(Biomes.BADLANDS).add(Biomes.WOODED_BADLANDS).add(Biomes.STONY_PEAKS);
         this.tag(ModTags.Biomes.CHERRY_PHANTOM_SPAWNS).add(Biomes.CHERRY_GROVE);
+        this.tag(ModTags.Biomes.PHANTOM_DRAGON_SPAWNS)
+                .add(Biomes.JAGGED_PEAKS).add(Biomes.STONY_PEAKS).add(Biomes.WINDSWEPT_HILLS);
+        this.tag(ModTags.Biomes.VIOLET_PHANTOM_SPAWNS).add(Biomes.MEADOW).add(Biomes.FLOWER_FOREST);
+        this.tag(ModTags.Biomes.TOXIC_PHANTOM_SPAWNS).add(Biomes.SWAMP).add(Biomes.MANGROVE_SWAMP);
     }
 }

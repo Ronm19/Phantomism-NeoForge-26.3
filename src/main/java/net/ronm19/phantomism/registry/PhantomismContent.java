@@ -34,6 +34,16 @@ import net.ronm19.phantomism.entity.GoldPhantom;
 import net.ronm19.phantomism.entity.GoldDustProjectile;
 import net.ronm19.phantomism.entity.CherryPhantom;
 import net.ronm19.phantomism.entity.PetalProjectile;
+import net.ronm19.phantomism.entity.PhantomDragon;
+import net.ronm19.phantomism.entity.DragonFireballProjectile;
+import net.ronm19.phantomism.entity.VioletPhantom;
+import net.ronm19.phantomism.entity.VioletLanceProjectile;
+import net.ronm19.phantomism.entity.ToxicPhantom;
+import net.ronm19.phantomism.entity.SculkPhantom;
+import net.ronm19.phantomism.entity.RavagerPhantom;
+import net.ronm19.phantomism.effect.SonicDisruptionEffect;
+import net.ronm19.phantomism.entity.AcidProjectile;
+import net.ronm19.phantomism.effect.ArmorFractureEffect;
 import net.ronm19.phantomism.effect.FrostboundEffect;
 import net.ronm19.phantomism.item.PhantomStaffItem;
 
@@ -103,15 +113,45 @@ public final class PhantomismContent {
     public static final DeferredHolder<EntityType<?>, EntityType<PetalProjectile>> PETAL_PROJECTILE = ENTITY_TYPES.registerEntityType(
             "petal_projectile", PetalProjectile::new, MobCategory.MISC,
             builder -> builder.sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(1));
+    public static final DeferredHolder<EntityType<?>, EntityType<PhantomDragon>> PHANTOM_DRAGON = ENTITY_TYPES.registerEntityType(
+            "phantom_dragon", PhantomDragon::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.75F, 1.125F).clientTrackingRange(10).updateInterval(3));
+    public static final DeferredHolder<EntityType<?>, EntityType<DragonFireballProjectile>> DRAGON_FIREBALL = ENTITY_TYPES.registerEntityType(
+            "dragon_fireball", DragonFireballProjectile::new, MobCategory.MISC,
+            builder -> builder.sized(0.35F, 0.35F).clientTrackingRange(6).updateInterval(1));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<VioletPhantom>> VIOLET_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "violet_phantom", VioletPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, 0.9F).clientTrackingRange(10).updateInterval(3));
+    public static final DeferredHolder<EntityType<?>, EntityType<VioletLanceProjectile>> VIOLET_LANCE = ENTITY_TYPES.registerEntityType(
+            "violet_lance", VioletLanceProjectile::new, MobCategory.MISC,
+            builder -> builder.sized(0.25F, 0.25F).clientTrackingRange(6).updateInterval(1));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<ToxicPhantom>> TOXIC_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "toxic_phantom", ToxicPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, 0.9F).clientTrackingRange(10).updateInterval(3));
+    public static final DeferredHolder<EntityType<?>, EntityType<AcidProjectile>> ACID_PROJECTILE = ENTITY_TYPES.registerEntityType(
+            "acid_projectile", AcidProjectile::new, MobCategory.MISC,
+            builder -> builder.sized(0.25F, 0.25F).clientTrackingRange(6).updateInterval(1));
 
     public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(
             Registries.MOB_EFFECT, Phantomism.MOD_ID);
     public static final DeferredHolder<MobEffect, FrostboundEffect> FROSTBOUND = MOB_EFFECTS.register(
             "frostbound", FrostboundEffect::new);
+    public static final DeferredHolder<MobEffect, ArmorFractureEffect> ARMOR_FRACTURE = MOB_EFFECTS.register(
+            "armor_fracture", ArmorFractureEffect::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<SculkPhantom>> SCULK_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "sculk_phantom", SculkPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, 0.9F).clientTrackingRange(10).updateInterval(3));
+    public static final DeferredHolder<MobEffect, SonicDisruptionEffect> SONIC_DISRUPTION = MOB_EFFECTS.register(
+            "sonic_disruption", SonicDisruptionEffect::new);
     public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(Registries.POTION, Phantomism.MOD_ID);
     public static final DeferredHolder<Potion, Potion> FROSTBOUND_POTION = POTIONS.register(
             "frostbound", () -> new Potion(Phantomism.MOD_ID + ".frostbound", new MobEffectInstance(FROSTBOUND, 160)));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<RavagerPhantom>> RAVAGER_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "ravager_phantom", RavagerPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.61F, 1.035F).clientTrackingRange(10).updateInterval(3));
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Phantomism.MOD_ID);
     public static final DeferredItem<PhantomStaffItem> PHANTOM_STAFF = ITEMS.registerItem(
             "phantom_staff",
@@ -145,6 +185,17 @@ public final class PhantomismContent {
     public static final DeferredItem<SpawnEggItem> CHERRY_PHANTOM_SPAWN_EGG = ITEMS.registerItem(
             "cherry_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(CHERRY_PHANTOM.get())));
 
+    public static final DeferredItem<SpawnEggItem> PHANTOM_DRAGON_SPAWN_EGG = ITEMS.registerItem(
+            "phantom_dragon_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(PHANTOM_DRAGON.get())));
+    public static final DeferredItem<SpawnEggItem> VIOLET_PHANTOM_SPAWN_EGG = ITEMS.registerItem(
+            "violet_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(VIOLET_PHANTOM.get())));
+    public static final DeferredItem<SpawnEggItem> TOXIC_PHANTOM_SPAWN_EGG = ITEMS.registerItem(
+            "toxic_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(TOXIC_PHANTOM.get())));
+    public static final DeferredItem<SpawnEggItem> SCULK_PHANTOM_SPAWN_EGG = ITEMS.registerItem(
+            "sculk_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(SCULK_PHANTOM.get())));
+    public static final DeferredItem<SpawnEggItem> RAVAGER_PHANTOM_SPAWN_EGG = ITEMS.registerItem(
+            "ravager_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(RAVAGER_PHANTOM.get())));
+
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(
             Registries.CREATIVE_MODE_TAB,
             Phantomism.MOD_ID
@@ -164,6 +215,11 @@ public final class PhantomismContent {
                         output.accept(SAND_PHANTOM_SPAWN_EGG.get());
                         output.accept(GOLD_PHANTOM_SPAWN_EGG.get());
                         output.accept(CHERRY_PHANTOM_SPAWN_EGG.get());
+                        output.accept(PHANTOM_DRAGON_SPAWN_EGG.get());
+                        output.accept(VIOLET_PHANTOM_SPAWN_EGG.get());
+                        output.accept(TOXIC_PHANTOM_SPAWN_EGG.get());
+                        output.accept(SCULK_PHANTOM_SPAWN_EGG.get());
+                        output.accept(RAVAGER_PHANTOM_SPAWN_EGG.get());
                     })
                     .build()
     );

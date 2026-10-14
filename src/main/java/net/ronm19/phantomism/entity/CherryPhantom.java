@@ -173,12 +173,15 @@ public final class CherryPhantom extends AbstractPhantom {
     }
 
     private void ambientPetals(ServerLevel level) {
-        if (!this.isAddedToLevel()) { return; }
-        boolean moving = this.getDeltaMovement().horizontalDistanceSqr() > 0.004D;
-        int interval = moving ? 12 : 80;
+        if (!this.isAddedToLevel() || !this.isAlive()) { return; }
+        Vec3 movement = this.getDeltaMovement();
+        boolean moving = movement.lengthSqr() > 0.0025D;
+        int interval = (moving ? 4 : 12) * (this.isBaby() ? 2 : 1);
         if (this.tickCount % interval == 0) {
-            Vec3 behind = this.position().subtract(this.getViewVector(1.0F).scale(0.55D)).add(0.0D, 0.6D, 0.0D);
-            PhantomVisualEffects.petals(level, behind, this.isBaby() ? 1 : moving ? 2 : 1, this.isBaby() ? 0.1F : 0.16F);
+            Vec3 heading = moving ? movement.normalize() : Vec3.directionFromRotation(0.0F, this.getYRot());
+            Vec3 behind = this.position().add(0.0D, this.getBbHeight() * 0.55D, 0.0D)
+                    .subtract(heading.scale(this.isBaby() ? 0.35D : 0.65D));
+            PhantomVisualEffects.petals(level, behind, this.isBaby() ? 1 : 2, this.isBaby() ? 0.12F : 0.2F);
         }
     }
 

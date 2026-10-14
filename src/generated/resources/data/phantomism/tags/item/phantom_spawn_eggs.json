@@ -8,6 +8,11 @@
     "phantomism:storm_phantom_spawn_egg",
     "phantomism:sand_phantom_spawn_egg",
     "phantomism:gold_phantom_spawn_egg",
-    "phantomism:cherry_phantom_spawn_egg"
+    "phantomism:cherry_phantom_spawn_egg",
+    "phantomism:phantom_dragon_spawn_egg",
+    "phantomism:violet_phantom_spawn_egg",
+    "phantomism:toxic_phantom_spawn_egg",
+    "phantomism:sculk_phantom_spawn_egg",
+    "phantomism:ravager_phantom_spawn_egg"
   ]
 }

@@ -28,7 +28,12 @@ public enum PhantomDiscovery {
     STORM("storm_phantom", PhantomismContent.STORM_PHANTOM, PhantomismContent.STORM_PHANTOM_SPAWN_EGG, Rarity.COMMON),
     SAND("sand_phantom", PhantomismContent.SAND_PHANTOM, PhantomismContent.SAND_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
     GOLD("gold_phantom", PhantomismContent.GOLD_PHANTOM, PhantomismContent.GOLD_PHANTOM_SPAWN_EGG, Rarity.RARE),
-    CHERRY("cherry_phantom", PhantomismContent.CHERRY_PHANTOM, PhantomismContent.CHERRY_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON);
+    CHERRY("cherry_phantom", PhantomismContent.CHERRY_PHANTOM, PhantomismContent.CHERRY_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    DRAGON("phantom_dragon", PhantomismContent.PHANTOM_DRAGON, PhantomismContent.PHANTOM_DRAGON_SPAWN_EGG, Rarity.RARE),
+    VIOLET("violet_phantom", PhantomismContent.VIOLET_PHANTOM, PhantomismContent.VIOLET_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    TOXIC("toxic_phantom", PhantomismContent.TOXIC_PHANTOM, PhantomismContent.TOXIC_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    SCULK("sculk_phantom", PhantomismContent.SCULK_PHANTOM, PhantomismContent.SCULK_PHANTOM_SPAWN_EGG, Rarity.RARE),
+    RAVAGER("ravager_phantom", PhantomismContent.RAVAGER_PHANTOM, PhantomismContent.RAVAGER_PHANTOM_SPAWN_EGG, Rarity.RARE);
 
     public static final String ICON_DATA_KEY = "phantomism_discovery_icon";
     public static final String CRITERION = "discovered";
