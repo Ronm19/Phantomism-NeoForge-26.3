@@ -46,6 +46,38 @@ public final class ModBiomeModifierProvider implements SingleRegistryBootstrap<B
                 PhantomismContent.VIOLET_PHANTOM.get(), PhantomDiscovery.VIOLET.rarity().spawnWeight());
         addSpawns(context, "toxic_phantom_spawns", ModTags.Biomes.TOXIC_PHANTOM_SPAWNS,
                 PhantomismContent.TOXIC_PHANTOM.get(), PhantomDiscovery.TOXIC.rarity().spawnWeight());
+        addSpawns(context, "end_phantom_spawns", ModTags.Biomes.END_PHANTOM_SPAWNS,
+                PhantomismContent.END_PHANTOM.get(), PhantomDiscovery.END.rarity().spawnWeight());
+        addSpawns(context, "zombie_phantom_spawns", ModTags.Biomes.ZOMBIE_PHANTOM_SPAWNS,
+                PhantomismContent.ZOMBIE_PHANTOM.get(), PhantomDiscovery.ZOMBIE.rarity().spawnWeight());
+        addSpawns(context, "echo_phantom_spawns", ModTags.Biomes.ECHO_PHANTOM_SPAWNS,
+                PhantomismContent.ECHO_PHANTOM.get(), PhantomDiscovery.ECHO.rarity().spawnWeight());
+        addSpawns(context, "blood_phantom_spawns", ModTags.Biomes.BLOOD_PHANTOM_SPAWNS,
+                PhantomismContent.BLOOD_PHANTOM.get(), PhantomDiscovery.BLOOD.rarity().spawnWeight());
+        addSpawns(context, "vampire_phantom_spawns", ModTags.Biomes.VAMPIRE_PHANTOM_SPAWNS,
+                PhantomismContent.VAMPIRE_PHANTOM.get(), PhantomDiscovery.VAMPIRE.rarity().spawnWeight());
+        addSpawns(context, "gravity_phantom_spawns", ModTags.Biomes.GRAVITY_PHANTOM_SPAWNS,
+                PhantomismContent.GRAVITY_PHANTOM.get(), 6);
+        addSpawns(context, "mirage_phantom_spawns", ModTags.Biomes.MIRAGE_PHANTOM_SPAWNS, PhantomismContent.MIRAGE_PHANTOM.get(), 6);
+        addSpawns(context, "omen_phantom_spawns", ModTags.Biomes.OMEN_PHANTOM_SPAWNS, PhantomismContent.OMEN_PHANTOM.get(), 6);
+        addSpawns(context, "ancient_phantom_spawns", ModTags.Biomes.ANCIENT_PHANTOM_SPAWNS, PhantomismContent.ANCIENT_PHANTOM.get(), 3);
+        addSpawns(context, "reaper_phantom_spawns", ModTags.Biomes.REAPER_PHANTOM_SPAWNS, PhantomismContent.REAPER_PHANTOM.get(), 3);
+        addSpawns(context, "primordial_phantom_spawns", ModTags.Biomes.PRIMORDIAL_PHANTOM_SPAWNS, PhantomismContent.PRIMORDIAL_PHANTOM.get(), 3);
+        addSpawns(context, "phantom_king_spawns", ModTags.Biomes.PHANTOM_KING_SPAWNS, PhantomismContent.PHANTOM_KING.get(), 3);
+        addSpawns(context, "dark_phantom_spawns", ModTags.Biomes.DARK_PHANTOM_SPAWNS, PhantomismContent.DARK_PHANTOM.get(), 6);
+        addSpawns(context, "void_phantom_spawns", ModTags.Biomes.VOID_PHANTOM_SPAWNS, PhantomismContent.VOID_PHANTOM.get(), 3);
+        addSpawns(context, "angel_phantom_spawns", ModTags.Biomes.ANGEL_PHANTOM_SPAWNS, PhantomismContent.ANGEL_PHANTOM.get(), 3);
+        addSpawns(context, "spectral_phantom_spawns", ModTags.Biomes.SPECTRAL_PHANTOM_SPAWNS, PhantomismContent.SPECTRAL_PHANTOM.get(), 6);
+        addSpawns(context, "demon_phantom_spawns", ModTags.Biomes.DEMON_PHANTOM_SPAWNS, PhantomismContent.DEMON_PHANTOM.get(), 4);
+        addSpawns(context, "sentinel_phantom_spawns", ModTags.Biomes.SENTINEL_PHANTOM_SPAWNS, PhantomismContent.SENTINEL_PHANTOM.get(), 6);
+        addSpawns(context, "rift_phantom_spawns", ModTags.Biomes.RIFT_PHANTOM_SPAWNS, PhantomismContent.RIFT_PHANTOM.get(), 6);
+        addSpawns(context, "chrono_phantom_spawns", ModTags.Biomes.CHRONO_PHANTOM_SPAWNS, PhantomismContent.CHRONO_PHANTOM.get(), 3);
+        addSpawns(context, "wither_phantom_spawns", ModTags.Biomes.WITHER_PHANTOM_SPAWNS,
+                PhantomismContent.WITHER_PHANTOM.get(), 6);
+        addSpawns(context, "husk_phantom_spawns", ModTags.Biomes.HUSK_PHANTOM_SPAWNS,
+                PhantomismContent.HUSK_PHANTOM.get(), PhantomDiscovery.HUSK.rarity().spawnWeight());
+        addSpawns(context, "skeleton_phantom_spawns", ModTags.Biomes.SKELETON_PHANTOM_SPAWNS,
+                PhantomismContent.SKELETON_PHANTOM.get(), PhantomDiscovery.SKELETON.rarity().spawnWeight());
     }
 
     private static void addSpawns(BootstrapContext<BiomeModifier> context, String name, TagKey<Biome> biomes,
@@ -55,6 +87,7 @@ public final class ModBiomeModifierProvider implements SingleRegistryBootstrap<B
         context.register(key, BiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(
                 context.lookup(Registries.BIOME).getOrThrow(biomes),
                 new Weighted<>(new MobSpawnSettings.SpawnerData(type, UniformInt.of(1,
-                        type == PhantomismContent.GOLD_PHANTOM.get() || type == PhantomismContent.PHANTOM_DRAGON.get() ? 1 : 2)), weight)));
+                        type == PhantomismContent.PHANTOM_KING.get() || type == PhantomismContent.REAPER_PHANTOM.get() || type == PhantomismContent.PRIMORDIAL_PHANTOM.get() || type == PhantomismContent.OMEN_PHANTOM.get() || type == PhantomismContent.VOID_PHANTOM.get() || type == PhantomismContent.ANGEL_PHANTOM.get() || type == PhantomismContent.SPECTRAL_PHANTOM.get() || type == PhantomismContent.DEMON_PHANTOM.get() || type == PhantomismContent.SENTINEL_PHANTOM.get() || type == PhantomismContent.RIFT_PHANTOM.get() || type == PhantomismContent.CHRONO_PHANTOM.get() || type == PhantomismContent.GRAVITY_PHANTOM.get() || type == PhantomismContent.WITHER_PHANTOM.get() ? 1 : type == PhantomismContent.ZOMBIE_PHANTOM.get() ? 3
+                                : type == PhantomismContent.GOLD_PHANTOM.get() || type == PhantomismContent.PHANTOM_DRAGON.get() ? 1 : 2)), weight)));
     }
 }

@@ -1,0 +1,31 @@
+{
+  "parent": "phantomism:discovery/root",
+  "criteria": {
+    "discovered": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.phantomism.discovery.phantom_king.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "components": {
+        "minecraft:custom_data": {
+          "phantomism_discovery_icon": "phantom_king"
+        }
+      },
+      "id": "phantomism:phantom_king_spawn_egg"
+    },
+    "title": {
+      "translate": "advancements.phantomism.discovery.phantom_king.title"
+    }
+  },
+  "requirements": [
+    [
+      "discovered"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

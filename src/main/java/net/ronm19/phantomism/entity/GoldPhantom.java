@@ -198,7 +198,7 @@ public final class GoldPhantom extends AbstractPhantom {
                 this.animate(PhantomAnimationAction.ULTIMATE);
                 this.playSound(SoundEvents.AMETHYST_BLOCK_CHIME, 1.0F, 0.7F);
             } else if (this.getControllingPassenger() == null && this.dustCooldown == 0
-                    && this.distanceToSqr(target) <= 28.0D * 28.0D && this.hasLineOfSight(target)
+                    && this.distanceToSqr(target) <= GoldDustProjectile.MAX_TRAVEL_DISTANCE * GoldDustProjectile.MAX_TRAVEL_DISTANCE && this.hasLineOfSight(target)
                     && this.launchGoldDust(level, target.getEyePosition().subtract(this.projectileOrigin()))) {
                 this.dustCooldown = DUST_COOLDOWN;
             }

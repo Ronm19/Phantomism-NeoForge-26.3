@@ -20,6 +20,7 @@ import net.ronm19.phantomism.vfx.PhantomVfxTheme;
 import org.jspecify.annotations.Nullable;
 
 public final class DragonFireballProjectile extends ThrowableItemProjectile {
+    public static final double MAX_TRAVEL_DISTANCE = 54.0D;
     private double travelDistance;
     private boolean empowered;
     private boolean exploded;
@@ -58,7 +59,7 @@ public final class DragonFireballProjectile extends ThrowableItemProjectile {
         Vec3 previous = this.position();
         super.tick();
         this.travelDistance += this.position().distanceTo(previous);
-        if (!this.level().isClientSide() && (this.tickCount >= 80 || this.travelDistance >= 36.0D)) { this.discard(); }
+        if (!this.level().isClientSide() && (this.tickCount >= 80 || this.travelDistance >= MAX_TRAVEL_DISTANCE)) { this.discard(); }
     }
 
     @Override
@@ -94,7 +95,7 @@ public final class DragonFireballProjectile extends ThrowableItemProjectile {
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         double distance = input.getDoubleOr("DragonFireballTravel", 0.0D);
-        this.travelDistance = Double.isFinite(distance) ? Math.clamp(distance, 0.0D, 36.0D) : 36.0D;
+        this.travelDistance = Double.isFinite(distance) ? Math.clamp(distance, 0.0D, MAX_TRAVEL_DISTANCE) : MAX_TRAVEL_DISTANCE;
         this.empowered = input.getBooleanOr("DragonFireballEmpowered", false);
     }
 }

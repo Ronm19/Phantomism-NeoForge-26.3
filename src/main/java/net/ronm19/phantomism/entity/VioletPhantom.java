@@ -260,7 +260,7 @@ public final class VioletPhantom extends AbstractPhantom {
             if (this.rupture(level, target)) { return; }
         }
         if (this.crosscutCooldown == 0 && this.distanceToSqr(target) <= 20.25D && this.crosscut(level, target)) { return; }
-        if (this.lanceCooldown == 0 && this.distanceToSqr(target) > 16.0D && this.distanceToSqr(target) <= 32.0D * 32.0D
+        if (this.lanceCooldown == 0 && this.distanceToSqr(target) > 16.0D && this.distanceToSqr(target) <= VioletLanceProjectile.MAX_TRAVEL_DISTANCE * VioletLanceProjectile.MAX_TRAVEL_DISTANCE
                 && this.launchLance(level, target.getEyePosition().subtract(this.projectileOrigin()))) { this.lanceCooldown = LANCE_COOLDOWN; }
     }
 

@@ -51,7 +51,7 @@ public final class SandPhantom extends AbstractPhantom {
     private static final int DIVE_COOLDOWN = 15 * 20;
     private static final int SANDSTORM_COOLDOWN = 70 * 20;
     private static final int SANDSTORM_DURATION = 10 * 20;
-    private static final double BOLT_RANGE = 28.0D;
+    private static final double BOLT_RANGE = SandBolt.MAX_TRAVEL_DISTANCE;
     private static final double SANDSTORM_RADIUS = 12.0D;
     private final Set<UUID> stormDustedTargets = new HashSet<>();
     private int boltCooldown;

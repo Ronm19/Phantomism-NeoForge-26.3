@@ -17,6 +17,7 @@ import net.neoforged.neoforge.entity.PartEntity;
 import org.jspecify.annotations.Nullable;
 
 public final class VioletLanceProjectile extends ThrowableItemProjectile {
+    public static final double MAX_TRAVEL_DISTANCE = 48.0D;
     private double travelDistance;
     private float damage = 5.0F;
 
@@ -54,7 +55,7 @@ public final class VioletLanceProjectile extends ThrowableItemProjectile {
         Vec3 previous = this.position();
         super.tick();
         this.travelDistance += this.position().distanceTo(previous);
-        if (!this.level().isClientSide() && (this.tickCount >= 80 || this.travelDistance >= 32.0D)) { this.discard(); }
+        if (!this.level().isClientSide() && (this.tickCount >= 80 || this.travelDistance >= MAX_TRAVEL_DISTANCE)) { this.discard(); }
     }
 
     @Override
@@ -86,7 +87,7 @@ public final class VioletLanceProjectile extends ThrowableItemProjectile {
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         double distance = input.getDoubleOr("VioletLanceTravel", 0.0D);
-        this.travelDistance = Double.isFinite(distance) ? Math.clamp(distance, 0.0D, 32.0D) : 32.0D;
+        this.travelDistance = Double.isFinite(distance) ? Math.clamp(distance, 0.0D, MAX_TRAVEL_DISTANCE) : MAX_TRAVEL_DISTANCE;
         this.setDamage(input.getFloatOr("VioletLanceDamage", 5.0F));
     }
 }

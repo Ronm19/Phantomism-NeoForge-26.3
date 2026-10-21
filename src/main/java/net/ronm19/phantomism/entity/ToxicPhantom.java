@@ -275,7 +275,7 @@ public final class ToxicPhantom extends AbstractPhantom {
         if (!this.isValidAcidTarget(target) || !this.hasLineOfSight(target)) { return; }
         if (this.tickCount % 10 == 0) { this.planAbilities(level, target); }
         if (this.getControllingPassenger() == null && this.abilityRecovery == 0 && this.projectileCooldown == 0
-                && this.distanceToSqr(target) <= 32.0D * 32.0D && this.distanceToSqr(target) > 9.0D
+                && this.distanceToSqr(target) <= AcidProjectile.MAX_TRAVEL_DISTANCE * AcidProjectile.MAX_TRAVEL_DISTANCE && this.distanceToSqr(target) > 9.0D
                 && this.launchAcid(level, target.getEyePosition().subtract(this.projectileOrigin()))) {
             this.projectileCooldown = PROJECTILE_COOLDOWN;
             this.abilityRecovery = 6;

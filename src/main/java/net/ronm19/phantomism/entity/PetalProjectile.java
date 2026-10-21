@@ -15,6 +15,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public final class PetalProjectile extends ThrowableItemProjectile {
+    public static final double MAX_TRAVEL_DISTANCE = 42.0D;
     private double travelDistance;
 
     public PetalProjectile(EntityType<? extends PetalProjectile> type, Level level) { super(type, level); }
@@ -38,7 +39,7 @@ public final class PetalProjectile extends ThrowableItemProjectile {
         Vec3 previous = this.position();
         super.tick();
         this.travelDistance += this.position().distanceTo(previous);
-        if (!this.level().isClientSide() && (this.tickCount >= 80 || this.travelDistance >= 28.0D)) { this.discard(); }
+        if (!this.level().isClientSide() && (this.tickCount >= 80 || this.travelDistance >= MAX_TRAVEL_DISTANCE)) { this.discard(); }
     }
 
     @Override

@@ -25,6 +25,7 @@ public final class PhantomFamilyProtectionEvents {
                 || !(event.getSource().getEntity() instanceof LivingEntity attacker)) {
             return;
         }
+        if (PhantomDuels.pair(victim, attacker)) { return; }
         var owner = companion.getOwnerReference();
         if (owner.matches(attacker) || attacker instanceof AbstractPhantom || victim.isAlliedTo(attacker)
                 || (attacker instanceof OwnableEntity owned && owner.equals(owned.getOwnerReference()))) {

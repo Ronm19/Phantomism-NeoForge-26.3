@@ -43,7 +43,12 @@ public final class ModTags {
     }
 
     public static final class EntityTypes {
+        public static final TagKey<EntityType<?>> RIFT_TELEPORT_IMMUNE = create("rift_teleport_immune");
         public static final TagKey<EntityType<?>> PHANTOMS = create("phantoms");
+        public static final TagKey<EntityType<?>> VAMPIRE_HYPNOSIS_IMMUNE = create("vampire_hypnosis_immune");
+        public static final TagKey<EntityType<?>> GRAVITY_MOVEMENT_IMMUNE = create("gravity_movement_immune");
+        public static final TagKey<EntityType<?>> HUSK_EXHAUSTION_RESISTANT = create("husk_exhaustion_resistant");
+        public static final TagKey<EntityType<?>> ZOMBIE_PRESENCE_ELIGIBLE = create("zombie_presence_eligible");
         public static final TagKey<EntityType<?>> RAVAGER_FEAR_IMMUNE = create("ravager_fear_immune");
         public static final TagKey<EntityType<?>> FROST_RESISTANT = create("frost_resistant");
         public static final TagKey<EntityType<?>> EARTH_CONTROL_RESISTANT = create("earth_control_resistant");
@@ -73,6 +78,29 @@ public final class ModTags {
         public static final TagKey<Biome> PHANTOM_DRAGON_SPAWNS = create("phantom_dragon_spawns");
         public static final TagKey<Biome> VIOLET_PHANTOM_SPAWNS = create("violet_phantom_spawns");
         public static final TagKey<Biome> TOXIC_PHANTOM_SPAWNS = create("toxic_phantom_spawns");
+        public static final TagKey<Biome> END_PHANTOM_SPAWNS = create("end_phantom_spawns");
+        public static final TagKey<Biome> ZOMBIE_PHANTOM_SPAWNS = create("zombie_phantom_spawns");
+        public static final TagKey<Biome> SKELETON_PHANTOM_SPAWNS = create("skeleton_phantom_spawns");
+        public static final TagKey<Biome> HUSK_PHANTOM_SPAWNS = create("husk_phantom_spawns");
+        public static final TagKey<Biome> ECHO_PHANTOM_SPAWNS = create("echo_phantom_spawns");
+        public static final TagKey<Biome> BLOOD_PHANTOM_SPAWNS = create("blood_phantom_spawns");
+        public static final TagKey<Biome> VAMPIRE_PHANTOM_SPAWNS = create("vampire_phantom_spawns");
+        public static final TagKey<Biome> GRAVITY_PHANTOM_SPAWNS = create("gravity_phantom_spawns");
+        public static final TagKey<Biome> MIRAGE_PHANTOM_SPAWNS = create("mirage_phantom_spawns");
+        public static final TagKey<Biome> OMEN_PHANTOM_SPAWNS = create("omen_phantom_spawns");
+        public static final TagKey<Biome> ANCIENT_PHANTOM_SPAWNS = create("ancient_phantom_spawns");
+        public static final TagKey<Biome> REAPER_PHANTOM_SPAWNS = create("reaper_phantom_spawns");
+        public static final TagKey<Biome> PRIMORDIAL_PHANTOM_SPAWNS = create("primordial_phantom_spawns");
+        public static final TagKey<Biome> PHANTOM_KING_SPAWNS = create("phantom_king_spawns");
+        public static final TagKey<Biome> DARK_PHANTOM_SPAWNS = create("dark_phantom_spawns");
+        public static final TagKey<Biome> VOID_PHANTOM_SPAWNS = create("void_phantom_spawns");
+        public static final TagKey<Biome> ANGEL_PHANTOM_SPAWNS = create("angel_phantom_spawns");
+        public static final TagKey<Biome> SPECTRAL_PHANTOM_SPAWNS = create("spectral_phantom_spawns");
+        public static final TagKey<Biome> DEMON_PHANTOM_SPAWNS = create("demon_phantom_spawns");
+        public static final TagKey<Biome> SENTINEL_PHANTOM_SPAWNS = create("sentinel_phantom_spawns");
+        public static final TagKey<Biome> RIFT_PHANTOM_SPAWNS = create("rift_phantom_spawns");
+        public static final TagKey<Biome> CHRONO_PHANTOM_SPAWNS = create("chrono_phantom_spawns");
+        public static final TagKey<Biome> WITHER_PHANTOM_SPAWNS = create("wither_phantom_spawns");
 
         private Biomes() {
         }

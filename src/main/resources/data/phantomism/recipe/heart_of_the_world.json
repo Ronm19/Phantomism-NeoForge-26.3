@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:heart_of_the_sea",
+    "minecraft:nether_star",
+    "minecraft:echo_shard"
+  ],
+  "result": {
+    "id": "phantomism:heart_of_the_world",
+    "count": 1
+  }
+}

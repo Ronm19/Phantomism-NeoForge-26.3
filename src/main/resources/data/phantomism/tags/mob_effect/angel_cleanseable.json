@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:poison",
+    "minecraft:wither",
+    "minecraft:slowness",
+    "minecraft:weakness",
+    "minecraft:blindness",
+    "minecraft:nausea",
+    "minecraft:hunger",
+    "minecraft:darkness",
+    "minecraft:mining_fatigue"
+  ]
+}

@@ -186,6 +186,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
     }
 
     public void setTask(Task task) {
+        net.ronm19.phantomism.entity.ai.RoyalTactics.ownerCommand(this, false);
         this.assignments.setTask(task);
         this.entityData.set(DATA_TASK, task.ordinal());
         this.resetIdleFlight();
@@ -311,6 +312,17 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
     }
 
     @Override
+    public boolean canTeleport(Level source, Level destination) {
+        return super.canTeleport(source, destination)
+                || net.ronm19.phantomism.entity.ai.PhantomDimensionTravel.allowsEndExit(this, source, destination);
+    }
+
+    @Override
+    public void teleportToPortalDestination(ServerLevel source, net.minecraft.world.level.portal.TeleportTransition transition) {
+        net.ronm19.phantomism.entity.ai.PhantomDimensionTravel.usePortal(this, source, transition);
+    }
+
+    @Override
     protected void customServerAiStep(ServerLevel level) {
         if (this.tickCount % 20 == 0) {
             this.getConfiguredStats().apply(this);
@@ -377,6 +389,9 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
 
     @Override
     public void setTarget(LivingEntity target) {
+        if (target != null && !this.isSpeciesCombatTarget(target)) {
+            target = null;
+        }
         super.setTarget(target);
         if (this.brain != null) {
             if (target == null) {
@@ -511,12 +526,16 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
                     movement.z
             );
             this.travelFlying(new Vec3(rider.xxa, 0.0D, rider.zza),
-                    (float) (0.5D * this.getAttributeValue(Attributes.FLYING_SPEED)));
+                    (float) this.getRiddenHorizontalAcceleration());
             return;
         }
 
         super.travel(input);
     }
+
+    public boolean isUltimateAnimationActive() { return this.lastAnimationAction == PhantomAnimationAction.ULTIMATE && this.level().getGameTime() < this.animationPriorityUntil; }
+
+    protected double getRiddenHorizontalAcceleration() { return 0.5D * this.getAttributeValue(Attributes.FLYING_SPEED); }
 
     protected double getRiddenVerticalInput(Player rider, Input input) {
         return (input.jump() ? 1.0D : 0.0D) - (input.sprint() ? 1.0D : 0.0D);
@@ -544,6 +563,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
     public void tick() {
         super.tick();
         if (!this.level().isClientSide()) {
+            net.ronm19.phantomism.entity.ai.PhantomDuels.tick(this);
             this.entityData.set(DATA_ANIMATION_FLAGS, (byte) ((this.diveTicks > 0 ? 1 : 0) | (this.isInLove() ? 2 : 0)));
             // Babies must never carry passengers, including riders from an older save.
             if (this.isBaby() && this.isVehicle()) {
@@ -631,6 +651,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
     }
 
     public void setOrder(Order order) {
+        net.ronm19.phantomism.entity.ai.RoyalTactics.ownerCommand(this, order == Order.FOLLOW);
         this.order = order;
         this.entityData.set(DATA_ORDER, order.ordinal());
         this.assignments.movementChanged();
@@ -648,10 +669,12 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
     }
 
     public void setCombatTarget(LivingEntity target) {
-        if (target instanceof AbstractPhantom || !target.isAlive() || this.isAlliedTo(target)) {
+        if (target instanceof AbstractPhantom || !target.isAlive() || this.isAlliedTo(target) || !this.isSpeciesCombatTarget(target)) {
             return;
         }
 
+        if (!net.ronm19.phantomism.entity.ai.PhantomDuels.begin(this, target)) { return; }
+        net.ronm19.phantomism.entity.ai.RoyalTactics.ownerCommand(this, false);
         this.assignments.stopAreaCombat();
         this.suppressedTargets.remove(target.getUUID());
         this.getBrain().setMemory(MemoryModuleType.ATTACK_TARGET, target);
@@ -665,6 +688,8 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
     }
 
     public void clearCombatTarget(boolean suppressRetaliation) {
+        if (suppressRetaliation) { net.ronm19.phantomism.entity.ai.RoyalTactics.ownerCommand(this, false); }
+        if (suppressRetaliation) { net.ronm19.phantomism.entity.ai.PhantomDuels.end(this); }
         this.assignments.stopAreaCombat();
         this.assignments.resetWork();
         LivingEntity currentTarget = this.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).orElse(this.getTarget());
@@ -713,6 +738,10 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
 
     protected boolean shouldHuntAutomatically(LivingEntity target, ServerLevel serverLevel) {
         return false;
+    }
+
+    protected boolean isSpeciesCombatTarget(LivingEntity target) {
+        return true;
     }
 
     protected double getAutomaticTargetPriority(LivingEntity target) {
@@ -898,6 +927,8 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
         return target != null
                 && target.isAlive()
                 && !target.isRemoved()
+                && this.isSpeciesCombatTarget(target)
+                && !net.ronm19.phantomism.entity.ai.PhantomDuels.excludesObserver(this, target)
                 && !(target instanceof AbstractPhantom)
                 && target != this.getOwner()
                 && !(target instanceof OwnableEntity owned && owned.getOwnerReference() != null
@@ -1223,6 +1254,8 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
         double x = target.getX() + Math.cos(this.orbitAngle) * radius;
         double y = target.getY(0.5D) + this.getFlightAltitudeOffset(altitude + Math.sin(this.orbitAngle * 2.0D));
         double z = target.getZ() + Math.sin(this.orbitAngle) * radius;
+        Vec3 royalOrbit = net.ronm19.phantomism.entity.ai.RoyalTactics.orbit(this, target, new Vec3(x, y, z), radius);
+        x = royalOrbit.x; y = royalOrbit.y; z = royalOrbit.z;
         this.moveControl.setWantedPosition(x, y, z, speed);
     }
 

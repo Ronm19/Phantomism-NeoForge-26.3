@@ -77,6 +77,31 @@ public class Phantomism {
         event.put(PhantomismContent.TOXIC_PHANTOM.get(), net.ronm19.phantomism.entity.ToxicPhantom.createAttributes().build());
         event.put(PhantomismContent.SCULK_PHANTOM.get(), net.ronm19.phantomism.entity.SculkPhantom.createAttributes().build());
         event.put(PhantomismContent.RAVAGER_PHANTOM.get(), net.ronm19.phantomism.entity.RavagerPhantom.createAttributes().build());
+        event.put(PhantomismContent.END_PHANTOM.get(), net.ronm19.phantomism.entity.EndPhantom.createAttributes().build());
+        event.put(PhantomismContent.ZOMBIE_PHANTOM.get(), net.ronm19.phantomism.entity.ZombiePhantom.createAttributes().build());
+        event.put(PhantomismContent.SKELETON_PHANTOM.get(), net.ronm19.phantomism.entity.SkeletonPhantom.createAttributes().build());
+        event.put(PhantomismContent.HUSK_PHANTOM.get(), net.ronm19.phantomism.entity.HuskPhantom.createAttributes().build());
+        event.put(PhantomismContent.ECHO_PHANTOM.get(), net.ronm19.phantomism.entity.EchoPhantom.createAttributes().build());
+        event.put(PhantomismContent.BLOOD_PHANTOM.get(), net.ronm19.phantomism.entity.BloodPhantom.createAttributes().build());
+        event.put(PhantomismContent.VAMPIRE_PHANTOM.get(), net.ronm19.phantomism.entity.VampirePhantom.createAttributes().build());
+        event.put(PhantomismContent.GRAVITY_PHANTOM.get(), net.ronm19.phantomism.entity.GravityPhantom.createAttributes().build());
+        event.put(PhantomismContent.OMEN_PHANTOM.get(), net.ronm19.phantomism.entity.OmenPhantom.createAttributes().build());
+        event.put(PhantomismContent.ANCIENT_PHANTOM.get(), net.ronm19.phantomism.entity.AncientPhantom.createAttributes().build());
+        event.put(PhantomismContent.REAPER_PHANTOM.get(), net.ronm19.phantomism.entity.ReaperPhantom.createAttributes().build());
+        event.put(PhantomismContent.PRIMORDIAL_PHANTOM.get(), net.ronm19.phantomism.entity.PrimordialPhantom.createAttributes().build());
+        event.put(PhantomismContent.MIRAGE_PHANTOM.get(), net.ronm19.phantomism.entity.MiragePhantom.createAttributes().build());
+        event.put(PhantomismContent.MIRAGE_DECOY.get(), net.ronm19.phantomism.entity.MirageDecoy.createAttributes().build());
+        event.put(PhantomismContent.GOLEM_PHANTOM.get(), net.ronm19.phantomism.entity.GolemPhantom.createAttributes().build());
+        event.put(PhantomismContent.PHANTOM_KING.get(), net.ronm19.phantomism.entity.PhantomKing.createAttributes().build());
+        event.put(PhantomismContent.DARK_PHANTOM.get(), net.ronm19.phantomism.entity.DarkPhantom.createAttributes().build());
+        event.put(PhantomismContent.VOID_PHANTOM.get(), net.ronm19.phantomism.entity.VoidPhantom.createAttributes().build());
+        event.put(PhantomismContent.ANGEL_PHANTOM.get(), net.ronm19.phantomism.entity.AngelPhantom.createAttributes().build());
+        event.put(PhantomismContent.SPECTRAL_PHANTOM.get(), net.ronm19.phantomism.entity.SpectralPhantom.createAttributes().build());
+        event.put(PhantomismContent.DEMON_PHANTOM.get(), net.ronm19.phantomism.entity.DemonPhantom.createAttributes().build());
+        event.put(PhantomismContent.SENTINEL_PHANTOM.get(), net.ronm19.phantomism.entity.SentinelPhantom.createAttributes().build());
+        event.put(PhantomismContent.RIFT_PHANTOM.get(), net.ronm19.phantomism.entity.RiftPhantom.createAttributes().build());
+        event.put(PhantomismContent.CHRONO_PHANTOM.get(), net.ronm19.phantomism.entity.ChronoPhantom.createAttributes().build());
+        event.put(PhantomismContent.WITHER_PHANTOM.get(), net.ronm19.phantomism.entity.WitherPhantom.createAttributes().build());
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

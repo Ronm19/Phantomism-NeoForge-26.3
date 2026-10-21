@@ -55,7 +55,7 @@ public final class StormPhantom extends AbstractPhantom {
     private static final int SHIELD_COOLDOWN = 20 * 20;
     private static final int ULTIMATE_COOLDOWN = 75 * 20;
     private static final int ULTIMATE_DURATION = 11 * 20;
-    private static final double PROJECTILE_RANGE = 28.0D;
+    private static final double PROJECTILE_RANGE = StormProjectile.MAX_TRAVEL_DISTANCE;
     private static final double CHAIN_RADIUS = 4.0D;
     private static final double ULTIMATE_RADIUS = 24.0D;
     private int projectileCooldown;

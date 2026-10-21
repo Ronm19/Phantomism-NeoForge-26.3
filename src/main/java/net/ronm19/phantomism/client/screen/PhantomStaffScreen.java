@@ -115,7 +115,8 @@ public final class PhantomStaffScreen extends Screen {
                 graphics.setComponentTooltipForNextFrame(this.font, groupActivityDetails(tasks), mouseX, mouseY);
             }
         } else if (minecraft.level != null && minecraft.level.getEntity(this.selectedRecipientId()) instanceof AbstractPhantom phantom) {
-            graphics.centeredText(this.font, Component.translatable("screen.phantomism.staff.activity_status", activityName(phantom.getTask())),
+            Component status = phantom instanceof net.ronm19.phantomism.entity.GolemPhantom golem ? Component.translatable("screen.phantomism.staff.golem_work", Component.translatable("work.phantomism.golem." + golem.workStatus()), golem.occupiedCargoSlots()) : Component.translatable("screen.phantomism.staff.activity_status", activityName(phantom.getTask()));
+            graphics.centeredText(this.font, status,
                     this.panelX + this.panelWidth / 2, this.panelY + 144, 0xFFCCCCCC);
         }
     }
@@ -194,6 +195,15 @@ public final class PhantomStaffScreen extends Screen {
 
     private void select(Action action) {
         int recipientId = this.selectedRecipientId();
+        if (action.name().startsWith("GOLEM_")) {
+            if (Minecraft.getInstance().level == null || !(Minecraft.getInstance().level.getEntity(recipientId) instanceof net.ronm19.phantomism.entity.GolemPhantom)) { if (Minecraft.getInstance().player != null) { Minecraft.getInstance().player.sendOverlayMessage(Component.translatable("message.phantomism.golem.select")); } return; }
+            if (action == Action.GOLEM_PRECISION || action == Action.GOLEM_AREA_A || action == Action.GOLEM_AREA_B || action == Action.GOLEM_CHEST) { PhantomismClient.beginBlockSelection(action, recipientId); Minecraft.getInstance().setScreenAndShow(null); if (Minecraft.getInstance().player != null) { Minecraft.getInstance().player.sendOverlayMessage(Component.translatable("message.phantomism.golem.block")); } return; }
+        }
+        if (action.name().startsWith("RIFT_") && (Minecraft.getInstance().level == null || !(Minecraft.getInstance().level.getEntity(recipientId) instanceof net.ronm19.phantomism.entity.RiftPhantom))) {
+            if (Minecraft.getInstance().player != null) { Minecraft.getInstance().player.sendOverlayMessage(Component.translatable("message.phantomism.rift.select")); } return;
+        }
+        if (action == Action.RIFT_SEND_ALLY) { PhantomismClient.beginRiftCompanionSelection(recipientId); Minecraft.getInstance().setScreenAndShow(null); if (Minecraft.getInstance().player != null) { Minecraft.getInstance().player.sendOverlayMessage(Component.translatable("screen.phantomism.staff.select_rift_ally")); } return; }
+        if (action == Action.RIFT_ANCHOR || action == Action.RIFT_PORTAL_A || action == Action.RIFT_PORTAL_B) { PhantomismClient.beginBlockSelection(action, recipientId); Minecraft.getInstance().setScreenAndShow(null); if (Minecraft.getInstance().player != null) { Minecraft.getInstance().player.sendOverlayMessage(Component.translatable("screen.phantomism.staff.select_rift")); } return; }
         if (action == Action.ATTACK_TARGET || action == Action.SET_HOME || action == Action.GUARD_POSITION) {
             if (action == Action.ATTACK_TARGET) {
                 PhantomismClient.beginAttackTargetSelection(recipientId);
@@ -224,7 +234,11 @@ public final class PhantomStaffScreen extends Screen {
         ACTIVITIES(Action.ACTIVITY_NONE, Action.HARVEST, Action.HUNT, Action.COLLECT),
         TARGETS(Action.ATTACK_TARGET, Action.CLEAR_TARGET),
         HOME(Action.SET_HOME, Action.RETURN_HOME),
-        UTILITY(Action.RECALL);
+        UTILITY(Action.RECALL),
+        SPATIAL(Action.RIFT_ANCHOR, Action.RIFT_PORTAL_A, Action.RIFT_PORTAL_B, Action.RIFT_ENTER, Action.RIFT_SEND_ALLY, Action.RIFT_CLOSE),
+        MINING(Action.GOLEM_PRECISION, Action.GOLEM_AREA_A, Action.GOLEM_AREA_B, Action.GOLEM_OBSIDIAN, Action.GOLEM_DELIVER, Action.GOLEM_CANCEL),
+        TITANIUM(Action.GOLEM_CHEST, Action.GOLEM_OWNER, Action.GOLEM_STATUS, Action.GOLEM_GUARD, Action.GOLEM_TITAN, Action.GOLEM_RAM_BREAK),
+        ILLUSION(Action.MIRAGE_COPIES, Action.MIRAGE_DOUBLE, Action.MIRAGE_FIELD, Action.MIRAGE_HALL);
 
         private final Action[] actions;
 

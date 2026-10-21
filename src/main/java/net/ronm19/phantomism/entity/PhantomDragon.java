@@ -261,7 +261,7 @@ public final class PhantomDragon extends AbstractPhantom {
             this.entityData.set(BREATHING, true);
             this.animate(PhantomAnimationAction.SENSE);
             this.playSound(SoundEvents.ENDER_DRAGON_GROWL, 0.65F, 0.7F);
-        } else if (this.fireballCooldown == 0 && this.distanceToSqr(target) <= 32.0D * 32.0D
+        } else if (this.fireballCooldown == 0 && this.distanceToSqr(target) <= 48.0D * 48.0D
                 && this.launchFireball(level, target.getEyePosition().subtract(this.projectileOrigin()))) {
             this.fireballCooldown = FIREBALL_COOLDOWN;
         }

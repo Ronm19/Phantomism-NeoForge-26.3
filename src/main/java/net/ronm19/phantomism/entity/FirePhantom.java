@@ -48,7 +48,7 @@ public final class FirePhantom extends AbstractPhantom {
     private static final int FIRE_VEIL_DURATION_TICKS = 8 * 20;
     private static final double FIRE_VEIL_SENSE_RADIUS = 12.0D;
     private static final int FIRE_PROJECTILE_COOLDOWN_TICKS = 10 * 20;
-    private static final double FIRE_PROJECTILE_RANGE = 28.0D;
+    private static final double FIRE_PROJECTILE_RANGE = 42.0D;
     private static final int FIRE_SHIELD_COOLDOWN_TICKS = 15 * 20;
     private static final int FIRE_SHIELD_DURATION_TICKS = 12 * 20;
     private static final int FIRE_SHIELD_STRENGTH_TICKS = 8 * 20;

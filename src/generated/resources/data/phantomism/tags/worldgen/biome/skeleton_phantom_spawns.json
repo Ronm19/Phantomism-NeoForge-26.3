@@ -1,0 +1,12 @@
+{
+  "values": [
+    "minecraft:windswept_hills",
+    "minecraft:windswept_gravelly_hills",
+    "minecraft:stony_peaks",
+    "minecraft:jagged_peaks",
+    "minecraft:frozen_peaks",
+    "minecraft:badlands",
+    "minecraft:eroded_badlands",
+    "minecraft:desert"
+  ]
+}

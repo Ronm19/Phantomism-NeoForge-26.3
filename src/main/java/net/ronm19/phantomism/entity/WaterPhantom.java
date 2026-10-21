@@ -45,7 +45,7 @@ public final class WaterPhantom extends AbstractPhantom {
     private static final int SHIELD_DURATION = 8 * 20;
     private static final int HYDRO_PUMP_COOLDOWN = 60 * 20;
     private static final int HYDRO_PUMP_DURATION = 4 * 20;
-    private static final double ABILITY_RANGE = 28.0D;
+    private static final double ABILITY_RANGE = WaterProjectile.MAX_TRAVEL_DISTANCE;
     private static final double BLESSING_RADIUS = 24.0D;
     private int projectileCooldown;
     private int shieldCooldown;

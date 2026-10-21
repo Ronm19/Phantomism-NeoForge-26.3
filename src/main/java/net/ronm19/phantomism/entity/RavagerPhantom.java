@@ -331,11 +331,7 @@ public final class RavagerPhantom extends AbstractPhantom {
 
     @Override
     protected boolean performRiddenProjectileAbility(ServerLevel level, Player rider) {
-        Vec3 facing = rider.getViewVector(1.0F);
-        LivingEntity target = this.enemies(level, this.position(), 3.5D).stream()
-                .filter(enemy -> enemy.getBoundingBox().getCenter().subtract(this.getBoundingBox().getCenter()).normalize().dot(facing) > 0.35D)
-                .findFirst().orElse(null);
-        return target != null && (this.ramCooldown == 0 ? this.useRam(level, target) : this.doHurtTarget(level, target));
+        return this.isAlive() && this.startCharge(level, rider.getViewVector(1.0F), false);
     }
 
     private boolean alliesInPath(ServerLevel level, Vec3 step) {

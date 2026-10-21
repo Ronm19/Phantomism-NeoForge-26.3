@@ -24,6 +24,8 @@ public final class ModMixinConfigProvider implements DataProvider {
         JsonArray mixins = new JsonArray();
         mixins.add("PowderSnowBlockMixin");
         mixins.add("ServerLevelMixin");
+        mixins.add("SpectralVehicleMixin");
+        mixins.add("SpectralPlayerSaveMixin");
         configuration.add("mixins", mixins);
         JsonArray clientMixins = new JsonArray();
         clientMixins.add("client.GuiGraphicsExtractorMixin");

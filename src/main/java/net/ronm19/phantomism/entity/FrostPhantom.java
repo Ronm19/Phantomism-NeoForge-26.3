@@ -36,7 +36,7 @@ import net.ronm19.phantomism.util.ModTags;
 
 public final class FrostPhantom extends AbstractPhantom {
     private static final int ICE_PROJECTILE_COOLDOWN_TICKS = 12 * 20;
-    private static final double ICE_PROJECTILE_RANGE = 24.0D;
+    private static final double ICE_PROJECTILE_RANGE = FrostProjectile.MAX_TRAVEL_DISTANCE;
     private static final int FROST_BITE_COOLDOWN_TICKS = 12 * 20;
     private static final int FREEZE_DURATION_TICKS = 8 * 20;
     private static final int RESISTANT_CONTROL_DURATION_TICKS = 2 * 20;

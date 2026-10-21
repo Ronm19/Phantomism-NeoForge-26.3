@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 
 public final class FrostProjectile extends ThrowableItemProjectile {
     private static final int MAX_LIFETIME_TICKS = 80;
-    private static final double MAX_TRAVEL_DISTANCE = 24.0D;
+    public static final double MAX_TRAVEL_DISTANCE = 36.0D;
     private double travelDistance;
 
     public FrostProjectile(EntityType<? extends FrostProjectile> type, Level level) {

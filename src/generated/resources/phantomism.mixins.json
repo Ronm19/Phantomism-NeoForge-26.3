@@ -8,7 +8,9 @@
   },
   "mixins": [
     "PowderSnowBlockMixin",
-    "ServerLevelMixin"
+    "ServerLevelMixin",
+    "SpectralVehicleMixin",
+    "SpectralPlayerSaveMixin"
   ],
   "overwrites": {
     "requireAnnotations": true

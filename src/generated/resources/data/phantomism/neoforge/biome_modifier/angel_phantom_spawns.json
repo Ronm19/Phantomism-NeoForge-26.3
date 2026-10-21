@@ -1,0 +1,13 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#phantomism:angel_phantom_spawns",
+  "spawners": {
+    "type": "phantomism:angel",
+    "count": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 1,
+      "min_inclusive": 1
+    },
+    "weight": 3
+  }
+}

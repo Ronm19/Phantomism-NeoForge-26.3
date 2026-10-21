@@ -30,5 +30,31 @@ public final class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(PhantomismContent.TOXIC_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.SCULK_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.RAVAGER_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.END_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.ZOMBIE_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.SKELETON_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.HUSK_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.ECHO_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.BLOOD_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.VAMPIRE_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.GRAVITY_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.WITHER_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.CHRONO_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.RIFT_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.SENTINEL_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.DEMON_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.SPECTRAL_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.ANGEL_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.VOID_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.DARK_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.PHANTOM_KING_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.MIRAGE_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.GOLEM_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.PRIMORDIAL_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.HEART_OF_THE_WORLD.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.REAPER_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.ANCIENT_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.ANCIENT_RELIC.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.OMEN_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
     }
 }

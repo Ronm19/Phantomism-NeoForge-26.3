@@ -62,6 +62,34 @@ public final class Config {
     public static final PhantomStats TOXIC_PHANTOM_STATS = stats("toxicPhantom", 64.0D, 6.0D, 8.0D, 0.35D, 2.0D, 48.0D);
     public static final PhantomStats SCULK_PHANTOM_STATS = stats("sculkPhantom", 60.0D, 6.0D, 8.0D, 0.3D, 2.0D);
     public static final PhantomStats RAVAGER_PHANTOM_STATS = stats("ravagerPhantom", 76.0D, 9.0D, 10.0D, 0.45D, 3.0D, 32.0D, 0.22D, 0.32D);
+    public static final PhantomStats END_PHANTOM_STATS = stats("endPhantom", 56.0D, 7.0D, 6.0D, 0.25D, 2.0D, 32.0D, 0.28D, 0.45D);
+    public static final PhantomStats ZOMBIE_PHANTOM_STATS = stats("zombiePhantom", 76.0D, 8.0D, 10.0D, 0.55D, 2.0D, 32.0D, 0.22D, 0.32D);
+    public static final PhantomStats SKELETON_PHANTOM_STATS = stats("skeletonPhantom", 64.0D, 8.0D, 8.0D, 0.35D, 2.0D, 32.0D, 0.24D, 0.36D);
+    public static final PhantomStats HUSK_PHANTOM_STATS = stats("huskPhantom", 88.0D, 9.0D, 14.0D, 0.70D, 4.0D, 32.0D, 0.20D, 0.35D);
+    public static final PhantomStats ECHO_PHANTOM_STATS = stats("echoPhantom", 64.0D, 5.0D, 8.0D, 0.35D, 2.0D, 48.0D, 0.25D, 0.425D);
+    public static final PhantomStats BLOOD_PHANTOM_STATS = stats("bloodPhantom", 72.0D, 8.0D, 10.0D, 0.45D, 3.0D, 40.0D, 0.24D, 0.4D);
+    public static final PhantomStats VAMPIRE_PHANTOM_STATS = stats("vampirePhantom", 64.0D, 6.0D, 8.0D, 0.3D, 2.0D, 36.0D, 0.25D, 0.425D);
+    public static final PhantomStats GRAVITY_PHANTOM_STATS = stats("gravityPhantom", 68.0D, 5.0D, 8.0D, 0.6D, 2.0D, 48.0D, 0.23D, 0.35D);
+    public static final PhantomStats OMEN_PHANTOM_STATS = stats("omenPhantom", 76, 8, 10, .4D, 4, 56, .25D, .425D);
+    public static final PhantomStats ANCIENT_PHANTOM_STATS = stats("ancientPhantom", 82, 9, 12, .5D, 6, 64, .25D, .4D);
+    public static final PhantomStats REAPER_PHANTOM_STATS = stats("reaperPhantom", 72, 9, 10, .4D, 4, 48, .25D, .45D);
+    public static final PhantomStats PRIMORDIAL_PHANTOM_STATS = stats("primordialPhantom", 88, 10, 14, .6D, 6, 64, .25D, .475D);
+    public static final ModConfigSpec.IntValue GOLEM_MAX_VOLUME = BUILDER.defineInRange("golemPhantom.maxExcavationVolume", 512, 1, 4096);
+    public static final ModConfigSpec.IntValue GOLEM_WORK_TICKS = BUILDER.defineInRange("golemPhantom.miningTicks", 12, 4, 200);
+    public static final PhantomStats MIRAGE_PHANTOM_STATS = stats("miragePhantom", 60, 6, 6, .25D, 2, 48, .25D, .5D);
+    public static final PhantomStats GOLEM_PHANTOM_STATS = stats("golemPhantom", 400, 16, 30, .95D, 12, 48, .2D, .3D);
+    public static final PhantomStats PHANTOM_KING_STATS = stats("phantomKing", 144, 14, 22, .85D, 8, 64, .25D, .45D);
+    public static final PhantomStats DARK_PHANTOM_STATS = stats("darkPhantom", 96, 12, 14, .55D, 4, 56, .25D, .475D);
+    public static final PhantomStats VOID_PHANTOM_STATS = stats("voidPhantom", 80, 7, 12, .55D, 4, 56, .25D, .45D);
+    public static final PhantomStats ANGEL_PHANTOM_STATS = stats("angelPhantom", 76, 5, 10, .4D, 4, 56, .25D, .425D);
+    public static final PhantomStats SPECTRAL_PHANTOM_STATS = stats("spectralPhantom", 56, 7, 4, .2D, 0, 48, .25D, .525D);
+    public static final PhantomStats DEMON_PHANTOM_STATS = stats("demonPhantom", 100, 14, 14, .7D, 5, 48, .25D, .4D);
+    public static final PhantomStats SENTINEL_PHANTOM_STATS = stats("sentinelPhantom", 112, 12, 20, .85D, 6, 56, .24D, .4D);
+    public static final PhantomStats RIFT_PHANTOM_STATS = stats("riftPhantom", 64, 5, 8, .30D, 2, 48, .24D, .45D);
+    public static final PhantomStats CHRONO_PHANTOM_STATS = stats("chronoPhantom", 64, 4, 8, .35D, 2, 48, .24D, .4D);
+    public static final PhantomStats WITHER_PHANTOM_STATS = stats("witherPhantom", 108.0D, 10.0D, 16.0D, 0.65D, 6.0D, 56.0D, 0.25D, 0.425D);
+    public static final ModConfigSpec.IntValue HUSK_EXHAUSTION_DURATION = BUILDER.defineInRange("huskExhaustionDurationTicks", 160, 20, 600);
+    public static int huskExhaustionDuration() { return SPEC.isLoaded() ? HUSK_EXHAUSTION_DURATION.get() : 160; }
     public static final ModConfigSpec.BooleanValue RAVAGER_BULLDOZER = BUILDER
             .comment("Allow adult owned Ravager Phantoms to clear tagged natural foliage only during a charge. Requires mobGriefing and owner/protection permission.")
             .translation("config.phantomism.ravagerPhantom.bulldozer")
@@ -76,6 +104,57 @@ public final class Config {
         BUILDER.comment("Shared Home patrol and family protection settings.")
                 .translation("config.phantomism.phantom").push("phantom").pop();
     }
+
+    public static final ModConfigSpec.DoubleValue SPECTRAL_STRIKE_BYPASS = BUILDER.translation("config.phantomism.spectralPhantom.strikeBypass").defineInRange("spectralPhantom.strikeBypass", .25D, 0, .5D);
+    public static final ModConfigSpec.DoubleValue SPECTRAL_PLANE_BYPASS = BUILDER.translation("config.phantomism.spectralPhantom.planeBypass").defineInRange("spectralPhantom.planeBypass", .4D, 0, .5D);
+    public static final ModConfigSpec.DoubleValue SPECTRAL_PLANE_SPEED = BUILDER.translation("config.phantomism.spectralPhantom.planeSpeed").defineInRange("spectralPhantom.planeSpeed", .15D, 0, .3D);
+    public static final ModConfigSpec.DoubleValue SPECTRAL_PLANE_MITIGATION = BUILDER.translation("config.phantomism.spectralPhantom.planeMitigation").defineInRange("spectralPhantom.planeMitigation", .15D, 0, .3D);
+    public static double spectralBypass(boolean plane) { return SPEC.isLoaded() ? (plane ? SPECTRAL_PLANE_BYPASS.get() : SPECTRAL_STRIKE_BYPASS.get()) : plane ? .4D : .25D; }
+    public static double spectralPlaneSpeed() { return SPEC.isLoaded() ? SPECTRAL_PLANE_SPEED.get() : .15D; }
+    public static double spectralPlaneMitigation() { return SPEC.isLoaded() ? SPECTRAL_PLANE_MITIGATION.get() : .15D; }
+
+    public static final ModConfigSpec.DoubleValue ANGEL_TOUCH_HEAL = BUILDER.defineInRange("angelPhantom.touchHeal", 12.0D, 0.0D, 24.0D);
+    public static final ModConfigSpec.DoubleValue ANGEL_TRAIL_HEAL = BUILDER.defineInRange("angelPhantom.trailHeal", 1.0D, 0.0D, 3.0D);
+    public static final ModConfigSpec.DoubleValue ANGEL_EYE_HEAL = BUILDER.defineInRange("angelPhantom.eyeHeal", 18.0D, 0.0D, 36.0D);
+    public static final ModConfigSpec.DoubleValue ANGEL_BLESSING_MITIGATION = BUILDER.defineInRange("angelPhantom.blessingMitigation", 0.15D, 0.0D, 0.25D);
+    public static final ModConfigSpec.DoubleValue ANGEL_SHIELD_MITIGATION = BUILDER.defineInRange("angelPhantom.shieldMitigation", 0.3D, 0.0D, 0.35D);
+    public static final ModConfigSpec.DoubleValue ANGEL_SHIELD_CAPACITY = BUILDER.defineInRange("angelPhantom.shieldCapacity", 8.0D, 0.0D, 16.0D);
+    public static final ModConfigSpec.DoubleValue ANGEL_EYE_MITIGATION = BUILDER.defineInRange("angelPhantom.eyeMitigation", 0.12D, 0.0D, 0.2D);
+    public static double angelValue(ModConfigSpec.DoubleValue value, double fallback) { return SPEC.isLoaded() ? value.get() : fallback; }
+
+    private static final java.util.Map<String,Double> VOID_DEFAULTS = java.util.Map.ofEntries(
+            java.util.Map.entry("boltDamage", 8.0D),
+            java.util.Map.entry("boltRange", 42.0D),
+            java.util.Map.entry("boltCooldown", 240.0D),
+            java.util.Map.entry("mountedCooldown", 6.0D),
+            java.util.Map.entry("fieldRadius", 10.0D),
+            java.util.Map.entry("graspCooldown", 320.0D),
+            java.util.Map.entry("graspDuration", 40.0D),
+            java.util.Map.entry("graspRange", 18.0D),
+            java.util.Map.entry("anchorCooldown", 800.0D),
+            java.util.Map.entry("anchorLifetime", 1200.0D),
+            java.util.Map.entry("pulseCooldown", 360.0D),
+            java.util.Map.entry("pulseRadius", 12.0D),
+            java.util.Map.entry("sealCooldown", 480.0D),
+            java.util.Map.entry("sealDuration", 80.0D),
+            java.util.Map.entry("stepCooldown", 320.0D),
+            java.util.Map.entry("stepRange", 12.0D),
+            java.util.Map.entry("stepMultiplier", 1.4D),
+            java.util.Map.entry("shieldCooldown", 700.0D),
+            java.util.Map.entry("shieldDuration", 120.0D),
+            java.util.Map.entry("shieldMitigation", 0.3D),
+            java.util.Map.entry("shieldRange", 20.0D));
+    public static final java.util.Map<String,ModConfigSpec.DoubleValue> VOID_ABILITIES = voidSettings();
+    private static java.util.Map<String,ModConfigSpec.DoubleValue> voidSettings() {
+        var values = new java.util.LinkedHashMap<String,ModConfigSpec.DoubleValue>();
+        for (var entry : VOID_DEFAULTS.entrySet()) {
+            String name = entry.getKey(); double minimum = name.endsWith("Cooldown") ? 6 : name.endsWith("Duration") || name.endsWith("Radius") || name.equals("anchorLifetime") ? 1 : 0;
+            double maximum = name.endsWith("Cooldown") || name.equals("anchorLifetime") ? 4800 : name.endsWith("Duration") ? 200 : name.endsWith("Radius") ? 16 : name.endsWith("Range") ? 42 : name.endsWith("Mitigation") ? .5D : name.endsWith("Multiplier") ? 3 : 100;
+            values.put(name, BUILDER.translation("config.phantomism.voidPhantom.abilities."+name).defineInRange("voidPhantom.abilities."+name,entry.getValue(),minimum,maximum));
+        }
+        return java.util.Map.copyOf(values);
+    }
+    public static double voidValue(String name) { return SPEC.isLoaded() ? VOID_ABILITIES.get(name).get() : VOID_DEFAULTS.get(name); }
 
     static final ModConfigSpec SPEC = BUILDER.build();
 

@@ -43,7 +43,10 @@ public class PhantomGeoRenderer<T extends AbstractPhantom> extends GeoEntityRend
     @Override
     public void addRenderData(T entity, @Nullable Void ignored, PhantomGeoRenderState state, float partialTick) {
         state.accessories = this.accessories;
+        state.golemAngry = false;
+        state.mirageCombat = false;
         state.mounted = entity.isVehicle();
+        state.zombieReviving = entity instanceof net.ronm19.phantomism.entity.ZombiePhantom zombie && zombie.isReviving();
         state.skyKnightActive = entity instanceof BlackPhantom black && black.isSkyKnightActive();
         state.addGeckolibData(PhantomAnimations.MOTION, motion(entity));
     }
@@ -143,6 +146,9 @@ public class PhantomGeoRenderer<T extends AbstractPhantom> extends GeoEntityRend
 
         @Override
         protected Identifier getTextureResource(PhantomGeoRenderState state) {
+            if (state.mirageCombat) { return state.isBaby ? MiragePhantomRenderer.BABY_COMBAT_EYES : MiragePhantomRenderer.COMBAT_EYES; }
+            if (state.golemAngry) { return state.isBaby ? GolemPhantomRenderer.BABY_COMBAT_EYES : GolemPhantomRenderer.COMBAT_EYES; }
+            if (state.zombieReviving) { return state.isBaby ? ZombiePhantomRenderer.BABY_REVIVAL_EYES : ZombiePhantomRenderer.REVIVAL_EYES; }
             return state.isBaby ? this.baby : this.adult;
         }
     }

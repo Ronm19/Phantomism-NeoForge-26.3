@@ -19,6 +19,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public final class EarthBomb extends ThrowableItemProjectile {
+    public static final double MAX_TRAVEL_DISTANCE = 42.0D;
     private double travelDistance;
 
     public EarthBomb(EntityType<? extends EarthBomb> type, Level level) {
@@ -43,7 +44,7 @@ public final class EarthBomb extends ThrowableItemProjectile {
         if (this.level().isClientSide()) {
             this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.MOSS_BLOCK.defaultBlockState()),
                     this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
-        } else if (this.tickCount >= 100 || this.travelDistance >= 28.0D) {
+        } else if (this.tickCount >= 100 || this.travelDistance >= MAX_TRAVEL_DISTANCE) {
             this.discard();
         }
     }

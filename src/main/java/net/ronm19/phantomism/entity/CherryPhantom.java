@@ -166,7 +166,7 @@ public final class CherryPhantom extends AbstractPhantom {
         }
         LivingEntity target = this.getTarget();
         if (this.getControllingPassenger() == null && this.sanctuaryTicks == 0 && this.barrageCooldown == 0
-                && this.isValidPetalTarget(target) && this.distanceToSqr(target) <= 28.0D * 28.0D
+                && this.isValidPetalTarget(target) && this.distanceToSqr(target) <= PetalProjectile.MAX_TRAVEL_DISTANCE * PetalProjectile.MAX_TRAVEL_DISTANCE
                 && this.hasLineOfSight(target) && this.launchPetals(level, target.getEyePosition().subtract(this.projectileOrigin()))) {
             this.barrageCooldown = BARRAGE_COOLDOWN;
         }

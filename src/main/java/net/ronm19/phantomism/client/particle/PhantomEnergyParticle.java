@@ -37,6 +37,9 @@ public final class PhantomEnergyParticle extends SingleQuadParticle {
                 && options.shape() == PhantomEnergyOptions.AURA
                 ? Math.min(0.3F, options.scale()) : options.scale();
         this.hasPhysics = false;
+        if (options.shape() == PhantomEnergyOptions.ORBIT || options.shape() == PhantomEnergyOptions.IMPLOSION) {
+            this.quadSize = Math.clamp(options.scale() * 0.12F, 0.07F, 0.22F);
+        }
         this.alpha = 0.0F;
         this.xd = xSpeed;
         this.yd = ySpeed;
@@ -66,7 +69,16 @@ public final class PhantomEnergyParticle extends SingleQuadParticle {
             return;
         }
         float progress = (float) this.age / this.lifetime;
-        if (this.options.shape() == PhantomEnergyOptions.AURA) {
+        if (this.options.shape() == PhantomEnergyOptions.ORBIT || this.options.shape() == PhantomEnergyOptions.IMPLOSION) {
+            this.angle += this.options.shape() == PhantomEnergyOptions.ORBIT ? 0.2D : 0.28D;
+            double distance = this.radius * (this.options.shape() == PhantomEnergyOptions.IMPLOSION ? 1.0D - smoothStep(progress) : 1.0D);
+            this.setPos(this.centerX + Math.cos(this.angle) * distance,
+                    this.centerY + Math.sin(this.angle * 1.5D) * distance * 0.4D,
+                    this.centerZ + Math.sin(this.angle) * distance);
+            this.roll += 0.12F;
+        } else if (this.options.shape() == PhantomEnergyOptions.DISTORTION) {
+            this.roll += 0.035F;
+        } else if (this.options.shape() == PhantomEnergyOptions.AURA) {
             this.angle += 0.14D;
             this.setPos(this.centerX + Math.cos(this.angle) * this.radius,
                     this.centerY + Math.sin(this.angle * 1.5D) * this.radius * 0.45D,
@@ -113,6 +125,8 @@ public final class PhantomEnergyParticle extends SingleQuadParticle {
     }
 
     private static int spriteIndex(PhantomEnergyOptions options) {
+        if (options.shape() == PhantomEnergyOptions.ORBIT || options.shape() == PhantomEnergyOptions.IMPLOSION) { return 0; }
+        if (options.shape() == PhantomEnergyOptions.DISTORTION) { return 13; }
         if (options.shape() == PhantomEnergyOptions.SONIC_RING) { return 13; }
         if (options.color() == PhantomVfxTheme.TOXIC.color()) {
             if (options.shape() == PhantomEnergyOptions.SPARK) { return 11; }
@@ -134,7 +148,8 @@ public final class PhantomEnergyParticle extends SingleQuadParticle {
     @Override
     public float getQuadSize(float partialTick) {
         float progress = Mth.clamp((this.age + partialTick) / this.lifetime, 0.0F, 1.0F);
-        float growth = this.options.shape() == PhantomEnergyOptions.SHOCKWAVE || this.options.shape() == PhantomEnergyOptions.SONIC_RING ? 0.2F + progress * 1.6F
+        float growth = this.options.shape() == PhantomEnergyOptions.DISTORTION ? 0.75F + (float) Math.sin(progress * Math.PI) * 0.3F
+                : this.options.shape() == PhantomEnergyOptions.SHOCKWAVE || this.options.shape() == PhantomEnergyOptions.SONIC_RING ? 0.2F + progress * 1.6F
                 : this.options.shape() == PhantomEnergyOptions.SLASH ? 0.85F + progress * 0.25F : 0.6F + smoothStep(progress) * 0.55F;
         return this.quadSize * growth;
     }

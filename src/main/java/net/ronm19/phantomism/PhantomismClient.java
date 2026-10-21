@@ -63,13 +63,28 @@ public class PhantomismClient {
             InputConstants.KEY_G,
             KeyMapping.Category.MISC
     );
+    private static final KeyMapping OMEN_MELEE_KEY = new KeyMapping("key.phantomism.omen_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping ANCIENT_MELEE_KEY = new KeyMapping("key.phantomism.ancient_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping REAPER_MELEE_KEY = new KeyMapping("key.phantomism.reaper_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping PRIMORDIAL_MELEE_KEY = new KeyMapping("key.phantomism.primordial_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping MIRAGE_MELEE_KEY = new KeyMapping("key.phantomism.mirage_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping GOLEM_MELEE_KEY = new KeyMapping("key.phantomism.golem_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping KING_MELEE_KEY = new KeyMapping("key.phantomism.king_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping DARK_MELEE_KEY = new KeyMapping("key.phantomism.dark_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping VOID_MELEE_KEY = new KeyMapping("key.phantomism.void_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping ANGEL_MELEE_KEY = new KeyMapping("key.phantomism.angel_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping SPECTRAL_MELEE_KEY = new KeyMapping("key.phantomism.spectral_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping DEMON_MELEE_KEY = new KeyMapping("key.phantomism.demon_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping SENTINEL_MELEE_KEY = new KeyMapping("key.phantomism.sentinel_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
     private static int attackTargetRecipientId = -2;
     private static int blockRecipientId = -2;
     private static Action blockSelectionAction;
+    private static Action targetSelectionAction = Action.ATTACK_TARGET;
     private static net.minecraft.client.multiplayer.ClientLevel selectionLevel;
     private static long selectionExpires;
 
     public PhantomismClient(ModContainer container) {
+        container.registerConfig(net.neoforged.fml.config.ModConfig.Type.CLIENT, net.ronm19.phantomism.client.vfx.VfxQualitySettings.SPEC);
         // Allows NeoForge to create a config screen for this mod's configs.
         // The config screen is accessed by going to the Mods screen > clicking on your mod > clicking on config.
         // Do not forget to add translations for your config options to the en_us.json file.
@@ -89,6 +104,19 @@ public class PhantomismClient {
     @SubscribeEvent
     static void registerKeyMappings(RegisterKeyMappingsEvent event) {
         event.register(RANGED_ABILITY_KEY);
+        event.register(SENTINEL_MELEE_KEY);
+        event.register(DEMON_MELEE_KEY);
+        event.register(SPECTRAL_MELEE_KEY);
+        event.register(ANGEL_MELEE_KEY);
+        event.register(VOID_MELEE_KEY);
+        event.register(DARK_MELEE_KEY);
+        event.register(KING_MELEE_KEY);
+        event.register(MIRAGE_MELEE_KEY);
+        event.register(GOLEM_MELEE_KEY);
+        event.register(PRIMORDIAL_MELEE_KEY);
+        event.register(REAPER_MELEE_KEY);
+        event.register(ANCIENT_MELEE_KEY);
+        event.register(OMEN_MELEE_KEY);
     }
 
     @SubscribeEvent
@@ -97,8 +125,24 @@ public class PhantomismClient {
         if (event.getAction() == InputConstants.PRESS
                 && (event.getKey() == InputConstants.KEY_LCONTROL || event.getKey() == InputConstants.KEY_RCONTROL)
                 && minecraft.gui.screen() == null && minecraft.player != null
-                && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.RavagerPhantom phantom) {
-            ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenSiegeChargePayload(phantom.getId()));
+                && minecraft.player.getVehicle() instanceof AbstractPhantom phantom) {
+            if (phantom instanceof net.ronm19.phantomism.entity.RavagerPhantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenSiegeChargePayload(phantom.getId()));
+            } else if (phantom instanceof net.ronm19.phantomism.entity.EchoPhantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenEchoStrikePayload(phantom.getId()));
+            } else if (phantom instanceof net.ronm19.phantomism.entity.BloodPhantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenBloodStrikePayload(phantom.getId()));
+            } else if (phantom instanceof net.ronm19.phantomism.entity.VampirePhantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenVampireBitePayload(phantom.getId()));
+            } else if (phantom instanceof net.ronm19.phantomism.entity.GravityPhantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenGravityCrushPayload(phantom.getId()));
+            } else if (phantom instanceof net.ronm19.phantomism.entity.RiftPhantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenRiftDashPayload(phantom.getId()));
+            } else if (phantom instanceof net.ronm19.phantomism.entity.ChronoPhantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenChronoDivePayload(phantom.getId()));
+            } else if (phantom instanceof net.ronm19.phantomism.entity.WitherPhantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenWitherBitePayload(phantom.getId()));
+            }
         }
     }
 
@@ -115,6 +159,71 @@ public class PhantomismClient {
                 || minecraft.level.getGameTime() > selectionExpires
                 || !isHoldingStaff(minecraft.player))) {
             clearStaffSelection();
+        }
+        while (OMEN_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.OmenPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenOmenDivePayload(phantom.getId()));
+            }
+        }
+        while (ANCIENT_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.AncientPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenAncientDivePayload(phantom.getId()));
+            }
+        }
+        while (REAPER_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.ReaperPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenReaperDivePayload(phantom.getId()));
+            }
+        }
+        while (PRIMORDIAL_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.PrimordialPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenPrimordialDivePayload(phantom.getId()));
+            }
+        }
+        while (MIRAGE_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.MiragePhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenMirageDivePayload(phantom.getId()));
+            }
+        }
+        while (GOLEM_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.GolemPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenGolemDivePayload(phantom.getId()));
+            }
+        }
+        while (KING_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.PhantomKing phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenKingDivePayload(phantom.getId()));
+            }
+        }
+        while (DARK_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.DarkPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenDarkDivePayload(phantom.getId()));
+            }
+        }
+        while (VOID_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.VoidPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenVoidDivePayload(phantom.getId()));
+            }
+        }
+        while (ANGEL_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.AngelPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenAngelDivePayload(phantom.getId()));
+            }
+        }
+        while (SPECTRAL_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.SpectralPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenSpectralDivePayload(phantom.getId()));
+            }
+        }
+        while (DEMON_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.DemonPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenDemonStrikePayload(phantom.getId()));
+            }
+        }
+        while (SENTINEL_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.SentinelPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenSentinelRepulsePayload(phantom.getId()));
+            }
         }
         while (RANGED_ABILITY_KEY.consumeClick()) {
             if (minecraft.gui.screen() == null
@@ -217,12 +326,12 @@ public class PhantomismClient {
                         && EntitySelector.CAN_BE_PICKED.test(entity)
                         && entity instanceof LivingEntity livingEntity
                         && livingEntity.isAlive()
-                        && !player.isAlliedTo(livingEntity),
+                        && (targetSelectionAction == Action.RIFT_SEND_ALLY ? livingEntity instanceof net.minecraft.world.entity.OwnableEntity owned && java.util.Objects.equals(owned.getOwnerReference(), net.minecraft.world.entity.EntityReference.of(player)) : !player.isAlliedTo(livingEntity)),
                 start.distanceToSqr(end)
         );
         if (entityHit != null) {
             ClientPacketDistributor.sendToServer(new StaffCommandPayload(
-                    Action.ATTACK_TARGET.ordinal(),
+                    targetSelectionAction.ordinal(),
                     attackTargetRecipientId,
                     entityHit.getEntity().getId()
             ));
@@ -243,7 +352,7 @@ public class PhantomismClient {
                 return;
             }
             ClientPacketDistributor.sendToServer(new StaffCommandPayload(
-                    Action.ATTACK_TARGET.ordinal(),
+                    targetSelectionAction.ordinal(),
                     attackTargetRecipientId,
                     target.getId()
             ));
@@ -263,6 +372,7 @@ public class PhantomismClient {
     }
 
     private static boolean isValidPlayerTarget(Player player, LivingEntity target) {
+        if (targetSelectionAction == Action.RIFT_SEND_ALLY) { return target.isAlive() && target instanceof net.minecraft.world.entity.OwnableEntity owned && java.util.Objects.equals(owned.getOwnerReference(), net.minecraft.world.entity.EntityReference.of(player)); }
         return target != player
                 && target.isAlive()
                 && !(target instanceof AbstractPhantom)
@@ -274,6 +384,8 @@ public class PhantomismClient {
         attackTargetRecipientId = recipientId;
         startSelectionTimer();
     }
+
+    public static void beginRiftCompanionSelection(int recipientId) { beginAttackTargetSelection(recipientId); targetSelectionAction = Action.RIFT_SEND_ALLY; }
 
     public static void beginBlockSelection(Action action, int recipientId) {
         clearStaffSelection();
@@ -289,6 +401,7 @@ public class PhantomismClient {
 
     private static void clearStaffSelection() {
         attackTargetRecipientId = -2;
+        targetSelectionAction = Action.ATTACK_TARGET;
         blockSelectionAction = null;
         blockRecipientId = -2;
         selectionLevel = null;
@@ -344,6 +457,66 @@ public class PhantomismClient {
                 net.ronm19.phantomism.client.renderer.SculkPhantomRenderer::new);
         event.registerEntityRenderer(PhantomismContent.RAVAGER_PHANTOM.get(),
                 net.ronm19.phantomism.client.renderer.RavagerPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.END_PHANTOM.get(),
+                net.ronm19.phantomism.client.renderer.EndPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.ZOMBIE_PHANTOM.get(),
+                net.ronm19.phantomism.client.renderer.ZombiePhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.INFECTED_SPIT.get(),
+                context -> new ThrownItemRenderer<>(context, 0.35F, true));
+        event.registerEntityRenderer(PhantomismContent.SKELETON_PHANTOM.get(),
+                net.ronm19.phantomism.client.renderer.SkeletonPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.ECHO_PHANTOM.get(),
+                net.ronm19.phantomism.client.renderer.EchoPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.BLOOD_PHANTOM.get(),
+                net.ronm19.phantomism.client.renderer.BloodPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.VAMPIRE_PHANTOM.get(),
+                net.ronm19.phantomism.client.renderer.VampirePhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.GRAVITY_PHANTOM.get(),
+                net.ronm19.phantomism.client.renderer.GravityPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.OMEN_PHANTOM.get(), net.ronm19.phantomism.client.renderer.OmenPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.OMEN_BOLT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.ANCIENT_PHANTOM.get(), net.ronm19.phantomism.client.renderer.AncientPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.ANCIENT_STONE.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.REAPER_PHANTOM.get(), net.ronm19.phantomism.client.renderer.ReaperPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.REAPER_SHARD.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.PRIMORDIAL_PHANTOM.get(), net.ronm19.phantomism.client.renderer.PrimordialPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.PRIMORDIAL_STAR.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.MIRAGE_PHANTOM.get(), net.ronm19.phantomism.client.renderer.MiragePhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.MIRAGE_DECOY.get(), net.ronm19.phantomism.client.renderer.MirageDecoyRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.MIRAGE_BOLT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.GOLEM_PHANTOM.get(), net.ronm19.phantomism.client.renderer.GolemPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.GOLEM_FIST.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.PHANTOM_KING.get(), net.ronm19.phantomism.client.renderer.PhantomKingRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.DARK_PHANTOM.get(), net.ronm19.phantomism.client.renderer.DarkPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.DARK_PROJECTILE.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.VOID_PHANTOM.get(), net.ronm19.phantomism.client.renderer.VoidPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.VOID_BOLT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.ANGEL_PHANTOM.get(), net.ronm19.phantomism.client.renderer.AngelPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.ANGEL_SMITE.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.SPECTRAL_PHANTOM.get(), net.ronm19.phantomism.client.renderer.SpectralPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.SPECTRAL_LANCE.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.DEMON_PHANTOM.get(), net.ronm19.phantomism.client.renderer.DemonPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.DEMON_METEOR.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.SENTINEL_PHANTOM.get(), net.ronm19.phantomism.client.renderer.SentinelPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.RIFT_PHANTOM.get(), net.ronm19.phantomism.client.renderer.RiftPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.RIFT_BOLT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.CHRONO_PHANTOM.get(), net.ronm19.phantomism.client.renderer.ChronoPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.TIME_BOLT.get(), context -> new ThrownItemRenderer<>(context, .18F, true));
+        event.registerEntityRenderer(PhantomismContent.WITHER_PHANTOM.get(),
+                net.ronm19.phantomism.client.renderer.WitherPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.WITHER_PHANTOM_SKULL.get(), net.minecraft.client.renderer.entity.WitherSkullRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.GRAVITY_WELL.get(),
+                context -> new ThrownItemRenderer<>(context, 0.2F, true));
+        event.registerEntityRenderer(PhantomismContent.VAMPIRE_BOLT.get(),
+                context -> new ThrownItemRenderer<>(context, 0.18F, true));
+        event.registerEntityRenderer(PhantomismContent.BLOOD_PROJECTILE.get(),
+                context -> new ThrownItemRenderer<>(context, 0.22F, true));
+        event.registerEntityRenderer(PhantomismContent.ECHO_PULSE.get(),
+                context -> new ThrownItemRenderer<>(context, 0.25F, true));
+        event.registerEntityRenderer(PhantomismContent.HUSK_PHANTOM.get(),
+                net.ronm19.phantomism.client.renderer.HuskPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.SKELETON_ARROW.get(),
+                net.ronm19.phantomism.client.renderer.SkeletonArrowRenderer::new);
         event.registerEntityRenderer(PhantomismContent.ACID_PROJECTILE.get(),
                 context -> new ThrownItemRenderer<>(context, 0.55F, true));
         event.registerEntityRenderer(PhantomismContent.STORM_PROJECTILE.get(),

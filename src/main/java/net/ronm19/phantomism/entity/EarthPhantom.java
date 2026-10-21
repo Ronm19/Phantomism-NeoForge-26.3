@@ -192,7 +192,7 @@ public final class EarthPhantom extends AbstractPhantom {
         if (this.quakeCooldown == 0 && this.performEarthquake(level)) {
             return;
         }
-        if (!this.isVehicle() && this.bombCooldown == 0 && this.distanceToSqr(target) <= BOMB_RANGE * BOMB_RANGE
+        if (!this.isVehicle() && this.bombCooldown == 0 && this.distanceToSqr(target) <= EarthBomb.MAX_TRAVEL_DISTANCE * EarthBomb.MAX_TRAVEL_DISTANCE
                 && this.hasLineOfSight(target) && this.canStagger(level, target)
                 && (this.distanceToSqr(target) >= 36.0D || this.threatensFamily(target))) {
             if (this.launchBomb(level, target.getEyePosition().subtract(this.projectileOrigin()))) {

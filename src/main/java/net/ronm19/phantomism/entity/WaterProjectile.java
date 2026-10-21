@@ -17,6 +17,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public final class WaterProjectile extends ThrowableItemProjectile {
+    public static final double MAX_TRAVEL_DISTANCE = 42.0D;
     private double travelDistance;
 
     public WaterProjectile(EntityType<? extends WaterProjectile> type, Level level) {
@@ -53,7 +54,7 @@ public final class WaterProjectile extends ThrowableItemProjectile {
         this.travelDistance += this.position().distanceTo(previous);
         if (this.level().isClientSide()) {
             this.level().addParticle(ParticleTypes.SPLASH, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
-        } else if (this.tickCount >= 80 || this.travelDistance >= 28.0D) {
+        } else if (this.tickCount >= 80 || this.travelDistance >= MAX_TRAVEL_DISTANCE) {
             this.discard();
         }
     }

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "phantomism:item/golem_phantom_spawn_egg"
+  }
+}

@@ -185,7 +185,7 @@ public final class SculkPhantom extends AbstractPhantom {
                 || !Double.isFinite(aim.x) || !Double.isFinite(aim.y) || !Double.isFinite(aim.z)) { return false; }
         Vec3 direction = aim.normalize();
         Vec3 start = this.sonicOrigin(direction);
-        Vec3 end = start.add(direction.scale(ultimate ? 30.0D : 24.0D));
+        Vec3 end = start.add(direction.scale(ultimate ? 45.0D : 36.0D));
         if (!this.isLoadedFlightBox(new AABB(start, end).inflate(0.5D))) { return false; }
         var obstruction = level.clip(new ClipContext(this.getEyePosition(), end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         if (obstruction.getType() != HitResult.Type.MISS) {
@@ -319,7 +319,7 @@ public final class SculkPhantom extends AbstractPhantom {
         if (!this.validTarget(target) || !this.hasLineOfSight(target)) { return; }
         if (this.tickCount % 10 == 0) { this.planAbilities(level, target); }
         if (this.getControllingPassenger() == null && this.boomCooldown == 0 && this.abilityRecovery == 0
-                && this.distanceToSqr(target) <= 24.0D * 24.0D
+                && this.distanceToSqr(target) <= 36.0D * 36.0D
                 && this.sonicBeam(level, target.getEyePosition().subtract(this.sonicOrigin(this.getLookAngle())), false)) {
             this.boomCooldown = BOOM_COOLDOWN;
             this.abilityRecovery = 10;
@@ -350,7 +350,7 @@ public final class SculkPhantom extends AbstractPhantom {
             this.tickSilence(level);
         }
         if (this.abilityRecovery > 0) { return; }
-        if (this.eyeCooldown == 0 && this.distanceToSqr(target) <= 30.0D * 30.0D
+        if (this.eyeCooldown == 0 && this.distanceToSqr(target) <= 45.0D * 45.0D
                 && (target instanceof Warden || target.getMaxHealth() >= 80.0F || this.alignedEnemies(level, target) >= 3)
                 && this.sonicBeam(level, target.getEyePosition().subtract(this.sonicOrigin(this.getLookAngle())), true)) {
             this.eyeCooldown = EYE_COOLDOWN;
@@ -371,8 +371,8 @@ public final class SculkPhantom extends AbstractPhantom {
 
     private int alignedEnemies(ServerLevel level, LivingEntity target) {
         Vec3 start = this.getEyePosition();
-        Vec3 finish = start.add(target.getEyePosition().subtract(start).normalize().scale(30.0D));
-        return (int) this.enemies(level, this.position(), 30.0D, 12.0D, false).stream()
+        Vec3 finish = start.add(target.getEyePosition().subtract(start).normalize().scale(45.0D));
+        return (int) this.enemies(level, this.position(), 45.0D, 12.0D, false).stream()
                 .filter(enemy -> enemy.getBoundingBox().inflate(0.85D).clip(start, finish).isPresent()).count();
     }
 

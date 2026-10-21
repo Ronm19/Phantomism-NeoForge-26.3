@@ -35,6 +35,30 @@ public final class ModDataGenerators {
         event.addProvider(new ModToxicAnimationProvider(event.getGenerator().getPackOutput()));
         event.addProvider(new ModSculkAnimationProvider(event.getGenerator().getPackOutput()));
         event.addProvider(new ModRavagerAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModEndAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModZombieAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModSkeletonAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModHuskAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModEchoAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModBloodAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModVampireAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModGravityAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModWitherAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModChronoAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModOmenAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModAncientAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModReaperAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModPrimordialAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModMirageAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModGolemAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModKingAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModDarkAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModVoidAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModAngelAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModSpectralAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModDemonAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModSentinelAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModRiftAnimationProvider(event.getGenerator().getPackOutput()));
         event.addProvider(new ModParticleProvider(event.getGenerator().getPackOutput()));
     }
 

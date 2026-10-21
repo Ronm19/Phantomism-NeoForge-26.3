@@ -96,6 +96,27 @@ public final class PhantomVisualEffects {
         emit(level, theme, center, PhantomEnergyOptions.GLOW, 0.45F, 10, 1, 0.0D, 0.0D);
     }
 
+    public static void rift(ServerLevel level, Vec3 center, float scale) {
+        emit(level, PhantomVfxTheme.END, center, PhantomEnergyOptions.SONIC_RING, scale, 18, 1, 0.0D, 0.0D);
+        emit(level, PhantomVfxTheme.END, center, PhantomEnergyOptions.GLOW, scale * 0.6F, 12, 1, 0.0D, 0.0D);
+        emit(level, PhantomVfxTheme.END, center, PhantomEnergyOptions.SPARK, 0.2F, 20, 8, 0.25D, 0.05D);
+    }
+
+    public static void endMotes(ServerLevel level, Vec3 center) {
+        emit(level, PhantomVfxTheme.END, center, PhantomEnergyOptions.SPARK, 0.12F, 24, 2, 0.45D, 0.01D);
+    }
+
+    public static void undeadMotes(ServerLevel level, Vec3 center) {
+        emit(level, PhantomVfxTheme.ZOMBIE, center, PhantomEnergyOptions.SPARK, 0.1F, 24, 2, 0.4D, 0.008D);
+    }
+
+    public static void undeadRevival(ServerLevel level, Vec3 center) {
+        shockwave(level, PhantomVfxTheme.ZOMBIE, center.add(0, -0.35D, 0), 4.5F);
+        emit(level, PhantomVfxTheme.ZOMBIE, center, PhantomEnergyOptions.GLOW, 2.5F, 24, 1, 0, 0);
+        emit(level, PhantomVfxTheme.ZOMBIE, center, PhantomEnergyOptions.AURA, 2.7F, 36, 14, 0, 0);
+        emit(level, PhantomVfxTheme.ZOMBIE, center, PhantomEnergyOptions.SPARK, 0.35F, 32, 24, 0.5D, 0.16D);
+    }
+
     public static void aura(ServerLevel level, PhantomVfxTheme theme, Vec3 center) {
         emit(level, theme, center, PhantomEnergyOptions.AURA, 1.25F, 28, 10, 0.0D, 0.0D);
     }
@@ -146,8 +167,99 @@ public final class PhantomVisualEffects {
         }
     }
 
+    public static void echoRings(ServerLevel level, Vec3 center, float radius, boolean layered) {
+        emit(level, PhantomVfxTheme.ECHO, center, PhantomEnergyOptions.SONIC_RING, radius, 18, 1, 0, 0);
+        if (layered) { emit(level, PhantomVfxTheme.ECHO, center.add(0, 0.15D, 0), PhantomEnergyOptions.SONIC_RING, radius * 0.65F, 24, 1, 0, 0); }
+        emit(level, PhantomVfxTheme.ECHO, center, PhantomEnergyOptions.GLOW, Math.min(0.6F, radius * 0.3F), 12, 1, 0, 0);
+    }
+
+    public static void bloodWings(ServerLevel level, Vec3 center, Vec3 forward) {
+        Vec3 side = new Vec3(-forward.z, 0, forward.x).normalize();
+        for (int wing = -1; wing <= 1; wing += 2) {
+            for (int arc = 1; arc <= 4; arc++) {
+                Vec3 point = center.add(forward.scale(arc * 0.9D)).add(side.scale(wing * arc * 0.7D));
+                emit(level, PhantomVfxTheme.BLOOD, point, PhantomEnergyOptions.SLASH, 1.4F, 15, 1, 0, 0);
+            }
+        }
+        shockwave(level, PhantomVfxTheme.BLOOD, center, 3);
+    }
+
+    public static void bloodDominion(ServerLevel level, Vec3 center) {
+        shockwave(level, PhantomVfxTheme.BLOOD, center.add(0, 0.1D, 0), 10);
+        for (int pillar = 0; pillar < 8; pillar++) {
+            double angle = pillar * Math.PI / 4 + level.getGameTime() * 0.025D;
+            Vec3 point = center.add(Math.cos(angle) * 8, 0.8D, Math.sin(angle) * 8);
+            emit(level, PhantomVfxTheme.BLOOD, point, PhantomEnergyOptions.GLOW, 0.6F, 24, 1, 0, 0);
+            emit(level, PhantomVfxTheme.BLOOD, point.add(0, 1, 0), PhantomEnergyOptions.SPARK, 0.2F, 24, 2, 0.1D, 0.04D);
+        }
+    }
+
+    public static void vampireRings(ServerLevel level, Vec3 center, float radius) {
+        emit(level, PhantomVfxTheme.VAMPIRE, center, PhantomEnergyOptions.SONIC_RING, radius, 24, 1, 0, 0);
+        emit(level, PhantomVfxTheme.VAMPIRE, center, PhantomEnergyOptions.SONIC_RING, radius * 0.55F, 18, 1, 0, 0);
+        emit(level, PhantomVfxTheme.VAMPIRE, center, PhantomEnergyOptions.GLOW, 0.2F, 14, 1, 0, 0);
+    }
+
+    public static void vampireMist(ServerLevel level, Vec3 center) {
+        emit(level, PhantomVfxTheme.VAMPIRE, center, PhantomEnergyOptions.AURA, 1.1F, 30, 5, 0.6D, 0.006D);
+        emit(level, PhantomVfxTheme.VAMPIRE, center, PhantomEnergyOptions.SPARK, 0.12F, 22, 3, 0.75D, 0.008D);
+    }
+
+    public static void vampireMoon(ServerLevel level, Vec3 center) {
+        vampireRings(level, center.add(0, 2.6D, 0), 2.4F);
+        emit(level, PhantomVfxTheme.VAMPIRE, center.add(0, 2.6D, 0), PhantomEnergyOptions.GLOW, 1.4F, 40, 1, 0, 0);
+        shockwave(level, PhantomVfxTheme.VAMPIRE, center.add(0, -0.4D, 0), 4);
+        for (int arc = 0; arc < 8; arc++) {
+            double angle = arc * Math.PI / 4;
+            emit(level, PhantomVfxTheme.VAMPIRE, center.add(Math.cos(angle) * 2, 0.4D, Math.sin(angle) * 2), PhantomEnergyOptions.SLASH, 0.8F, 20, 1, 0, 0);
+        }
+    }
+
+    public static void echoCharge(ServerLevel level, Vec3 center, int charge) {
+        emit(level, PhantomVfxTheme.ECHO, center, PhantomEnergyOptions.SPARK, 0.12F, 20, Math.clamp(charge, 1, 5), 0.45D, 0.005D);
+    }
+
+    public static void huskDust(ServerLevel level, Vec3 center, float radius, boolean fragments) {
+        shockwave(level, PhantomVfxTheme.HUSK, center.add(0, 0.08D, 0), radius);
+        emit(level, PhantomVfxTheme.HUSK, center.add(0, 0.3D, 0), PhantomEnergyOptions.SPARK, 0.2F, 24, fragments ? 8 : 3, radius * 0.25D, 0.025D);
+        level.sendParticles(new net.minecraft.core.particles.BlockParticleOption(net.minecraft.core.particles.ParticleTypes.BLOCK,
+                net.minecraft.world.level.block.Blocks.SAND.defaultBlockState()), center.x, center.y + 0.2D, center.z,
+                fragments ? 8 : 3, radius * 0.3D, 0.15D, radius * 0.3D, 0.025D);
+        if (fragments) {
+            for (int fragment = 0; fragment < 6; fragment++) {
+                double angle = fragment * Math.PI / 3 + level.getGameTime() * 0.08D;
+                Vec3 point = center.add(Math.cos(angle) * radius * 0.65D, 0.4D + fragment % 2 * 0.4D, Math.sin(angle) * radius * 0.65D);
+                level.sendParticles(new net.minecraft.core.particles.ItemParticleOption(net.minecraft.core.particles.ParticleTypes.ITEM, net.minecraft.world.item.Items.BONE), point.x, point.y, point.z, 1, 0.03D, 0.05D, 0.03D, 0.03D);
+                emit(level, PhantomVfxTheme.HUSK, point, PhantomEnergyOptions.GLOW, 0.18F, 18, 1, 0, 0);
+            }
+        }
+    }
+
+    public static void orbit(ServerLevel level, PhantomVfxTheme theme, Vec3 center, float radius, int particles) {
+        emit(level, theme, center, PhantomEnergyOptions.ORBIT, radius, 28, Math.clamp(particles, 1, 16), 0, 0);
+    }
+
+    public static void implosion(ServerLevel level, PhantomVfxTheme theme, Vec3 center, float radius) {
+        emit(level, theme, center, PhantomEnergyOptions.IMPLOSION, radius, 24, 12, 0, 0);
+        emit(level, theme, center, PhantomEnergyOptions.DISTORTION, radius * 0.6F, 18, 1, 0, 0);
+        emit(level, theme, center, PhantomEnergyOptions.GLOW, 0.3F, 12, 1, 0, 0);
+    }
+
+    public static void distortion(ServerLevel level, PhantomVfxTheme theme, Vec3 center, float radius) {
+        emit(level, theme, center, PhantomEnergyOptions.DISTORTION, radius, 20, 1, 0, 0);
+        orbit(level, theme, center, radius, 4);
+    }
+
+    public static void gravityVortex(ServerLevel level, Vec3 center, float radius, boolean ultimate) {
+        distortion(level, PhantomVfxTheme.GRAVITY, center.add(0, ultimate ? 1.6D : 0.6D, 0), radius);
+        orbit(level, PhantomVfxTheme.GRAVITY, center.add(0, 0.5D, 0), radius * 1.5F, ultimate ? 12 : 6);
+        implosion(level, PhantomVfxTheme.GRAVITY, center.add(0, 0.7D, 0), radius * 1.8F);
+        if (ultimate && level.getGameTime() % 24 < 4) { shockwave(level, PhantomVfxTheme.GRAVITY, center, 8); }
+    }
+
     private static void emit(ServerLevel level, PhantomVfxTheme theme, Vec3 center, int shape, float scale,
             int lifetime, int count, double spread, double speed) {
+        if (!Double.isFinite(center.lengthSqr()) || !Double.isFinite(spread) || !Double.isFinite(speed) || count <= 0) { return; }
         Budget budget = BUDGETS.computeIfAbsent(level, ignored -> new Budget());
         if (budget.tick != level.getGameTime()) {
             budget.tick = level.getGameTime();
@@ -160,6 +272,15 @@ public final class PhantomVisualEffects {
         budget.particles += available;
         level.sendParticles(PhantomEnergyOptions.of(theme, shape, scale, lifetime), center.x, center.y, center.z,
                 available, spread, spread, spread, speed);
+    }
+
+    public static void witherStorm(ServerLevel level, Vec3 center, boolean charging) {
+        Vec3 halo = center.add(0, charging ? 3.5D : 4.5D, 0);
+        distortion(level, PhantomVfxTheme.WITHER, halo, charging ? 3 : 5);
+        orbit(level, PhantomVfxTheme.WITHER, halo, charging ? 4 : 6, 10);
+        if (charging) { implosion(level, PhantomVfxTheme.WITHER, halo, 3); }
+        level.sendParticles(net.minecraft.core.particles.ParticleTypes.LARGE_SMOKE, halo.x, halo.y, halo.z, 6, 3, 0.8D, 3, 0.01D);
+        if (level.getGameTime() % 20 == 0) { shockwave(level, PhantomVfxTheme.WITHER, center.add(0, 0.2D, 0), 8); }
     }
 
     private static final class Budget {

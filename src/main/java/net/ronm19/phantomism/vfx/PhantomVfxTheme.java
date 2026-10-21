@@ -22,7 +22,29 @@ public enum PhantomVfxTheme {
     VIOLET(0xF0B3FF, 0x7820DB),
     TOXIC(0xD1FF59, 0x50791D),
     SCULK(0x64F4FF, 0x006E86),
-    RAVAGER(0xFFD19A, 0xA84A2C);
+    RAVAGER(0xFFD19A, 0xA84A2C),
+    END(0xD4A0FF, 0x382258),
+    ZOMBIE(0xBEDC72, 0x33452B),
+    SKELETON(0xE3CBBB, 0x8F43D5),
+    HUSK(0xFFE0A0, 0xAC713B),
+    ECHO(0x9EEFFF, 0x1742A4),
+    BLOOD(0xFF5361, 0x870C20),
+    VAMPIRE(0xFF477B, 0x350C21),
+    GRAVITY(0xB8A3FF, 0x28106F),
+    WITHER(0x87F0FF, 0x07313B),
+    CHRONO(0x83EFFF, 0xF2C567),
+    RIFT(0xB98BFF, 0x5EE5FF),
+    SENTINEL(0xC7F0FF, 0x5C7DA8),
+    DEMON(0xFF203B, 0xFF9D38),
+    SPECTRAL(0x9DEFFF, 0xA58AFF),
+    ANGEL(0xFFE2A0, 0xE4F3FF),
+    OMEN(0x1AF599, 0xB0FFE5),
+    ANCIENT(0x60EADD, 0xD7BE85),
+    REAPER(0xAE67EB, 0x77E8F5),
+    PRIMORDIAL(0xA68AFF, 0x79EFFF),
+    VOID(0x963CFA, 0xD6ADFF),
+    DARK(0x6516B3, 0xDC89FA),
+    KING(0xEFB73E, 0xFFECB0), GOLEM(0x20BBF5, 0xD8EEFA), MIRAGE(0xBE92EF, 0x72F5F5);
 
     private final int color;
     private final int fadeColor;
@@ -41,6 +63,30 @@ public enum PhantomVfxTheme {
     }
 
     public static PhantomVfxTheme of(AbstractPhantom phantom) {
+        if (phantom instanceof net.ronm19.phantomism.entity.MiragePhantom) { return MIRAGE; }
+        if (phantom instanceof net.ronm19.phantomism.entity.GolemPhantom) { return GOLEM; }
+        if (phantom instanceof net.ronm19.phantomism.entity.PhantomKing) { return KING; }
+        if (phantom instanceof net.ronm19.phantomism.entity.DarkPhantom) { return DARK; }
+        if (phantom instanceof net.ronm19.phantomism.entity.VoidPhantom) { return VOID; }
+        if (phantom instanceof net.ronm19.phantomism.entity.PrimordialPhantom) { return PRIMORDIAL; }
+        if (phantom instanceof net.ronm19.phantomism.entity.ReaperPhantom) { return REAPER; }
+        if (phantom instanceof net.ronm19.phantomism.entity.AncientPhantom) { return ANCIENT; }
+        if (phantom instanceof net.ronm19.phantomism.entity.OmenPhantom) { return OMEN; }
+        if (phantom instanceof net.ronm19.phantomism.entity.AngelPhantom) { return ANGEL; }
+        if (phantom instanceof net.ronm19.phantomism.entity.SpectralPhantom) { return SPECTRAL; }
+        if (phantom instanceof net.ronm19.phantomism.entity.DemonPhantom) { return DEMON; }
+        if (phantom instanceof net.ronm19.phantomism.entity.SentinelPhantom) { return SENTINEL; }
+        if (phantom instanceof net.ronm19.phantomism.entity.RiftPhantom) { return RIFT; }
+        if (phantom instanceof net.ronm19.phantomism.entity.ChronoPhantom) { return CHRONO; }
+        if (phantom instanceof net.ronm19.phantomism.entity.WitherPhantom) { return WITHER; }
+        if (phantom instanceof net.ronm19.phantomism.entity.GravityPhantom) { return GRAVITY; }
+        if (phantom instanceof net.ronm19.phantomism.entity.VampirePhantom) { return VAMPIRE; }
+        if (phantom instanceof net.ronm19.phantomism.entity.BloodPhantom) { return BLOOD; }
+        if (phantom instanceof net.ronm19.phantomism.entity.EchoPhantom) { return ECHO; }
+        if (phantom instanceof net.ronm19.phantomism.entity.HuskPhantom) { return HUSK; }
+        if (phantom instanceof net.ronm19.phantomism.entity.SkeletonPhantom) { return SKELETON; }
+        if (phantom instanceof net.ronm19.phantomism.entity.ZombiePhantom) { return ZOMBIE; }
+        if (phantom instanceof net.ronm19.phantomism.entity.EndPhantom) { return END; }
         if (phantom instanceof net.ronm19.phantomism.entity.RavagerPhantom) { return RAVAGER; }
         if (phantom instanceof net.ronm19.phantomism.entity.SculkPhantom) { return SCULK; }
         if (phantom instanceof net.ronm19.phantomism.entity.ToxicPhantom) { return TOXIC; }

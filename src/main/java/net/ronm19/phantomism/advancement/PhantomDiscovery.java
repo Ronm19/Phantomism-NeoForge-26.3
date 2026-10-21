@@ -33,7 +33,31 @@ public enum PhantomDiscovery {
     VIOLET("violet_phantom", PhantomismContent.VIOLET_PHANTOM, PhantomismContent.VIOLET_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
     TOXIC("toxic_phantom", PhantomismContent.TOXIC_PHANTOM, PhantomismContent.TOXIC_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
     SCULK("sculk_phantom", PhantomismContent.SCULK_PHANTOM, PhantomismContent.SCULK_PHANTOM_SPAWN_EGG, Rarity.RARE),
-    RAVAGER("ravager_phantom", PhantomismContent.RAVAGER_PHANTOM, PhantomismContent.RAVAGER_PHANTOM_SPAWN_EGG, Rarity.RARE);
+    RAVAGER("ravager_phantom", PhantomismContent.RAVAGER_PHANTOM, PhantomismContent.RAVAGER_PHANTOM_SPAWN_EGG, Rarity.RARE),
+    END("end_phantom", PhantomismContent.END_PHANTOM, PhantomismContent.END_PHANTOM_SPAWN_EGG, Rarity.COMMON),
+    ZOMBIE("zombie_phantom", PhantomismContent.ZOMBIE_PHANTOM, PhantomismContent.ZOMBIE_PHANTOM_SPAWN_EGG, Rarity.COMMON),
+    SKELETON("skeleton_phantom", PhantomismContent.SKELETON_PHANTOM, PhantomismContent.SKELETON_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    HUSK("husk_phantom", PhantomismContent.HUSK_PHANTOM, PhantomismContent.HUSK_PHANTOM_SPAWN_EGG, Rarity.COMMON),
+    ECHO("echo_phantom", PhantomismContent.ECHO_PHANTOM, PhantomismContent.ECHO_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    BLOOD("blood_phantom", PhantomismContent.BLOOD_PHANTOM, PhantomismContent.BLOOD_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    VAMPIRE("vampire_phantom", PhantomismContent.VAMPIRE_PHANTOM, PhantomismContent.VAMPIRE_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    GRAVITY("gravity_phantom", PhantomismContent.GRAVITY_PHANTOM, PhantomismContent.GRAVITY_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    WITHER("wither_phantom", PhantomismContent.WITHER_PHANTOM, PhantomismContent.WITHER_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    CHRONO("chrono_phantom", PhantomismContent.CHRONO_PHANTOM, PhantomismContent.CHRONO_PHANTOM_SPAWN_EGG, Rarity.RARE),
+    RIFT("rift_phantom", PhantomismContent.RIFT_PHANTOM, PhantomismContent.RIFT_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    SENTINEL("sentinel_phantom", PhantomismContent.SENTINEL_PHANTOM, PhantomismContent.SENTINEL_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    DEMON("demon_phantom", PhantomismContent.DEMON_PHANTOM, PhantomismContent.DEMON_PHANTOM_SPAWN_EGG, Rarity.RARE),
+    SPECTRAL("spectral_phantom", PhantomismContent.SPECTRAL_PHANTOM, PhantomismContent.SPECTRAL_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    ANGEL("angel_phantom", PhantomismContent.ANGEL_PHANTOM, PhantomismContent.ANGEL_PHANTOM_SPAWN_EGG, Rarity.RARE),
+    OMEN("omen_phantom", PhantomismContent.OMEN_PHANTOM, PhantomismContent.OMEN_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    ANCIENT("ancient_phantom", PhantomismContent.ANCIENT_PHANTOM, PhantomismContent.ANCIENT_PHANTOM_SPAWN_EGG, Rarity.RARE),
+    REAPER("reaper_phantom", PhantomismContent.REAPER_PHANTOM, PhantomismContent.REAPER_PHANTOM_SPAWN_EGG, Rarity.RARE),
+    PRIMORDIAL("primordial_phantom", PhantomismContent.PRIMORDIAL_PHANTOM, PhantomismContent.PRIMORDIAL_PHANTOM_SPAWN_EGG, Rarity.LEGENDARY),
+    VOID("void_phantom", PhantomismContent.VOID_PHANTOM, PhantomismContent.VOID_PHANTOM_SPAWN_EGG, Rarity.EPIC),
+    DARK("dark_phantom", PhantomismContent.DARK_PHANTOM, PhantomismContent.DARK_PHANTOM_SPAWN_EGG, Rarity.EPIC),
+    KING("phantom_king", PhantomismContent.PHANTOM_KING, PhantomismContent.PHANTOM_KING_SPAWN_EGG, Rarity.EPIC),
+    GOLEM("golem_phantom", PhantomismContent.GOLEM_PHANTOM, PhantomismContent.GOLEM_PHANTOM_SPAWN_EGG, Rarity.EPIC),
+    MIRAGE("mirage_phantom", PhantomismContent.MIRAGE_PHANTOM, PhantomismContent.MIRAGE_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON);
 
     public static final String ICON_DATA_KEY = "phantomism_discovery_icon";
     public static final String CRITERION = "discovered";
@@ -91,7 +115,8 @@ public enum PhantomDiscovery {
         COMMON(AdvancementType.TASK, 40),
         UNCOMMON(AdvancementType.TASK, 28),
         RARE(AdvancementType.GOAL, 16),
-        EPIC(AdvancementType.CHALLENGE, 6);
+        EPIC(AdvancementType.CHALLENGE, 6),
+        LEGENDARY(AdvancementType.CHALLENGE, 1);
 
         private final AdvancementType frame;
         private final int spawnWeight;
