@@ -508,4 +508,9 @@ public final class EarthPhantom extends AbstractPhantom {
         this.quakeCooldown = Math.min(QUAKE_COOLDOWN, Math.max(0, input.getIntOr("EarthquakeCooldown", 0)));
         this.nextBlessing = input.getLongOr("EarthBlessingNext", 0L);
     }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Bomb Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(BOMB_COOLDOWN), "Shield Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SHIELD_COOLDOWN), "Wall Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(WALL_COOLDOWN), "Quake Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(QUAKE_COOLDOWN));
+    }
 }

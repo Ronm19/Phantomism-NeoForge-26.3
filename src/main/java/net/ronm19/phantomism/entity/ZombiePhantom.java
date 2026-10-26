@@ -139,7 +139,9 @@ public final class ZombiePhantom extends AbstractPhantom {
         if (!this.isTame() && !this.isBaby() && this.tickCount % 20 == 0) { this.followLure(level); }
     }
 
-    private static boolean lure(Player player) { return player.getMainHandItem().is(Items.ROTTEN_FLESH) || player.getOffhandItem().is(Items.ROTTEN_FLESH); }
+    public static net.minecraft.world.item.Item lureItem() { return Items.ROTTEN_FLESH; }
+    private static boolean lure(Player player) { return player.getMainHandItem().is(lureItem()) || player.getOffhandItem().is(lureItem()); }
+    @Override public java.util.Optional<net.minecraft.world.item.Item> preferredLure() { return java.util.Optional.of(lureItem()); }
 
     private void followLure(ServerLevel level) {
         if (this.getTarget() != null || this.isVehicle()) { return; }
@@ -354,4 +356,19 @@ public final class ZombiePhantom extends AbstractPhantom {
         this.diveCooldown = Math.clamp(input.getIntOr("ZombieDiveCooldown", 0), 0, 280);
         this.resilienceCooldown = Math.clamp(input.getIntOr("ZombieResilienceCooldown", 0), 0, 900); this.cancelDive();
     }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Spit Cooldown Ticks: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SPIT_COOLDOWN_TICKS));
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "launch_spit" -> this.spitCooldown;
+            case "begin_dive" -> this.diveCooldown;
+            case "rotten_resilience" -> this.resilienceCooldown;
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { this.spitCooldown = ticks; }
 }

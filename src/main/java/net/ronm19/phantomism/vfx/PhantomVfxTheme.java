@@ -9,6 +9,9 @@ import net.ronm19.phantomism.entity.StormPhantom;
 import net.ronm19.phantomism.entity.WaterPhantom;
 
 public enum PhantomVfxTheme {
+    LUNAR(0x8DBAFF, 0xF1E8FF),
+    INFERNAL_PHANTOM(0xFF651A, 0xFFDB7F),
+    ILLAGER(0x4CE3AA, 0xB93554),
     BLACK(0xC690FF, 0x5530AC),
     FIRE(0xFFF16A, 0xF43C0A),
     FROST(0xD9FFFF, 0x38A9EB),
@@ -44,7 +47,7 @@ public enum PhantomVfxTheme {
     PRIMORDIAL(0xA68AFF, 0x79EFFF),
     VOID(0x963CFA, 0xD6ADFF),
     DARK(0x6516B3, 0xDC89FA),
-    KING(0xEFB73E, 0xFFECB0), GOLEM(0x20BBF5, 0xD8EEFA), MIRAGE(0xBE92EF, 0x72F5F5);
+    KING(0xEFB73E, 0xFFECB0), GOLEM(0x20BBF5, 0xD8EEFA), MIRAGE(0xBE92EF, 0x72F5F5), ECLIPSE(0xFFC757, 0xAD6DFF), SHADOW(0x934BDF, 0xCEBDE8), PLAGUE(0x86C92D, 0xDBF79C), CRYSTAL(0xBA87FF, 0x8AECFF), OBSIDIAN(0x8D27D9, 0xE5B9FF), GALE(0x2FCBFF, 0xE5FAFF), SPORE(0x94C846, 0xE5E9B3);
 
     private final int color;
     private final int fadeColor;
@@ -63,6 +66,17 @@ public enum PhantomVfxTheme {
     }
 
     public static PhantomVfxTheme of(AbstractPhantom phantom) {
+        if (phantom instanceof net.ronm19.phantomism.entity.LunarPhantom) { return LUNAR; }
+        if (phantom instanceof net.ronm19.phantomism.entity.InfernalPhantom) { return INFERNAL_PHANTOM; }
+        if (phantom instanceof net.ronm19.phantomism.entity.IllagerPhantom) { return ILLAGER; }
+        if (phantom instanceof net.ronm19.phantomism.entity.SolarPhantom) { return GOLD; }
+        if (phantom instanceof net.ronm19.phantomism.entity.SporePhantom) { return SPORE; }
+        if (phantom instanceof net.ronm19.phantomism.entity.GalePhantom) { return GALE; }
+        if (phantom instanceof net.ronm19.phantomism.entity.ObsidianPhantom) { return OBSIDIAN; }
+        if (phantom instanceof net.ronm19.phantomism.entity.CrystalPhantom) { return CRYSTAL; }
+        if (phantom instanceof net.ronm19.phantomism.entity.PlaguePhantom) { return PLAGUE; }
+        if (phantom instanceof net.ronm19.phantomism.entity.ShadowPhantom) { return SHADOW; }
+        if (phantom instanceof net.ronm19.phantomism.entity.EclipsePhantom) { return ECLIPSE; }
         if (phantom instanceof net.ronm19.phantomism.entity.MiragePhantom) { return MIRAGE; }
         if (phantom instanceof net.ronm19.phantomism.entity.GolemPhantom) { return GOLEM; }
         if (phantom instanceof net.ronm19.phantomism.entity.PhantomKing) { return KING; }

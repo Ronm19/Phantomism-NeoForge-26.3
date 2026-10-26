@@ -291,4 +291,9 @@ public final class CherryPhantom extends AbstractPhantom {
         this.sanctuaryTicks = 0;
         this.recentDamageTicks = 0;
     }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Heal Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(HEAL_COOLDOWN), "Barrage Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(BARRAGE_COOLDOWN), "Veil Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(VEIL_COOLDOWN), "Sanctuary Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SANCTUARY_COOLDOWN));
+    }
 }

@@ -111,7 +111,7 @@ public final class ReaperPhantom extends AbstractPhantom implements CooldownDisc
     }
     private void action(String clip,int ticks){actionTicks=ticks;sessionOpen=true;triggerAnim("reaper",clip);}
     @Override public void registerControllers(AnimatableManager.ControllerRegistrar controllers){super.registerControllers(controllers);var controller=new AnimationController<ReaperPhantom>("reaper",3,state->actionTicks>0?PlayState.CONTINUE:PlayState.STOP);for(String clip:CLIPS){controller.triggerableAnim(clip,RawAnimation.begin().thenPlay("animation.reaper."+clip));}controllers.add(controller);}
-    @Override public InteractionResult mobInteract(Player player,InteractionHand hand){if(isAlive()&&!isTame()&&!player.isSpectator()&&player.getItemInHand(hand).is(Items.WITHER_SKELETON_SKULL)){if(!level().isClientSide()){if(!player.isCreative()){player.getItemInHand(hand).shrink(1);}tame(player);clearCombatTarget(true);level().broadcastEntityEvent(this,(byte)7);}return InteractionResult.SUCCESS;}return super.mobInteract(player,hand);}
+    @Override public InteractionResult mobInteract(Player player,InteractionHand hand){if(isAlive()&&!isTame()&&!player.isSpectator()&&player.getItemInHand(hand).is(preferredTaming().item())){if(!level().isClientSide()){if(!player.isCreative()){player.getItemInHand(hand).shrink(1);}tame(player);clearCombatTarget(true);level().broadcastEntityEvent(this,(byte)7);}return InteractionResult.SUCCESS;}return super.mobInteract(player,hand);}
     public void endReaper(){if(sessionOpen&&level() instanceof ServerLevel){ReaperVfx.cancel(this);session=UUID.randomUUID();sessionOpen=false;}ReaperSouls.release(this);markedId=null;orderedId=null;markTicks=0;bargainTicks=0;bellTicks=0;actionTicks=0;bellCenter=null;}
     @Override public void clearCombatTarget(boolean suppress){super.clearCombatTarget(suppress);if(suppress&&cooldowns!=null){endReaper();}}
     @Override public void setOrder(Order order){super.setOrder(order);if(cooldowns!=null&&(order==Order.STAY||order==Order.RETURN_HOME)){endReaper();}}
@@ -120,4 +120,27 @@ public final class ReaperPhantom extends AbstractPhantom implements CooldownDisc
     @Override protected void addAdditionalSaveData(ValueOutput output){super.addAdditionalSaveData(output);output.putInt("ReaperMelee",meleeTicks);output.putInt("ReaperFragments",souls());for(int index=0;index<cooldowns.length;index++){output.putInt("ReaperCooldown"+index,cooldowns[index]);}}
     @Override protected void readAdditionalSaveData(ValueInput input){super.readAdditionalSaveData(input);endReaper();session=UUID.randomUUID();entityData.set(SOUL_FRAGMENTS,Math.clamp(input.getIntOr("ReaperFragments",0),0,3));meleeTicks=Math.clamp(input.getIntOr("ReaperMelee",0),0,32);for(int index=0;index<cooldowns.length;index++){cooldowns[index]=Math.clamp(input.getIntOr("ReaperCooldown"+index,0),0,INTERVALS[index]);}}
     @Override public List<CooldownDiscipline.Slot> temporalCooldowns(){var slots=new ArrayList<CooldownDiscipline.Slot>();for(int index=0;index<5;index++){final int slot=index;slots.add(CooldownDiscipline.Slot.normal("reaper_"+CLIPS[index],INTERVALS[index],()->cooldowns[slot],value->cooldowns[slot]=value));}return List.copyOf(slots);}
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(Items.WITHER_SKELETON_SKULL, 1F, 1, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Mark: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[0]), "Cut: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[1]), "Sever: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[2]), "Passage: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[3]), "Shard: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[4]), "Bargain: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[5]), "Bell: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[6]));
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "mark" -> cooldowns[0];
+            case "soul_cut" -> cooldowns[1];
+            case "mortal_sever" -> cooldowns[2];
+            case "passage" -> cooldowns[3];
+            case "shard" -> cooldowns[4];
+            case "last_bell" -> cooldowns[6];
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { cooldowns[4] = ticks; }
 }

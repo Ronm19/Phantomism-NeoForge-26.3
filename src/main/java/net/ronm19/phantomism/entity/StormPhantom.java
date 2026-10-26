@@ -409,4 +409,9 @@ public final class StormPhantom extends AbstractPhantom {
         this.ultimateTicks = 0;
         this.ultimateCharge = 0;
     }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Projectile Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(PROJECTILE_COOLDOWN), "Shield Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SHIELD_COOLDOWN), "Ultimate Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(ULTIMATE_COOLDOWN));
+    }
 }

@@ -254,7 +254,7 @@ public final class OmenPhantom extends AbstractPhantom implements CooldownDiscip
         for (String clip : CLIPS) { controller.triggerableAnim(clip, RawAnimation.begin().thenPlay("animation.omen." + clip)); } controllers.add(controller);
     }
     @Override public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (isAlive() && !isTame() && !player.isSpectator() && player.getItemInHand(hand).is(Items.OMINOUS_BOTTLE)) {
+        if (isAlive() && !isTame() && !player.isSpectator() && player.getItemInHand(hand).is(preferredTaming().item())) {
             if (!level().isClientSide()) { if (!player.isCreative()) { player.getItemInHand(hand).shrink(1); } tame(player); clearCombatTarget(true); level().broadcastEntityEvent(this, (byte)7); } return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);
@@ -270,4 +270,27 @@ public final class OmenPhantom extends AbstractPhantom implements CooldownDiscip
     @Override protected void addAdditionalSaveData(ValueOutput output) { super.addAdditionalSaveData(output); output.putInt("OmenMelee", meleeTicks); for (int index = 0; index < cooldowns.length; index++) { output.putInt("OmenCooldown" + index, cooldowns[index]); } }
     @Override protected void readAdditionalSaveData(ValueInput input) { super.readAdditionalSaveData(input); endOmen(); session = UUID.randomUUID(); meleeTicks = Math.clamp(input.getIntOr("OmenMelee", 0), 0, 34); for (int index = 0; index < cooldowns.length; index++) { cooldowns[index] = Math.clamp(input.getIntOr("OmenCooldown" + index, 0), 0, INTERVALS[index]); } }
     @Override public List<CooldownDiscipline.Slot> temporalCooldowns() { var slots = new ArrayList<CooldownDiscipline.Slot>(); for (int index = 0; index < 5; index++) { final int slot = index; slots.add(CooldownDiscipline.Slot.normal("omen_" + CLIPS[index], INTERVALS[index], () -> cooldowns[slot], value -> cooldowns[slot] = value)); } return List.copyOf(slots); }
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(Items.OMINOUS_BOTTLE, 1F, 1, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Bolt: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[0]), "Dive: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[1]), "Mark: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[2]), "Standard: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[3]), "Shield: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[4]), "Calamity: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[5]));
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "mark" -> cooldowns[2];
+            case "standard" -> cooldowns[3];
+            case "bolt" -> cooldowns[0];
+            case "shield" -> cooldowns[4];
+            case "dive" -> cooldowns[1];
+            case "calamity" -> cooldowns[5];
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { cooldowns[0] = ticks; }
 }

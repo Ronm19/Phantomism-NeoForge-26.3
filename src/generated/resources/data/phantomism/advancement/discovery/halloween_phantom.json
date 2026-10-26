@@ -1,0 +1,16 @@
+{
+  "parent": "phantomism:discovery/root",
+  "criteria": { "discovered": { "trigger": "minecraft:impossible" } },
+  "display": {
+    "announce_to_chat": false,
+    "description": { "translate": "advancements.phantomism.discovery.halloween_phantom.description" },
+    "frame": "task",
+    "icon": {
+      "components": { "minecraft:custom_data": { "phantomism_discovery_icon": "halloween_phantom" } },
+      "id": "phantomism:halloween_phantom_spawn_egg"
+    },
+    "title": { "translate": "advancements.phantomism.discovery.halloween_phantom.title" }
+  },
+  "requirements": [["discovered"]],
+  "sends_telemetry_event": true
+}

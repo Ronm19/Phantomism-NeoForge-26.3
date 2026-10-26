@@ -30,6 +30,15 @@ public final class MirageDecoy extends PathfinderMob implements GeoEntity {
     private static final EntityDataAccessor<Boolean> BABY = SynchedEntityData.defineId(MirageDecoy.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> PHYSICAL = SynchedEntityData.defineId(MirageDecoy.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> COMBAT = SynchedEntityData.defineId(MirageDecoy.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> GALE_VISUAL = SynchedEntityData.defineId(MirageDecoy.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> GALE_VARIANT = SynchedEntityData.defineId(MirageDecoy.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> OBSIDIAN_VISUAL = SynchedEntityData.defineId(MirageDecoy.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> OBSIDIAN_VARIANT = SynchedEntityData.defineId(MirageDecoy.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> CRYSTAL_VISUAL = SynchedEntityData.defineId(MirageDecoy.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> CRYSTAL_VARIANT = SynchedEntityData.defineId(MirageDecoy.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> PLAGUE_VISUAL = SynchedEntityData.defineId(MirageDecoy.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SHADOW_VISUAL = SynchedEntityData.defineId(MirageDecoy.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ECLIPSE_VISUAL = SynchedEntityData.defineId(MirageDecoy.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ATTACK = SynchedEntityData.defineId(MirageDecoy.class, EntityDataSerializers.BOOLEAN);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private UUID casterId = new UUID(0, 0), session = new UUID(0, 0), budgetOwner = new UUID(0, 0);
@@ -42,13 +51,22 @@ public final class MirageDecoy extends PathfinderMob implements GeoEntity {
     public static AttributeSupplier.Builder createAttributes() { return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 6).add(Attributes.MOVEMENT_SPEED, 0).add(Attributes.KNOCKBACK_RESISTANCE, 1); }
     @Override protected void defineSynchedData(SynchedEntityData.Builder data) {
         super.defineSynchedData(data); data.define(SPECIES, "mirage_phantom"); data.define(ANIMATION, "entity/mirage_phantom"); data.define(SIZE, 1F);
-        data.define(BABY, false); data.define(PHYSICAL, false); data.define(COMBAT, false); data.define(ATTACK, false);
+        data.define(BABY, false); data.define(PHYSICAL, false); data.define(COMBAT, false); data.define(ATTACK, false); data.define(ECLIPSE_VISUAL, 0); data.define(SHADOW_VISUAL, 0); data.define(PLAGUE_VISUAL, 0); data.define(GALE_VISUAL, 0); data.define(GALE_VARIANT, 0); data.define(OBSIDIAN_VISUAL, 0); data.define(OBSIDIAN_VARIANT, 0); data.define(CRYSTAL_VISUAL, 0); data.define(CRYSTAL_VARIANT, 0);
     }
     public void configure(MiragePhantom source, AbstractPhantom disguise, Mode mode, Vec3 position, int duration, int formation) {
         this.casterId = source.getUUID(); this.session = source.session(); this.budgetOwner = source.budgetOwner(); this.anchor = position; this.formation = formation;
         this.expires = level().getGameTime() + duration; setPos(position); setYRot(disguise.getYRot()); setYHeadRot(disguise.getYHeadRot());
         entityData.set(SPECIES, Arrays.stream(net.ronm19.phantomism.advancement.PhantomDiscovery.values()).filter(species -> species.entityType() == disguise.getType()).map(net.ronm19.phantomism.advancement.PhantomDiscovery::modelName).findFirst().orElse("mirage_phantom"));
         entityData.set(ANIMATION, disguise.getPhantomAnimationResource().getPath()); entityData.set(SIZE, Math.clamp(disguise.getScale(), .25F, 3F));
+        entityData.set(GALE_VISUAL, disguise instanceof GalePhantom gale ? gale.visualState() : 0);
+        entityData.set(GALE_VARIANT, disguise instanceof GalePhantom gale ? gale.variant() : 0);
+        entityData.set(OBSIDIAN_VISUAL, disguise instanceof ObsidianPhantom obsidian ? obsidian.visualState() : 0);
+        entityData.set(OBSIDIAN_VARIANT, disguise instanceof ObsidianPhantom obsidian ? obsidian.variant() : 0);
+        entityData.set(CRYSTAL_VISUAL, disguise instanceof CrystalPhantom crystal ? crystal.visualState() : 0);
+        entityData.set(CRYSTAL_VARIANT, disguise instanceof CrystalPhantom crystal ? crystal.variant() : 0);
+        entityData.set(PLAGUE_VISUAL, disguise instanceof PlaguePhantom plague ? plague.visualState() : 0);
+        entityData.set(SHADOW_VISUAL, disguise instanceof ShadowPhantom shadow ? shadow.visualState() : 0);
+        entityData.set(ECLIPSE_VISUAL, disguise instanceof EclipsePhantom eclipse ? eclipse.visualState() : 0);
         entityData.set(BABY, disguise.isBaby()); entityData.set(PHYSICAL, mode == Mode.PHYSICAL); entityData.set(COMBAT, true); setHealth(mode == Mode.PHYSICAL ? 6 : 1);
     }
     public UUID casterId() { return casterId; }
@@ -57,6 +75,15 @@ public final class MirageDecoy extends PathfinderMob implements GeoEntity {
     public String species() { return entityData.get(SPECIES); }
     public String animationPath() { return entityData.get(ANIMATION); }
     public float visualScale() { return entityData.get(SIZE) * (entityData.get(BABY) ? .6F : 1F); }
+    public int galeVisual() { return entityData.get(GALE_VISUAL); }
+    public int galeVariant() { return entityData.get(GALE_VARIANT); }
+    public int obsidianVisual() { return entityData.get(OBSIDIAN_VISUAL); }
+    public int obsidianVariant() { return entityData.get(OBSIDIAN_VARIANT); }
+    public int crystalVisual() { return entityData.get(CRYSTAL_VISUAL); }
+    public int crystalVariant() { return entityData.get(CRYSTAL_VARIANT); }
+    public int plagueVisual() { return entityData.get(PLAGUE_VISUAL); }
+    public int shadowVisual() { return entityData.get(SHADOW_VISUAL); }
+    public int eclipseVisual() { return entityData.get(ECLIPSE_VISUAL); }
     public boolean copiedBaby() { return entityData.get(BABY); }
     public boolean combatEyes() { return entityData.get(COMBAT); }
     public boolean fakeAttack() { return entityData.get(ATTACK); }

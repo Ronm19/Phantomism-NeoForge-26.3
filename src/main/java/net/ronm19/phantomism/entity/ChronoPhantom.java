@@ -104,7 +104,7 @@ public final class ChronoPhantom extends AbstractPhantom implements CooldownDisc
     @Override protected boolean shouldHuntAutomatically(LivingEntity target, ServerLevel level) { return this.isTame() && this.getOrder() == Order.GUARD && this.getOwner() != null && target instanceof Enemy && this.getOwner().distanceToSqr(target) <= 24 * 24; }
     @Override protected double getAutomaticTargetPriority(LivingEntity target) { return this.distanceToSqr(target) - (target instanceof Mob mob && this.acceptsAllyTarget(mob) ? 400 : 0); }
     @Override public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        var stack = player.getItemInHand(hand); if (!this.isTame() && stack.is(Items.CLOCK)) {
+        var stack = player.getItemInHand(hand); if (!this.isTame() && stack.is(preferredTaming().item())) {
             if (!this.level().isClientSide()) { this.tame(player); this.clearCombatTarget(true); if (!player.isCreative()) { stack.shrink(1); } this.level().broadcastEntityEvent(this, (byte) 7); } return InteractionResult.SUCCESS;
         } return super.mobInteract(player, hand);
     }
@@ -240,4 +240,20 @@ public final class ChronoPhantom extends AbstractPhantom implements CooldownDisc
     @Override protected void addAdditionalSaveData(ValueOutput output) { super.addAdditionalSaveData(output); output.putInt("ChronoMeleeCooldown", this.meleeCooldown); for (int index = 0; index < this.cooldowns.length; index++) { output.putInt("ChronoCooldown" + index, this.cooldowns[index]); } }
     @Override protected void readAdditionalSaveData(ValueInput input) { super.readAdditionalSaveData(input); this.cancel(); this.meleeCooldown = Math.clamp(input.getIntOr("ChronoMeleeCooldown", 0), 0, 40); int[] maxima = {240, 480, 320, 400, 600, 480, 2400, 240}; for (int index = 0; index < this.cooldowns.length; index++) { this.cooldowns[index] = Math.clamp(input.getIntOr("ChronoCooldown" + index, 0), 0, maxima[index]); } }
     @Override public List<CooldownDiscipline.Slot> temporalCooldowns() { return List.of(CooldownDiscipline.Slot.normal("chrono_accelerate", 480, () -> this.cooldowns[1], value -> this.cooldowns[1] = value), CooldownDiscipline.Slot.normal("chrono_slow", 480, () -> this.cooldowns[5], value -> this.cooldowns[5] = value), CooldownDiscipline.Slot.normal("chrono_dive", 240, () -> this.cooldowns[7], value -> this.cooldowns[7] = value)); }
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(Items.CLOCK, 1F, 1, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "time_bolt" -> this.cooldowns[0];
+            case "accelerate" -> this.cooldowns[1];
+            case "slow_field" -> this.cooldowns[5];
+            case "time_stop" -> this.cooldowns[6];
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { this.cooldowns[0] = ticks; }
 }

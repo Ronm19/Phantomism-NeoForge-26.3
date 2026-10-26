@@ -37,6 +37,21 @@
     "phantomism:dark_phantom_spawn_egg",
     "phantomism:phantom_king_spawn_egg",
     "phantomism:golem_phantom_spawn_egg",
-    "phantomism:mirage_phantom_spawn_egg"
+    "phantomism:mirage_phantom_spawn_egg",
+    "phantomism:eclipse_phantom_spawn_egg",
+    "phantomism:shadow_phantom_spawn_egg",
+    "phantomism:plague_phantom_spawn_egg",
+    "phantomism:crystal_phantom_spawn_egg",
+    "phantomism:obsidian_phantom_spawn_egg",
+    "phantomism:gale_phantom_spawn_egg",
+    "phantomism:spore_phantom_spawn_egg",
+    "phantomism:solar_phantom_spawn_egg",
+    "phantomism:illager_phantom_spawn_egg",
+    "phantomism:infernal_phantom_spawn_egg",
+    "phantomism:lunar_phantom_spawn_egg",
+    "phantomism:autumn_phantom_spawn_egg",
+    "phantomism:halloween_phantom_spawn_egg",
+    "phantomism:christmas_phantom_spawn_egg",
+    "phantomism:easter_phantom_spawn_egg"
   ]
 }

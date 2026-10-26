@@ -30,7 +30,7 @@ public final class ModAdvancementProvider extends AdvancementSubProvider {
                     .parent(root)
                     .display(discovery.icon(), Component.translatable(discovery.translationKey("title")),
                             Component.translatable(discovery.translationKey("description")),
-                            discovery.rarity().frame(), true, true, false)
+                            discovery.rarity().frame(), true, false, false)
                     .addCriterion(PhantomDiscovery.CRITERION, CriteriaTriggers.IMPOSSIBLE.createCriterion(new ImpossibleTrigger.TriggerInstance()))
                     .save(this.output, discovery.advancementId().toString());
         }

@@ -1,0 +1,13 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#phantomism:plague_phantom_spawns",
+  "spawners": {
+    "type": "phantomism:plague_phantom",
+    "count": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 1,
+      "min_inclusive": 1
+    },
+    "weight": 6
+  }
+}

@@ -97,7 +97,7 @@ public final class PrimordialPhantom extends AbstractPhantom implements Cooldown
     }
     private void action(String clip,int ticks){actionTicks=ticks;visualStarted();triggerAnim("primordial",clip);}
     @Override public void registerControllers(AnimatableManager.ControllerRegistrar controllers){super.registerControllers(controllers);var controller=new AnimationController<PrimordialPhantom>("primordial",3,state->actionTicks>0?PlayState.CONTINUE:PlayState.STOP);for(String clip:CLIPS){controller.triggerableAnim(clip,RawAnimation.begin().thenPlay("animation.primordial."+clip));}controllers.add(controller);}
-    @Override public InteractionResult mobInteract(Player player,InteractionHand hand){if(isAlive()&&!isTame()&&!player.isSpectator()&&player.getItemInHand(hand).is(PhantomismContent.HEART_OF_THE_WORLD.get())){if(!level().isClientSide()){if(!player.isCreative()){player.getItemInHand(hand).shrink(1);}tame(player);clearCombatTarget(true);level().broadcastEntityEvent(this,(byte)7);}return InteractionResult.SUCCESS;}return super.mobInteract(player,hand);}
+    @Override public InteractionResult mobInteract(Player player,InteractionHand hand){if(isAlive()&&!isTame()&&!player.isSpectator()&&player.getItemInHand(hand).is(preferredTaming().item())){if(!level().isClientSide()){if(!player.isCreative()){player.getItemInHand(hand).shrink(1);}tame(player);clearCombatTarget(true);level().broadcastEntityEvent(this,(byte)7);}return InteractionResult.SUCCESS;}return super.mobInteract(player,hand);}
     public void endPrimordial(){if(sessionOpen&&level() instanceof ServerLevel){PrimordialVfx.cancel(this);session=UUID.randomUUID();sessionOpen=false;}PrimordialSupport.release(this);insight.clear();orderedId=null;comboId=null;comboTicks=0;wingTicks=0;wingCapacity=0;shiftFallTicks=0;restorationTicks=0;novaTicks=0;domainTicks=0;actionTicks=0;novaCenter=null;domainCenter=null;novaHits.clear();}
     @Override public void clearCombatTarget(boolean suppress){super.clearCombatTarget(suppress);if(suppress&&cooldowns!=null){endPrimordial();}}
     @Override public void setOrder(Order order){super.setOrder(order);if(cooldowns!=null&&(order==Order.STAY||order==Order.RETURN_HOME)){endPrimordial();}}
@@ -106,4 +106,27 @@ public final class PrimordialPhantom extends AbstractPhantom implements Cooldown
     @Override protected void addAdditionalSaveData(ValueOutput output){super.addAdditionalSaveData(output);output.putInt("PrimordialMelee",meleeTicks);for(int index=0;index<cooldowns.length;index++){output.putInt("PrimordialCooldown"+index,cooldowns[index]);}}
     @Override protected void readAdditionalSaveData(ValueInput input){super.readAdditionalSaveData(input);endPrimordial();session=UUID.randomUUID();meleeTicks=Math.clamp(input.getIntOr("PrimordialMelee",0),0,34);for(int index=0;index<cooldowns.length;index++){cooldowns[index]=Math.clamp(input.getIntOr("PrimordialCooldown"+index,0),0,INTERVALS[index]);}}
     @Override public List<CooldownDiscipline.Slot> temporalCooldowns(){var slots=new ArrayList<CooldownDiscipline.Slot>();for(int index=0;index<6;index++){final int slot=index;slots.add(CooldownDiscipline.Slot.normal("primordial_"+CLIPS[index],INTERVALS[index],()->cooldowns[slot],value->cooldowns[slot]=value));}return List.copyOf(slots);}
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(PhantomismContent.HEART_OF_THE_WORLD.get(), 1F, 1, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Starfall: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[0]), "Strike: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[1]), "Wing: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[2]), "Shift: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[3]), "Restoration: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[4]), "Nova: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[5]), "Domain: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[6]));
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "primordial_strike" -> cooldowns[1];
+            case "starfall" -> cooldowns[0];
+            case "creation_wing" -> cooldowns[2];
+            case "restoration" -> cooldowns[4];
+            case "cosmic_nova" -> cooldowns[5];
+            case "primal_domain" -> cooldowns[6];
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { cooldowns[0] = ticks; }
 }

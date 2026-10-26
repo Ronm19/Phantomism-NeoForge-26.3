@@ -348,4 +348,9 @@ public final class GoldPhantom extends AbstractPhantom {
             this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).removeModifier(SHIELD_KNOCKBACK);
         }
     }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Dust Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(DUST_COOLDOWN), "Rush Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(RUSH_COOLDOWN), "Shield Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SHIELD_COOLDOWN), "Eye Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(EYE_COOLDOWN));
+    }
 }

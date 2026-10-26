@@ -293,4 +293,13 @@ public final class SkeletonPhantom extends AbstractPhantom {
         this.guardCooldown = Math.clamp(input.getIntOr("SkeletonGuardCooldown", 0), 0, 500); this.guardTicks = Math.clamp(input.getIntOr("SkeletonGuardTicks", 0), 0, 120);
         this.rainCooldown = Math.clamp(input.getIntOr("SkeletonRainCooldown", 0), 0, 1800); this.rainTicks = 0; this.attacks.clear(); this.entityData.set(EYE, this.eyeTicks > 0);
     }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "rain_of_arrows" -> this.rainCooldown;
+            case "eye_of_the_skeleton" -> this.eyeCooldown;
+            case "bone_guard" -> this.guardCooldown;
+            default -> -1;
+        };
+    }
 }

@@ -1,0 +1,9 @@
+{
+  "entries": [
+    "phantomism:codex_simple_dungeon",
+    "phantomism:codex_abandoned_mineshaft",
+    "phantomism:codex_woodland_mansion",
+    "phantomism:codex_ancient_city"
+  ],
+  "replace": false
+}

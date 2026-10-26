@@ -1,0 +1,32 @@
+{
+  "parent": "phantomism:discovery/root",
+  "criteria": {
+    "discovered": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.phantomism.discovery.eclipse_phantom.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "components": {
+        "minecraft:custom_data": {
+          "phantomism_discovery_icon": "eclipse_phantom"
+        }
+      },
+      "id": "phantomism:eclipse_phantom_spawn_egg"
+    },
+    "title": {
+      "translate": "advancements.phantomism.discovery.eclipse_phantom.title"
+    }
+  },
+  "requirements": [
+    [
+      "discovered"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

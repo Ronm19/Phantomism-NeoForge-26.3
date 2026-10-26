@@ -452,4 +452,9 @@ public final class SculkPhantom extends AbstractPhantom {
         this.spreadTicks = this.isBaby() || !this.validCenter(this.spreadCenter) ? 0
                 : Math.clamp(input.getIntOr("SculkSpreadTicks", 0), 0, SPREAD_DURATION);
     }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Boom Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(BOOM_COOLDOWN), "Spread Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SPREAD_COOLDOWN), "Dive Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(DIVE_COOLDOWN), "Shield Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SHIELD_COOLDOWN), "Silence Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SILENCE_COOLDOWN), "Eye Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(EYE_COOLDOWN));
+    }
 }

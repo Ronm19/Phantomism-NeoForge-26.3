@@ -404,4 +404,9 @@ public final class PhantomDragon extends AbstractPhantom {
         this.recentDamageTicks = 0;
         this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).removeModifier(WINGS_KNOCKBACK);
     }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Breath Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(BREATH_COOLDOWN), "Fireball Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(FIREBALL_COOLDOWN), "Shield Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SHIELD_COOLDOWN), "Roar Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(ROAR_COOLDOWN), "Dive Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(DIVE_COOLDOWN), "Fury Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(FURY_COOLDOWN));
+    }
 }

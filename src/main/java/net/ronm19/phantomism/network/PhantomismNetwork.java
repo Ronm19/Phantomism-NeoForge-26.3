@@ -32,6 +32,23 @@ public final class PhantomismNetwork {
     }
 
     public static void registerPayloads(RegisterPayloadHandlersEvent event) {
+        net.ronm19.phantomism.codex.CodexService.register(event);
+        net.ronm19.phantomism.ability.StaffAbilityService.register(event);
+        event.registrar("1").playToServer(RiddenEasterLeapPayload.TYPE, RiddenEasterLeapPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.EasterPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenLeap(player); }
+                }));
+        event.registrar("1").playToServer(RiddenChristmasDivePayload.TYPE, RiddenChristmasDivePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.ChristmasPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenDive(player); }
+                }));
+        event.registrar("1").playToServer(RiddenHalloweenDivePayload.TYPE, RiddenHalloweenDivePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.HalloweenPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenDive(player); }
+                }));
         event.registrar("1").playToServer(RiddenSpectralDismountPayload.TYPE, RiddenSpectralDismountPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> {
                     if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.SpectralPhantom phantom
@@ -57,6 +74,66 @@ public final class PhantomismNetwork {
                 (payload, context) -> context.enqueueWork(() -> {
                     if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.PrimordialPhantom phantom
                             && phantom.getId() == payload.phantomId()) { phantom.activateRiddenDive(player); }
+                }));
+        event.registrar("1").playToServer(RiddenAutumnRushPayload.TYPE, RiddenAutumnRushPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.AutumnPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenRush(player); }
+                }));
+        event.registrar("1").playToServer(RiddenLunarFangPayload.TYPE, RiddenLunarFangPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.LunarPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenFang(player); }
+                }));
+        event.registrar("1").playToServer(RiddenInfernalHellrushPayload.TYPE, RiddenInfernalHellrushPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.InfernalPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenHellrush(player); }
+                }));
+        event.registrar("1").playToServer(RiddenIllagerWrathPayload.TYPE, RiddenIllagerWrathPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.IllagerPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenWrath(player); }
+                }));
+        event.registrar("1").playToServer(RiddenSolarBlitzPayload.TYPE, RiddenSolarBlitzPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.SolarPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenBlitz(player); }
+                }));
+        event.registrar("1").playToServer(RiddenSporeDivePayload.TYPE, RiddenSporeDivePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.SporePhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenDive(player); }
+                }));
+        event.registrar("1").playToServer(RiddenGaleRushPayload.TYPE, RiddenGaleRushPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.GalePhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenRush(player); }
+                }));
+        event.registrar("1").playToServer(RiddenObsidianRamPayload.TYPE, RiddenObsidianRamPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.ObsidianPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenRam(player); }
+                }));
+        event.registrar("1").playToServer(RiddenCrystalCounterPayload.TYPE, RiddenCrystalCounterPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.CrystalPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenCounter(player); }
+                }));
+        event.registrar("1").playToServer(RiddenPlagueDivePayload.TYPE, RiddenPlagueDivePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.PlaguePhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenDive(player); }
+                }));
+        event.registrar("1").playToServer(RiddenShadowDivePayload.TYPE, RiddenShadowDivePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.ShadowPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenDive(player); }
+                }));
+        event.registrar("1").playToServer(RiddenEclipseDivePayload.TYPE, RiddenEclipseDivePayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.EclipsePhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenRend(player); }
                 }));
         event.registrar("1").playToServer(RiddenMirageDivePayload.TYPE, RiddenMirageDivePayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> {
@@ -175,26 +252,12 @@ public final class PhantomismNetwork {
         context.enqueueWork(() -> {
             if (!(context.player() instanceof ServerPlayer player)
                     || !isHoldingStaff(player)
-                    || payload.action() < 0
-                    || payload.action() >= Action.values().length) {
+                    || Action.fromNetworkId(payload.action()) == null) {
                 return;
             }
 
             ServerLevel level = (ServerLevel) player.level();
-            Action action = Action.values()[payload.action()];
-            if (action.name().startsWith("MIRAGE_")) {
-                boolean success = false;
-                if (level.getEntity(payload.recipientId()) instanceof net.ronm19.phantomism.entity.MiragePhantom source && source.isOwnedBy(player) && source.isAlive() && source.distanceToSqr(player) <= 80 * 80) {
-                    success = switch (action) {
-                        case MIRAGE_COPIES -> source.copies(level, false);
-                        case MIRAGE_DOUBLE -> source.phantomDouble(level, player);
-                        case MIRAGE_FIELD -> source.field(level);
-                        case MIRAGE_HALL -> source.hall(level);
-                        default -> false;
-                    };
-                }
-                player.sendOverlayMessage(Component.translatable(success ? "message.phantomism.mirage.success" : "message.phantomism.mirage.unavailable")); return;
-            }
+            Action action = Action.fromNetworkId(payload.action());
             if (action.name().startsWith("GOLEM_")) {
                 boolean success = level.getEntity(payload.recipientId()) instanceof net.ronm19.phantomism.entity.GolemPhantom source && source.excavation().command(player, action);
                 if (!success) { player.sendOverlayMessage(Component.translatable("message.phantomism.golem.unavailable")); } return;
@@ -235,10 +298,10 @@ public final class PhantomismNetwork {
     private static void handleBlockCommand(BlockCommandPayload payload, IPayloadContext context) {
         context.enqueueWork(() -> {
             if (!(context.player() instanceof ServerPlayer player) || !isHoldingStaff(player)
-                    || payload.action() < 0 || payload.action() >= Action.values().length) {
+                    || Action.fromNetworkId(payload.action()) == null) {
                 return;
             }
-            Action action = Action.values()[payload.action()];
+            Action action = Action.fromNetworkId(payload.action());
             if (action != Action.SET_HOME && action != Action.GUARD_POSITION && action != Action.RIFT_ANCHOR && action != Action.RIFT_PORTAL_A && action != Action.RIFT_PORTAL_B && action != Action.GOLEM_PRECISION && action != Action.GOLEM_AREA_A && action != Action.GOLEM_AREA_B && action != Action.GOLEM_CHEST) {
                 return;
             }
@@ -385,28 +448,61 @@ public final class PhantomismNetwork {
             case HARVEST -> phantom.setTask(Task.HARVEST);
             case HUNT -> phantom.setTask(Task.HUNT);
             case COLLECT -> phantom.setTask(Task.COLLECT);
-            case MIRAGE_COPIES, MIRAGE_DOUBLE, MIRAGE_FIELD, MIRAGE_HALL, GOLEM_PRECISION, GOLEM_AREA_A, GOLEM_AREA_B, GOLEM_OBSIDIAN, GOLEM_DELIVER, GOLEM_CANCEL, GOLEM_CHEST, GOLEM_OWNER, GOLEM_STATUS, GOLEM_GUARD, GOLEM_TITAN, GOLEM_RAM_BREAK, RIFT_ANCHOR, RIFT_PORTAL_A, RIFT_PORTAL_B, RIFT_ENTER, RIFT_SEND_ALLY, RIFT_CLOSE, GUARD_POSITION, SET_HOME -> {
+            case GOLEM_PRECISION, GOLEM_AREA_A, GOLEM_AREA_B, GOLEM_OBSIDIAN, GOLEM_DELIVER, GOLEM_CANCEL, GOLEM_CHEST, GOLEM_OWNER, GOLEM_STATUS, GOLEM_RAM_BREAK, RIFT_ANCHOR, RIFT_PORTAL_A, RIFT_PORTAL_B, RIFT_ENTER, RIFT_SEND_ALLY, RIFT_CLOSE, GUARD_POSITION, SET_HOME -> {
             }
         }
     }
 
     public enum Action {
-        FOLLOW,
-        STAY,
-        GUARD,
-        ATTACK_TARGET,
-        RECALL,
-        CLEAR_TARGET,
-        WANDER,
-        GUARD_POSITION,
-        SET_HOME,
-        RETURN_HOME,
-        ACTIVITY_NONE,
-        HARVEST,
-        HUNT,
-        COLLECT,
-        RIFT_ANCHOR, RIFT_PORTAL_A, RIFT_PORTAL_B, RIFT_ENTER, RIFT_SEND_ALLY, RIFT_CLOSE,
-        GOLEM_PRECISION, GOLEM_AREA_A, GOLEM_AREA_B, GOLEM_OBSIDIAN, GOLEM_DELIVER, GOLEM_CANCEL, GOLEM_CHEST, GOLEM_OWNER, GOLEM_STATUS, GOLEM_GUARD, GOLEM_TITAN, GOLEM_RAM_BREAK, MIRAGE_COPIES, MIRAGE_DOUBLE, MIRAGE_FIELD, MIRAGE_HALL
+        FOLLOW(0),
+        STAY(1),
+        GUARD(2),
+        ATTACK_TARGET(3),
+        RECALL(4),
+        CLEAR_TARGET(5),
+        WANDER(6),
+        GUARD_POSITION(7),
+        SET_HOME(8),
+        RETURN_HOME(9),
+        ACTIVITY_NONE(10),
+        HARVEST(11),
+        HUNT(12),
+        COLLECT(13),
+        RIFT_ANCHOR(14),
+        RIFT_PORTAL_A(15),
+        RIFT_PORTAL_B(16),
+        RIFT_ENTER(17),
+        RIFT_SEND_ALLY(18),
+        RIFT_CLOSE(19),
+        GOLEM_PRECISION(20),
+        GOLEM_AREA_A(21),
+        GOLEM_AREA_B(22),
+        GOLEM_OBSIDIAN(23),
+        GOLEM_DELIVER(24),
+        GOLEM_CANCEL(25),
+        GOLEM_CHEST(26),
+        GOLEM_OWNER(27),
+        GOLEM_STATUS(28),
+        GOLEM_RAM_BREAK(31);
+
+        private final int networkId;
+
+        Action(int networkId) {
+            this.networkId = networkId;
+        }
+
+        public int networkId() {
+            return this.networkId;
+        }
+
+        public static Action fromNetworkId(int networkId) {
+            for (Action action : values()) {
+                if (action.networkId == networkId) {
+                    return action;
+                }
+            }
+            return null;
+        }
     }
 
     public record BlockCommandPayload(int action, int recipientId, BlockPos position) implements CustomPacketPayload {
@@ -511,6 +607,82 @@ public final class PhantomismNetwork {
     public record RiddenPrimordialDivePayload(int phantomId) implements CustomPacketPayload {
         public static final Type<RiddenPrimordialDivePayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_primordial_dive"));
         public static final StreamCodec<ByteBuf, RiddenPrimordialDivePayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenPrimordialDivePayload::phantomId, RiddenPrimordialDivePayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenHalloweenDivePayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenHalloweenDivePayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_halloween_dive"));
+        public static final StreamCodec<ByteBuf, RiddenHalloweenDivePayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenHalloweenDivePayload::phantomId, RiddenHalloweenDivePayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenEasterLeapPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenEasterLeapPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_easter_leap"));
+        public static final StreamCodec<ByteBuf, RiddenEasterLeapPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenEasterLeapPayload::phantomId, RiddenEasterLeapPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenChristmasDivePayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenChristmasDivePayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_christmas_dive"));
+        public static final StreamCodec<ByteBuf, RiddenChristmasDivePayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenChristmasDivePayload::phantomId, RiddenChristmasDivePayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+
+    public record RiddenAutumnRushPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenAutumnRushPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_autumn_rush"));
+        public static final StreamCodec<ByteBuf, RiddenAutumnRushPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenAutumnRushPayload::phantomId, RiddenAutumnRushPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenLunarFangPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenLunarFangPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_lunar_fang"));
+        public static final StreamCodec<ByteBuf, RiddenLunarFangPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenLunarFangPayload::phantomId, RiddenLunarFangPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenInfernalHellrushPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenInfernalHellrushPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_infernal_hellrush"));
+        public static final StreamCodec<ByteBuf, RiddenInfernalHellrushPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenInfernalHellrushPayload::phantomId, RiddenInfernalHellrushPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenIllagerWrathPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenIllagerWrathPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_illager_wrath"));
+        public static final StreamCodec<ByteBuf, RiddenIllagerWrathPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenIllagerWrathPayload::phantomId, RiddenIllagerWrathPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenSolarBlitzPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenSolarBlitzPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_solar_blitz"));
+        public static final StreamCodec<ByteBuf, RiddenSolarBlitzPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenSolarBlitzPayload::phantomId, RiddenSolarBlitzPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenSporeDivePayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenSporeDivePayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_spore_dive"));
+        public static final StreamCodec<ByteBuf, RiddenSporeDivePayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenSporeDivePayload::phantomId, RiddenSporeDivePayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenGaleRushPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenGaleRushPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_gale_rush"));
+        public static final StreamCodec<ByteBuf, RiddenGaleRushPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenGaleRushPayload::phantomId, RiddenGaleRushPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenObsidianRamPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenObsidianRamPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_obsidian_ram"));
+        public static final StreamCodec<ByteBuf, RiddenObsidianRamPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenObsidianRamPayload::phantomId, RiddenObsidianRamPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenCrystalCounterPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenCrystalCounterPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_crystal_counter"));
+        public static final StreamCodec<ByteBuf, RiddenCrystalCounterPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenCrystalCounterPayload::phantomId, RiddenCrystalCounterPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenPlagueDivePayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenPlagueDivePayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_plague_dive"));
+        public static final StreamCodec<ByteBuf, RiddenPlagueDivePayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenPlagueDivePayload::phantomId, RiddenPlagueDivePayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenShadowDivePayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenShadowDivePayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_shadow_dive"));
+        public static final StreamCodec<ByteBuf, RiddenShadowDivePayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenShadowDivePayload::phantomId, RiddenShadowDivePayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenEclipseDivePayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenEclipseDivePayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_eclipse_dive"));
+        public static final StreamCodec<ByteBuf, RiddenEclipseDivePayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenEclipseDivePayload::phantomId, RiddenEclipseDivePayload::new);
         @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
     }
     public record RiddenMirageDivePayload(int phantomId) implements CustomPacketPayload {

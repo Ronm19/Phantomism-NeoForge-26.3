@@ -29,6 +29,7 @@ public final class ModMixinConfigProvider implements DataProvider {
         configuration.add("mixins", mixins);
         JsonArray clientMixins = new JsonArray();
         clientMixins.add("client.GuiGraphicsExtractorMixin");
+        clientMixins.add("client.DiscoveryToastMixin");
         configuration.add("client", clientMixins);
         JsonObject injectors = new JsonObject();
         injectors.addProperty("defaultRequire", 1);

@@ -1,0 +1,26 @@
+{
+  "parent": "phantomism:discovery/solar_phantom",
+  "criteria": {
+    "bond": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "bond"
+    ]
+  ],
+  "display": {
+    "icon": {
+      "id": "phantomism:solar_phantom_spawn_egg"
+    },
+    "title": {
+      "translate": "advancements.phantomism.celestial_bond.title"
+    },
+    "description": {
+      "translate": "advancements.phantomism.celestial_bond.description"
+    },
+    "frame": "goal",
+    "announce_to_chat": false
+  }
+}

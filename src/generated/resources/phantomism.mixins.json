@@ -1,6 +1,7 @@
 {
   "client": [
-    "client.GuiGraphicsExtractorMixin"
+    "client.GuiGraphicsExtractorMixin",
+    "client.DiscoveryToastMixin"
   ],
   "compatibilityLevel": "JAVA_25",
   "injectors": {

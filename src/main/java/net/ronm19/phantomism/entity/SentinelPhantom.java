@@ -261,7 +261,7 @@ public final class SentinelPhantom extends AbstractPhantom {
         }
     }
     @Override public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (!isTame() && isAlive() && !player.isSpectator() && player.getItemInHand(hand).is(Items.SHIELD)) {
+        if (!isTame() && isAlive() && !player.isSpectator() && player.getItemInHand(hand).is(preferredTaming().item())) {
             if (!level().isClientSide()) { if (!player.isCreative()) { player.getItemInHand(hand).shrink(1); } tame(player); clearCombatTarget(true); level().broadcastEntityEvent(this, (byte) 7); } return InteractionResult.SUCCESS;
         } return super.mobInteract(player, hand);
     }
@@ -283,4 +283,20 @@ public final class SentinelPhantom extends AbstractPhantom {
     @Override public void remove(RemovalReason reason) { endDefense(); super.remove(reason); }
     @Override protected void addAdditionalSaveData(ValueOutput output) { super.addAdditionalSaveData(output); for (int index = 0; index < cooldowns.length; index++) { output.putInt("SentinelCooldown" + index, cooldowns[index]); } }
     @Override protected void readAdditionalSaveData(ValueInput input) { super.readAdditionalSaveData(input); endDefense(); for (int index = 0; index < cooldowns.length; index++) { cooldowns[index] = Math.clamp(input.getIntOr("SentinelCooldown" + index, 0), 0, index == 6 ? 1800 : 560); } }
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(Items.SHIELD, 1F, 1, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "repulse" -> cooldowns[1];
+            case "cleave" -> cooldowns[2];
+            case "pulse" -> cooldowns[4];
+            case "guard" -> cooldowns[5];
+            case "bastion" -> cooldowns[6];
+            default -> -1;
+        };
+    }
 }

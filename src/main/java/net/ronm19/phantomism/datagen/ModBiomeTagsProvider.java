@@ -48,6 +48,18 @@ public final class ModBiomeTagsProvider extends BiomeTagsProvider {
         this.tag(ModTags.Biomes.BLOOD_PHANTOM_SPAWNS).add(Biomes.BADLANDS).add(Biomes.ERODED_BADLANDS).add(Biomes.WOODED_BADLANDS).add(Biomes.DARK_FOREST);
         this.tag(ModTags.Biomes.VAMPIRE_PHANTOM_SPAWNS).add(Biomes.DARK_FOREST).addTag(net.minecraft.tags.BiomeTags.IS_MOUNTAIN);
         this.tag(ModTags.Biomes.GRAVITY_PHANTOM_SPAWNS).add(Biomes.JAGGED_PEAKS).add(Biomes.STONY_PEAKS).add(Biomes.WINDSWEPT_HILLS);
+        this.tag(ModTags.Biomes.INFERNAL_PHANTOM_SPAWNS).add(Biomes.NETHER_WASTES, Biomes.BASALT_DELTAS);
+        this.tag(ModTags.Biomes.AUTUMN_PRIMARY_SPAWNS).add(Biomes.DAPPLED_FOREST);
+        this.tag(ModTags.Biomes.AUTUMN_PHANTOM_SPAWNS).add(Biomes.DAPPLED_FOREST, Biomes.FOREST, Biomes.FLOWER_FOREST, Biomes.BIRCH_FOREST, Biomes.OLD_GROWTH_BIRCH_FOREST);
+        this.tag(ModTags.Biomes.LUNAR_PHANTOM_SPAWNS).add(Biomes.MEADOW, Biomes.TAIGA, Biomes.WINDSWEPT_HILLS);
+        this.tag(ModTags.Biomes.SOLAR_PHANTOM_SPAWNS).add(Biomes.MEADOW, Biomes.STONY_PEAKS, Biomes.JAGGED_PEAKS, Biomes.FROZEN_PEAKS, Biomes.SAVANNA, Biomes.SAVANNA_PLATEAU, Biomes.WINDSWEPT_SAVANNA, Biomes.BADLANDS, Biomes.WOODED_BADLANDS, Biomes.ERODED_BADLANDS);
+        this.tag(ModTags.Biomes.SPORE_PHANTOM_SPAWNS).add(Biomes.SWAMP, Biomes.MANGROVE_SWAMP, Biomes.MUSHROOM_FIELDS);
+        this.tag(ModTags.Biomes.GALE_PHANTOM_SPAWNS).add(Biomes.WINDSWEPT_HILLS, Biomes.MEADOW, Biomes.JAGGED_PEAKS);
+        this.tag(ModTags.Biomes.OBSIDIAN_PHANTOM_SPAWNS).add(Biomes.BASALT_DELTAS, Biomes.NETHER_WASTES);
+        this.tag(ModTags.Biomes.CRYSTAL_PHANTOM_SPAWNS).add(Biomes.STONY_PEAKS).add(Biomes.WINDSWEPT_HILLS);
+        this.tag(ModTags.Biomes.PLAGUE_PHANTOM_SPAWNS).add(Biomes.SWAMP).add(Biomes.DARK_FOREST);
+        this.tag(ModTags.Biomes.SHADOW_PHANTOM_SPAWNS).add(Biomes.DARK_FOREST).add(Biomes.TAIGA);
+        this.tag(ModTags.Biomes.ECLIPSE_PHANTOM_SPAWNS).add(Biomes.MEADOW).add(Biomes.WINDSWEPT_HILLS);
         this.tag(ModTags.Biomes.MIRAGE_PHANTOM_SPAWNS).add(Biomes.FLOWER_FOREST).add(Biomes.MEADOW).add(Biomes.DARK_FOREST);
         this.tag(ModTags.Biomes.OMEN_PHANTOM_SPAWNS).add(Biomes.DARK_FOREST).add(Biomes.SAVANNA).add(Biomes.SAVANNA_PLATEAU);
         this.tag(ModTags.Biomes.ANCIENT_PHANTOM_SPAWNS).addTag(net.minecraft.tags.BiomeTags.IS_MOUNTAIN).add(Biomes.WINDSWEPT_HILLS).add(Biomes.WINDSWEPT_FOREST).add(Biomes.WINDSWEPT_GRAVELLY_HILLS).add(Biomes.DRIPSTONE_CAVES).add(Biomes.LUSH_CAVES);

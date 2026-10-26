@@ -133,7 +133,9 @@ public final class HuskPhantom extends AbstractPhantom {
         super.travel(input);
     }
 
-    public static boolean lure(Player player) { return player.getMainHandItem().is(Items.RABBIT_FOOT) || player.getOffhandItem().is(Items.RABBIT_FOOT); }
+    private static final net.minecraft.world.item.Item LURE_ITEM = Items.RABBIT_FOOT;
+    public static boolean lure(Player player) { return player.getMainHandItem().is(LURE_ITEM) || player.getOffhandItem().is(LURE_ITEM); }
+    @Override public java.util.Optional<net.minecraft.world.item.Item> preferredLure() { return java.util.Optional.of(LURE_ITEM); }
     private boolean provoked(Player player) { return this.getLastHurtByMob() == player && this.tickCount - this.getLastHurtByMobTimestamp() < 100; }
     @Override protected boolean isSpeciesCombatTarget(LivingEntity target) {
         if (target instanceof Player player) { return !this.isTame() && !player.isCreative() && !player.isSpectator() && (!lure(player) || this.provoked(player)); }
@@ -419,5 +421,15 @@ public final class HuskPhantom extends AbstractPhantom {
         }
         this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).removeModifier(GUARD);
         if (this.guardTicks > 0) { this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).addOrUpdateTransientModifier(new AttributeModifier(GUARD, 0.25D, AttributeModifier.Operation.ADD_VALUE)); }
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "begin_dive" -> this.diveCooldown;
+            case "activate_relentless" -> this.stateCooldown;
+            case "activate_mummified_guard" -> this.guardCooldown;
+            case "activate_dead_land" -> this.landCooldown;
+            default -> -1;
+        };
     }
 }

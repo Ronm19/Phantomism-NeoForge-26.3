@@ -186,6 +186,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
     }
 
     public void setTask(Task task) {
+        net.ronm19.phantomism.entity.ai.PhantomHornRally.cancel(this);
         net.ronm19.phantomism.entity.ai.RoyalTactics.ownerCommand(this, false);
         this.assignments.setTask(task);
         this.entityData.set(DATA_TASK, task.ordinal());
@@ -323,6 +324,13 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
     }
 
     @Override
+    public Entity teleport(net.minecraft.world.level.portal.TeleportTransition transition) {
+        if (!net.ronm19.phantomism.entity.ai.PhantomDimensionTravel.beginTransfer(this)) { return null; }
+        try { return super.teleport(transition); }
+        finally { net.ronm19.phantomism.entity.ai.PhantomDimensionTravel.endTransfer(this); }
+    }
+
+    @Override
     protected void customServerAiStep(ServerLevel level) {
         if (this.tickCount % 20 == 0) {
             this.getConfiguredStats().apply(this);
@@ -337,6 +345,8 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
             this.getNavigation().stop();
             return;
         }
+
+        if (net.ronm19.phantomism.entity.ai.PhantomHornRally.tick(this, level)) { return; }
 
         this.getBrain().tick(level, this);
         this.getBrain().setActiveActivityToFirstValid(List.of(Activity.FIGHT, Activity.IDLE));
@@ -357,11 +367,13 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
                 || rider != this.getControllingPassenger()
                 || !this.isOwnedBy(rider)
                 || this.riddenProjectileAbilityCooldownTicks > 0
+                || !net.ronm19.phantomism.ability.PhantomAbilities.mountedReady(this)
                 || !this.performRiddenProjectileAbility(serverLevel, rider)) {
             return false;
         }
 
         this.riddenProjectileAbilityCooldownTicks = Math.max(1, this.getRiddenProjectileAbilityCooldownTicks());
+        this.staffMountedCooldown(this.riddenProjectileAbilityCooldownTicks);
         return true;
     }
 
@@ -370,13 +382,17 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
         return RIDDEN_PROJECTILE_ABILITY_COOLDOWN_TICKS;
     }
 
+    public int staffAbilityCooldown(String ability) { return -1; }
+
+    protected void staffMountedCooldown(int ticks) {}
+
     protected boolean performRiddenProjectileAbility(ServerLevel serverLevel, Player rider) {
         return false;
     }
 
     @Override
     public LivingEntity getTarget() {
-        return this.getTargetFromBrain();
+        return net.ronm19.phantomism.entity.ai.PhantomHornRally.returning(this) ? null : this.getTargetFromBrain();
     }
 
     @Override
@@ -389,7 +405,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
 
     @Override
     public void setTarget(LivingEntity target) {
-        if (target != null && !this.isSpeciesCombatTarget(target)) {
+        if (target != null && (net.ronm19.phantomism.entity.ai.PhantomHornRally.returning(this) || !this.isSpeciesCombatTarget(target))) {
             target = null;
         }
         super.setTarget(target);
@@ -575,7 +591,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
 
         float flap = Mth.cos((this.getUniqueFlapTickOffset() + this.tickCount) * 7.448451F * Mth.DEG_TO_RAD + Mth.PI);
         float nextFlap = Mth.cos((this.getUniqueFlapTickOffset() + this.tickCount + 1) * 7.448451F * Mth.DEG_TO_RAD + Mth.PI);
-        if (flap > 0.0F && nextFlap <= 0.0F) {
+        if (flap > 0.0F && nextFlap <= 0.0F && this.shouldPlayWingSound()) {
             this.level().playLocalSound(
                     this,
                     SoundEvents.PHANTOM_FLAP,
@@ -590,6 +606,8 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
     public SoundSource getSoundSource() {
         return SoundSource.HOSTILE;
     }
+
+    protected boolean shouldPlayWingSound() { return true; }
 
     @Override
     protected SoundEvent getAmbientSound() {
@@ -651,6 +669,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
     }
 
     public void setOrder(Order order) {
+        net.ronm19.phantomism.entity.ai.PhantomHornRally.cancel(this);
         net.ronm19.phantomism.entity.ai.RoyalTactics.ownerCommand(this, order == Order.FOLLOW);
         this.order = order;
         this.entityData.set(DATA_ORDER, order.ordinal());
@@ -673,6 +692,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
             return;
         }
 
+        net.ronm19.phantomism.entity.ai.PhantomHornRally.cancel(this);
         if (!net.ronm19.phantomism.entity.ai.PhantomDuels.begin(this, target)) { return; }
         net.ronm19.phantomism.entity.ai.RoyalTactics.ownerCommand(this, false);
         this.assignments.stopAreaCombat();
@@ -716,7 +736,15 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
         this.moveControl.setWantedPosition(this.getX(), this.getY(), this.getZ(), 0.0D);
     }
 
+    public final void interruptCombatForRecall() {
+        var previous = new java.util.HashMap<>(this.suppressedTargets);
+        this.clearCombatTarget(true);
+        this.suppressedTargets.clear();
+        this.suppressedTargets.putAll(previous);
+    }
+
     public boolean isTargetSuppressed(LivingEntity target) {
+        if (net.ronm19.phantomism.entity.ai.PhantomHornRally.returning(this)) { return true; }
         Long expiresAt = this.suppressedTargets.get(target.getUUID());
         if (expiresAt == null) {
             return false;
@@ -1434,5 +1462,24 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
             }
             phantom.tickCombat(level, target);
         }
+    }
+
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return net.ronm19.phantomism.codex.TamingProfile.staffOnly();
+    }
+
+    public java.util.List<String> codexCooldowns() {
+        if (this instanceof net.ronm19.phantomism.entity.ai.CooldownDiscipline.Participant participant) {
+            return participant.temporalCooldowns().stream().map(slot -> slot.id().getPath().replace('_', ' ') + ": " + net.ronm19.phantomism.codex.CodexCatalog.seconds(slot.duration())).toList();
+        }
+        return java.util.List.of();
+    }
+
+    public int codexMountedCooldown() {
+        return getRiddenProjectileAbilityCooldownTicks();
+    }
+
+    public java.util.Optional<net.minecraft.world.item.Item> preferredLure() {
+        return java.util.Optional.empty();
     }
 }

@@ -15,6 +15,7 @@ public final class ModModelProvider extends ModelProvider {
 
     @Override
     protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+        itemModels.generateFlatItem(PhantomismContent.PHANTOM_CODEX.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.PHANTOM_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
         itemModels.generateFlatItem(PhantomismContent.BLACK_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.FIRE_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
@@ -48,6 +49,21 @@ public final class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(PhantomismContent.VOID_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.DARK_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.PHANTOM_KING_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.AUTUMN_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.HALLOWEEN_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.EASTER_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.CHRISTMAS_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.LUNAR_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.INFERNAL_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.ILLAGER_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.SOLAR_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.SPORE_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.GALE_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.OBSIDIAN_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.CRYSTAL_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.PLAGUE_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.SHADOW_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.ECLIPSE_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.MIRAGE_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.GOLEM_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.PRIMORDIAL_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);

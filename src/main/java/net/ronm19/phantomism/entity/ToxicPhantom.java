@@ -440,4 +440,9 @@ public final class ToxicPhantom extends AbstractPhantom {
         this.rainTicks = this.isBaby() || !this.validCenter(this.rainCenter, 12.0D) ? 0 : Math.clamp(input.getIntOr("AcidRainTicks", 0), 0, RAIN_DURATION);
         this.entityData.set(RAINING, this.rainTicks > 0);
     }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Projectile Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(PROJECTILE_COOLDOWN), "Pulse Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(PULSE_COOLDOWN), "Dive Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(DIVE_COOLDOWN), "Area Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(AREA_COOLDOWN), "Shield Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SHIELD_COOLDOWN), "Rain Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(RAIN_COOLDOWN));
+    }
 }

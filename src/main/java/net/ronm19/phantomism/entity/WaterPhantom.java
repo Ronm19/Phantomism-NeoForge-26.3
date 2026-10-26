@@ -450,4 +450,9 @@ public final class WaterPhantom extends AbstractPhantom {
             this.mob.setDeltaMovement(movement.add(desired.subtract(movement).scale(0.2D)));
         }
     }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Projectile Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(PROJECTILE_COOLDOWN), "Shield Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SHIELD_COOLDOWN), "Hydro Pump Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(HYDRO_PUMP_COOLDOWN));
+    }
 }

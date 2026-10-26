@@ -30,7 +30,7 @@ public final class VfxManager {
         if (world != client.level) { for (VfxEffect effect : ACTIVE) { effect.remove(); } ACTIVE.clear(); world = client.level; }
         ACTIVE.removeIf(effect -> !effect.isAlive());
         if (world == null || client.player == null || !world.dimension().toString().equals(packet.dimension())) { return; }
-        if (packet.effect().equals(CinematicVfx.CANCEL)) { ACTIVE.removeIf(effect -> { if (effect.packet.caster().equals(packet.caster()) && effect.packet.session().equals(packet.session())) { effect.remove(); return true; } return false; }); return; }
+        if (packet.effect().equals(CinematicVfx.CANCEL)) { ACTIVE.removeIf(effect -> { if (effect.packet.caster().equals(packet.caster()) && effect.packet.session().equals(packet.session()) || effect.packet.effect().equals(net.ronm19.phantomism.vfx.SolarVfx.ECLIPSE) && effect.packet.attached().equals(packet.caster())) { effect.remove(); return true; } return false; }); return; }
         if (packet.effect().equals(net.ronm19.phantomism.vfx.OmenVfx.CLEAR_MARK)) {
             ACTIVE.removeIf(effect -> { if (effect.packet.caster().equals(packet.caster()) && effect.packet.session().equals(packet.session()) && effect.packet.effect().equals(net.ronm19.phantomism.vfx.OmenVfx.MARK)) { effect.remove(); return true; } return false; }); return;
         }

@@ -26,6 +26,7 @@ import net.ronm19.phantomism.Config;
 import net.ronm19.phantomism.Phantomism;
 import net.ronm19.phantomism.entity.ai.*;
 import net.ronm19.phantomism.entity.spawn.KingEncounterSpawner;
+import net.ronm19.phantomism.util.ModTags;
 import net.ronm19.phantomism.vfx.RoyalVfx;
 
 public final class PhantomKing extends AbstractPhantom implements CooldownDiscipline.Participant {
@@ -50,14 +51,20 @@ public final class PhantomKing extends AbstractPhantom implements CooldownDiscip
                 .add(Attributes.MOVEMENT_SPEED, .25D).add(Attributes.FLYING_SPEED, .45D).add(Attributes.SCALE, 2);
     }
     public static boolean checkSpawnRules(EntityType<PhantomKing> type, ServerLevelAccessor accessor, EntitySpawnReason reason, BlockPos position, RandomSource random) {
-        return KingEncounterSpawner.habitat(accessor.getLevel(), position) && accessor.getFluidState(position).isEmpty()
+        AABB clearance = spawnBox(position);
+        return accessor.getLevel().dimension() == Level.OVERWORLD && accessor.getBiome(position).is(ModTags.Biomes.PHANTOM_KING_SPAWNS)
+                && accessor.hasChunksAt(BlockPos.containing(clearance.minX - 1, clearance.minY - 1, clearance.minZ - 1), BlockPos.containing(clearance.maxX + 1, clearance.maxY + 1, clearance.maxZ + 1))
+                && accessor.getFluidState(position).isEmpty()
                 && accessor.getBlockState(position).getCollisionShape(accessor, position).isEmpty()
-                && accessor.getLevel().noBlockCollision(null, spawnBox(position));
+                && accessor.noBlockCollision(null, clearance);
     }
     public static AABB spawnBox(BlockPos position) { return new AABB(position.getX() - .9D, position.getY(), position.getZ() - .9D, position.getX() + 1.9D, position.getY() + 1.8D, position.getZ() + 1.9D); }
     @Override protected Config.PhantomStats getConfiguredStats() { return Config.PHANTOM_KING_STATS; }
     @Override public Identifier getPhantomAnimationResource() { return ANIMATIONS; }
     @Override public int getMaxSpawnClusterSize() { return 1; }
+    @Override protected double getFlightAltitudeOffset(double offset) { return RoyalCruise.idle(this) ? offset + 2 : super.getFlightAltitudeOffset(offset); }
+    @Override protected boolean isSuitableIdleFlightPosition(Vec3 destination, AABB clearance) { return super.isSuitableIdleFlightPosition(destination, clearance) && RoyalCruise.clearBelow(this, destination); }
+    @Override protected void customServerAiStep(ServerLevel level) { super.customServerAiStep(level); RoyalCruise.tick(this, level); }
     @Override protected int getMeleeAttackCooldownTicks() { return 32; }
     @Override protected boolean preservesCombatTargetWhileRidden() { return true; }
     @Override protected void defineSynchedData(SynchedEntityData.Builder builder) { super.defineSynchedData(builder); builder.define(MOMENTUM, (byte) 0); builder.define(DOMINION, false); builder.define(RAMMING, false); }
@@ -101,7 +108,7 @@ public final class PhantomKing extends AbstractPhantom implements CooldownDiscip
         return explicit || target instanceof Enemy && !(target instanceof NeutralMob) && target.getType() != EntityTypes.PIGLIN;
     }
     public boolean validTarget(LivingEntity target) { return isSpeciesCombatTarget(target) && getAssignments().permitsDefensivePursuit(target); }
-    @Override protected boolean shouldHuntAutomatically(LivingEntity target, ServerLevel level) { return enabled() && validTarget(target); }
+    @Override protected boolean shouldHuntAutomatically(LivingEntity target, ServerLevel level) { return false; }
     @Override protected double getAutomaticTargetPriority(LivingEntity target) { return (judges(target) ? -300 : 0) - Math.min(100, target.getMaxHealth()) + distanceToSqr(target) * .02D; }
     @Override public void setCombatTarget(LivingEntity target) { if (!safeEnemy(target) || !PhantomDuels.begin(this, target)) { return; } orderedId = target.getUUID(); super.setCombatTarget(target); }
     public boolean line(Vec3 start, Vec3 end) { return Double.isFinite(start.lengthSqr()) && Double.isFinite(end.lengthSqr()) && isLoadedFlightBox(new AABB(start, end).inflate(.04D)) && level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS; }
@@ -293,7 +300,7 @@ public final class PhantomKing extends AbstractPhantom implements CooldownDiscip
     public void action(String clip, int duration) { actionTicks = Math.max(actionTicks, duration); visualStarted(); triggerAnim("royal", clip); }
     @Override public void registerControllers(AnimatableManager.ControllerRegistrar registrar) { super.registerControllers(registrar); var controller = new AnimationController<PhantomKing>("royal", 2, state -> actionTicks > 0 ? PlayState.CONTINUE : PlayState.STOP); for (String clip : CLIPS) { controller.triggerableAnim(clip, RawAnimation.begin().thenPlay("animation.king." + clip)); } registrar.add(controller.additiveAnimations()); }
     @Override public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (!isTame() && isAlive() && !player.isSpectator() && player.getItemInHand(hand).is(Items.ENCHANTED_GOLDEN_APPLE)) {
+        if (!isTame() && isAlive() && !player.isSpectator() && player.getItemInHand(hand).is(preferredTaming().item())) {
             if (!level().isClientSide()) { if (!player.isCreative()) { player.getItemInHand(hand).shrink(1); } tame(player); clearCombatTarget(true); warnedPlayer = null; warningTicks = 0; level().broadcastEntityEvent(this, (byte) 7); } return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);
@@ -309,4 +316,25 @@ public final class PhantomKing extends AbstractPhantom implements CooldownDiscip
     @Override protected void addAdditionalSaveData(ValueOutput output) { super.addAdditionalSaveData(output); output.putInt("RoyalMomentum", momentum()); output.putInt("RoyalIdle", idleTicks); for (int index = 0; index < cooldowns.length; index++) { output.putInt("RoyalCooldown" + index, cooldowns[index]); } }
     @Override protected void readAdditionalSaveData(ValueInput input) { super.readAdditionalSaveData(input); endCombat(); momentum(input.getIntOr("RoyalMomentum", 0)); idleTicks = Math.clamp(input.getIntOr("RoyalIdle", 0), 0, 280); for (int index = 0; index < cooldowns.length; index++) { cooldowns[index] = Math.clamp(input.getIntOr("RoyalCooldown" + index, 0), 0, INTERVALS[index]); } warnedPlayer = null; warningTicks = 0; territory = null; }
     @Override public List<CooldownDiscipline.Slot> temporalCooldowns() { List<CooldownDiscipline.Slot> slots = new ArrayList<>(); for (int index = 0; index < 7; index++) { final int slot = index; slots.add(CooldownDiscipline.Slot.normal("royal_" + CLIPS[index], INTERVALS[index], () -> cooldowns[slot], value -> cooldowns[slot] = value)); } return List.copyOf(slots); }
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(Items.ENCHANTED_GOLDEN_APPLE, 1F, 1, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Ram: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[0]), "Judgment: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[1]), "Strike: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[2]), "Roar: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[3]), "Command: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[4]), "Guard: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[5]), "Intercept: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[6]), "Dominion: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[7]));
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "ram" -> cooldowns[0];
+            case "judgment" -> cooldowns[1];
+            case "roar" -> cooldowns[3];
+            case "command" -> cooldowns[4];
+            case "dominion" -> cooldowns[7];
+            default -> -1;
+        };
+    }
 }

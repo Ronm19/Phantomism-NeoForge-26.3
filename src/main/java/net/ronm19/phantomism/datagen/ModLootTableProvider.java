@@ -10,6 +10,7 @@ public final class ModLootTableProvider extends LootTableProvider {
     public ModLootTableProvider() {
         super(Set.of(), List.of(
                 new SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK),
+                new SubProviderEntry(ModCodexLootProvider::new, LootContextParamSets.CHEST),
                 new SubProviderEntry(ModEntityLootTableProvider::new, LootContextParamSets.ENTITY)));
     }
 }

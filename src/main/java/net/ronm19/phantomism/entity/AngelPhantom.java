@@ -299,7 +299,7 @@ public final class AngelPhantom extends AbstractPhantom implements CooldownDisci
         for (String clip : CLIPS) { controller.triggerableAnim(clip, RawAnimation.begin().thenPlay("animation.angel." + clip)); } controllers.add(controller);
     }
     @Override public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (isAlive() && !isTame() && !player.isSpectator() && player.getItemInHand(hand).is(Items.GOLDEN_APPLE)) {
+        if (isAlive() && !isTame() && !player.isSpectator() && player.getItemInHand(hand).is(preferredTaming().item())) {
             if (!level().isClientSide()) { if (!player.isCreative()) { player.getItemInHand(hand).shrink(1); } tame(player); clearCombatTarget(true); level().broadcastEntityEvent(this, (byte) 7); } return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);
@@ -315,4 +315,25 @@ public final class AngelPhantom extends AbstractPhantom implements CooldownDisci
     @Override protected void addAdditionalSaveData(ValueOutput output) { super.addAdditionalSaveData(output); output.putInt("AngelMelee", meleeTicks); for (int index = 0; index < cooldowns.length; index++) { output.putInt("AngelCooldown" + index, cooldowns[index]); } }
     @Override protected void readAdditionalSaveData(ValueInput input) { super.readAdditionalSaveData(input); endSupport(); session = UUID.randomUUID(); meleeTicks = Math.clamp(input.getIntOr("AngelMelee", 0), 0, 40); for (int index = 0; index < cooldowns.length; index++) { cooldowns[index] = Math.clamp(input.getIntOr("AngelCooldown" + index, 0), 0, INTERVALS[index]); } }
     @Override public List<CooldownDiscipline.Slot> temporalCooldowns() { var result = new ArrayList<CooldownDiscipline.Slot>(); for (int index = 0; index < 7; index++) { final int slot = index; result.add(CooldownDiscipline.Slot.normal("angel_" + CLIPS[index], INTERVALS[index], () -> cooldowns[slot], value -> cooldowns[slot] = value)); } return List.copyOf(result); }
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(Items.GOLDEN_APPLE, 1F, 1, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Touch: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[0]), "Blessing: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[1]), "Trail: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[2]), "Smite: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[3]), "Dive: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[4]), "Shield: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[5]), "Intercept: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[6]), "Eye: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[7]));
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "heal_trail" -> cooldowns[2];
+            case "smite" -> cooldowns[3];
+            case "dive" -> cooldowns[4];
+            case "eye" -> cooldowns[7];
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { cooldowns[3] = ticks; }
 }

@@ -46,6 +46,25 @@ base {
 // Mojang ships Java 25 to end users in 26.3, so mods should target Java 25.
 java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
+sourceSets {
+    textureReview {
+        compileClasspath += sourceSets.main.output + configurations.compileClasspath
+        runtimeClasspath += output + compileClasspath
+    }
+}
+
+def textureReviewJar = tasks.register('textureReviewJar', Jar) {
+    dependsOn tasks.named('textureReviewClasses')
+    from sourceSets.textureReview.output
+    archiveFileName = 'phantomism-texture-review-v4-dev.jar'
+}
+
+tasks.register('installTextureReview', Copy) {
+    dependsOn textureReviewJar
+    from textureReviewJar.flatMap { it.archiveFile }
+    into layout.projectDirectory.dir('run/mods')
+}
+
 neoForge {
     // Specify the version of NeoForge to use.
     version = project.neo_version

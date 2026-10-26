@@ -323,10 +323,10 @@ public final class MiragePhantom extends AbstractPhantom implements CooldownDisc
         for (String clip : CLIPS) { controller.triggerableAnim(clip, RawAnimation.begin().thenPlay("animation.mirage." + clip)); } controllers.add(controller);
     }
     @Override public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (!isTame() && isAlive() && !player.isSpectator() && player.getItemInHand(hand).is(Items.GLOW_INK_SAC)) {
+        if (!isTame() && isAlive() && !player.isSpectator() && player.getItemInHand(hand).is(preferredTaming().item())) {
             if (!level().isClientSide()) {
                 if (!player.isCreative()) { player.getItemInHand(hand).shrink(1); }
-                if (++tameAttempts >= 2 || getRandom().nextFloat() < .75F) { tame(player); clearCombatTarget(true); setOrder(Order.FOLLOW); level().broadcastEntityEvent(this, (byte) 7); }
+                if (++tameAttempts >= preferredTaming().guaranteedAttempt() || getRandom().nextFloat() < preferredTaming().chance()) { tame(player); clearCombatTarget(true); setOrder(Order.FOLLOW); level().broadcastEntityEvent(this, (byte) 7); }
                 else { level().broadcastEntityEvent(this, (byte) 6); }
             }
             return InteractionResult.SUCCESS;
@@ -358,4 +358,27 @@ public final class MiragePhantom extends AbstractPhantom implements CooldownDisc
         for (int index = 0; index < 7; index++) { final int slot = index; slots.add(CooldownDiscipline.Slot.normal("mirage_" + CLIPS[index], INTERVALS[index], () -> cooldowns[slot], value -> cooldowns[slot] = value)); }
         return List.copyOf(slots);
     }
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(Items.GLOW_INK_SAC, .75F, 2, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Copies: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[0]), "Double: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[1]), "Bolt: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[2]), "Strike: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[3]), "Rescue: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[4]), "Field: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[5]), "Guard: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[6]), "Hall: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[7]));
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "copies" -> cooldowns[0];
+            case "phantom_double" -> cooldowns[1];
+            case "bolt" -> cooldowns[2];
+            case "illusory_strike" -> cooldowns[3];
+            case "field" -> cooldowns[5];
+            case "hall" -> cooldowns[7];
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { cooldowns[2] = ticks; }
 }

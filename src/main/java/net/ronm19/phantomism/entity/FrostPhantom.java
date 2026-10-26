@@ -391,4 +391,9 @@ public final class FrostPhantom extends AbstractPhantom {
         this.iceStormCooldown = Math.max(0, input.getIntOr("IceStormCooldown", 0));
         this.iceStormTicks = Math.min(ICE_STORM_DURATION_TICKS, Math.max(0, input.getIntOr("IceStormTicks", 0)));
     }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Ice Projectile Cooldown Ticks: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(ICE_PROJECTILE_COOLDOWN_TICKS), "Frost Bite Cooldown Ticks: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(FROST_BITE_COOLDOWN_TICKS), "Ice Shield Cooldown Ticks: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(ICE_SHIELD_COOLDOWN_TICKS), "Ice Storm Cooldown Ticks: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(ICE_STORM_COOLDOWN_TICKS));
+    }
 }

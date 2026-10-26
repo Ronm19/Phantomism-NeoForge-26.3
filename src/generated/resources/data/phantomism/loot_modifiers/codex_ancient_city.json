@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:add_table",
+  "condition": {
+    "type": "neoforge:loot_table_id",
+    "loot_table_id": "minecraft:chests/ancient_city"
+  },
+  "priority": 0,
+  "table": "phantomism:chests/codex_ancient_city"
+}

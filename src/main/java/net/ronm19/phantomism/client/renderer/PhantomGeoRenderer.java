@@ -42,9 +42,26 @@ public class PhantomGeoRenderer<T extends AbstractPhantom> extends GeoEntityRend
 
     @Override
     public void addRenderData(T entity, @Nullable Void ignored, PhantomGeoRenderState state, float partialTick) {
+        state.codexPortrait = false;
         state.accessories = this.accessories;
         state.golemAngry = false;
         state.mirageCombat = false;
+        state.eclipseVisual = -1;
+        state.shadowVisual = -1;
+        state.plagueVisual = -1;
+        state.autumnVisual = -1;
+        state.halloweenVisual = -1;
+        state.lunarCharge = -1;
+        state.infernalHeat = -1;
+        state.illagerVisual = -1;
+        state.solarVisual = -1;
+        state.sporeVisual = -1;
+        state.galeVisual = -1;
+        state.galeVariant = 0;
+        state.obsidianVisual = -1;
+        state.obsidianVariant = 0;
+        state.crystalVisual = -1;
+        state.crystalVariant = 0;
         state.mounted = entity.isVehicle();
         state.zombieReviving = entity instanceof net.ronm19.phantomism.entity.ZombiePhantom zombie && zombie.isReviving();
         state.skyKnightActive = entity instanceof BlackPhantom black && black.isSkyKnightActive();
@@ -117,7 +134,10 @@ public class PhantomGeoRenderer<T extends AbstractPhantom> extends GeoEntityRend
         if (pass.renderState().mounted) {
             snapshots.ifPresent("root", snapshot -> snapshot.setRotX(0.0F).setRotZ(0.0F));
         }
-        PhantomismAccessoryVisibility flags = pass.renderState().accessories;
+        applyVisibility(snapshots, pass.renderState().accessories, pass.renderState().codexPortrait);
+    }
+
+    public static void applyVisibility(BoneSnapshots snapshots, PhantomismAccessoryVisibility flags, boolean portrait) {
         visibility(snapshots, "mushrooms", flags.mushrooms());
         visibility(snapshots, "spikes", flags.spikes());
         visibility(snapshots, "tail_spikes", flags.spikes());
@@ -128,6 +148,18 @@ public class PhantomGeoRenderer<T extends AbstractPhantom> extends GeoEntityRend
         visibility(snapshots, "left_wing", flags.wings());
         visibility(snapshots, "right_wing", flags.wings());
         visibility(snapshots, "tail", flags.tail());
+        snapshots.ifPresent("body", snapshot -> snapshot.skipRender(portrait));
+        snapshots.ifPresent("mushrooms", snapshot -> {
+            boolean headMounted = portrait && flags.mushrooms();
+            float scale = headMounted ? .4F : 1F;
+            snapshot.setScale(scale, scale, scale).setTranslation(0, headMounted ? -.05F : 0, headMounted ? -9.2F : 0);
+        });
+        if (portrait) {
+            visibility(snapshots, "left_wing", false);
+            visibility(snapshots, "right_wing", false);
+            visibility(snapshots, "tail", false);
+            visibility(snapshots, "spikes", false);
+        }
     }
 
     private static void visibility(BoneSnapshots snapshots, String bone, boolean visible) {
@@ -138,6 +170,11 @@ public class PhantomGeoRenderer<T extends AbstractPhantom> extends GeoEntityRend
         private final Identifier adult;
         private final Identifier baby;
 
+        @Override
+        public void submitRenderTask(RenderPassInfo<PhantomGeoRenderState> pass, net.minecraft.client.renderer.SubmitNodeCollector collector) {
+            if (pass.renderState().halloweenVisual != 0) { super.submitRenderTask(pass, collector); }
+        }
+
         private EyesLayer(PhantomGeoRenderer<T> renderer, String species) {
             super(renderer, Identifier.fromNamespaceAndPath("phantomism", "textures/entity/" + species + "_eyes.png"), RenderTypes::eyes);
             this.adult = Identifier.fromNamespaceAndPath("phantomism", "textures/entity/" + species + "_eyes.png");
@@ -146,6 +183,18 @@ public class PhantomGeoRenderer<T extends AbstractPhantom> extends GeoEntityRend
 
         @Override
         protected Identifier getTextureResource(PhantomGeoRenderState state) {
+            if (state.autumnVisual >= 0) { return AutumnPhantomRenderer.texture(state.isBaby, state.autumnVisual, true); }
+            if (state.lunarCharge >= 0) { return LunarPhantomRenderer.texture(state.isBaby, state.lunarCharge, true); }
+            if (state.infernalHeat >= 0) { return InfernalPhantomRenderer.texture(state.isBaby, state.infernalHeat, true); }
+            if (state.illagerVisual >= 0) { return IllagerPhantomRenderer.texture(state.isBaby, state.illagerVisual, true); }
+            if (state.solarVisual >= 0) { return SolarPhantomRenderer.texture(state.isBaby, state.solarVisual, true); }
+            if (state.sporeVisual >= 0) { return SporePhantomRenderer.texture(state.isBaby, state.sporeVisual, true); }
+            if (state.galeVisual >= 0) { return GalePhantomRenderer.texture(state.isBaby, state.galeVariant, state.galeVisual, true); }
+            if (state.obsidianVisual >= 0) { return ObsidianPhantomRenderer.texture(state.isBaby, state.obsidianVariant, state.obsidianVisual, true); }
+            if (state.crystalVisual >= 0) { return CrystalPhantomRenderer.texture(state.isBaby, state.crystalVariant, state.crystalVisual, true); }
+            if (state.plagueVisual >= 0) { return PlaguePhantomRenderer.texture(state.isBaby, state.plagueVisual, true); }
+            if (state.shadowVisual >= 0) { return ShadowPhantomRenderer.texture(state.isBaby, state.shadowVisual, true); }
+            if (state.eclipseVisual >= 0) { return EclipsePhantomRenderer.texture(state.isBaby, state.eclipseVisual, true); }
             if (state.mirageCombat) { return state.isBaby ? MiragePhantomRenderer.BABY_COMBAT_EYES : MiragePhantomRenderer.COMBAT_EYES; }
             if (state.golemAngry) { return state.isBaby ? GolemPhantomRenderer.BABY_COMBAT_EYES : GolemPhantomRenderer.COMBAT_EYES; }
             if (state.zombieReviving) { return state.isBaby ? ZombiePhantomRenderer.BABY_REVIVAL_EYES : ZombiePhantomRenderer.REVIVAL_EYES; }

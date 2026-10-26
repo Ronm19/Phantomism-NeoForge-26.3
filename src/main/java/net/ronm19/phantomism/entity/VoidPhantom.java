@@ -90,7 +90,7 @@ public final class VoidPhantom extends AbstractPhantom implements CooldownDiscip
     }
     public void action(String clip,int ticks){actionTicks=ticks;visualStarted();triggerAnim("void",clip);}
     @Override public void registerControllers(AnimatableManager.ControllerRegistrar controllers){super.registerControllers(controllers);var controller=new AnimationController<VoidPhantom>("void",3,state->actionTicks>0?PlayState.CONTINUE:PlayState.STOP);for(String clip:CLIPS){controller.triggerableAnim(clip,RawAnimation.begin().thenPlay("animation.void."+clip));}controllers.add(controller);}
-    @Override public InteractionResult mobInteract(Player player,InteractionHand hand){if(isAlive()&&!isTame()&&!player.isSpectator()&&player.getItemInHand(hand).is(net.minecraft.world.item.Items.END_CRYSTAL)){if(!level().isClientSide()){if(!player.isCreative()){player.getItemInHand(hand).shrink(1);}tame(player);clearCombatTarget(true);level().broadcastEntityEvent(this,(byte)7);}return InteractionResult.SUCCESS;}return super.mobInteract(player,hand);}
+    @Override public InteractionResult mobInteract(Player player,InteractionHand hand){if(isAlive()&&!isTame()&&!player.isSpectator()&&player.getItemInHand(hand).is(preferredTaming().item())){if(!level().isClientSide()){if(!player.isCreative()){player.getItemInHand(hand).shrink(1);}tame(player);clearCombatTarget(true);level().broadcastEntityEvent(this,(byte)7);}return InteractionResult.SUCCESS;}return super.mobInteract(player,hand);}
     public void endVoid(){if(sessionOpen&&level() instanceof ServerLevel){VoidVfx.cancel(this);session=UUID.randomUUID();sessionOpen=false;}VoidSuppression.release(this);rescue.clearAnchor();orderedId=null;shieldTarget=null;sealTarget=null;shieldTicks=0;horizonTicks=0;actionTicks=0;horizonCenter=null;}
     @Override public void clearCombatTarget(boolean suppress){super.clearCombatTarget(suppress);if(suppress&&cooldowns!=null){endVoid();}}
     @Override public void setOrder(Order order){super.setOrder(order);if(cooldowns!=null&&(order==Order.STAY||order==Order.RETURN_HOME)){endVoid();}}
@@ -99,4 +99,21 @@ public final class VoidPhantom extends AbstractPhantom implements CooldownDiscip
     @Override protected void addAdditionalSaveData(ValueOutput output){super.addAdditionalSaveData(output);output.putInt("VoidMelee",meleeTicks);for(int index=0;index<cooldowns.length;index++){output.putInt("VoidCooldown"+index,cooldowns[index]);}}
     @Override protected void readAdditionalSaveData(ValueInput input){super.readAdditionalSaveData(input);endVoid();rescue.reset();session=UUID.randomUUID();meleeTicks=Math.clamp(input.getIntOr("VoidMelee",0),0,36);for(int index=0;index<cooldowns.length;index++){cooldowns[index]=Math.clamp(input.getIntOr("VoidCooldown"+index,0),0,4800);}}
     @Override public List<CooldownDiscipline.Slot> temporalCooldowns(){var slots=new ArrayList<CooldownDiscipline.Slot>();for(int index:new int[]{0,1,3,4,5,6}){final int slot=index;slots.add(CooldownDiscipline.Slot.normal("void_"+CLIPS[index],interval(index),()->cooldowns[slot],value->cooldowns[slot]=value));}return List.copyOf(slots);}
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(net.minecraft.world.item.Items.END_CRYSTAL, 1F, 1, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "bolt" -> cooldowns[0];
+            case "grasp" -> cooldowns[1];
+            case "anti_caster_pulse" -> cooldowns[3];
+            case "void_step" -> cooldowns[5];
+            case "null_horizon" -> cooldowns[7];
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { cooldowns[0] = ticks; }
 }

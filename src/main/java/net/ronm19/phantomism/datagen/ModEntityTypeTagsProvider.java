@@ -61,7 +61,14 @@ public final class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 .add(PhantomismContent.DARK_PHANTOM.key())
                 .add(PhantomismContent.PHANTOM_KING.key())
                 .add(PhantomismContent.GOLEM_PHANTOM.key())
-                .add(PhantomismContent.MIRAGE_PHANTOM.key());
+                .add(PhantomismContent.MIRAGE_PHANTOM.key())
+                .add(PhantomismContent.ECLIPSE_PHANTOM.key())
+                .add(PhantomismContent.SHADOW_PHANTOM.key())
+                .add(PhantomismContent.PLAGUE_PHANTOM.key())
+                .add(PhantomismContent.CRYSTAL_PHANTOM.key())
+                .add(PhantomismContent.OBSIDIAN_PHANTOM.key())
+                .add(PhantomismContent.GALE_PHANTOM.key())
+                .add(PhantomismContent.SPORE_PHANTOM.key()).add(PhantomismContent.SOLAR_PHANTOM.key()).add(PhantomismContent.ILLAGER_PHANTOM.key()).add(PhantomismContent.INFERNAL_PHANTOM.key()).add(PhantomismContent.LUNAR_PHANTOM.key()).add(PhantomismContent.AUTUMN_PHANTOM.key()).add(PhantomismContent.HALLOWEEN_PHANTOM.key()).add(PhantomismContent.CHRISTMAS_PHANTOM.key()).add(PhantomismContent.EASTER_PHANTOM.key());
         this.tag(ModTags.EntityTypes.ZOMBIE_PRESENCE_ELIGIBLE)
                 .add(EntityTypeIds.ZOMBIE).add(EntityTypeIds.HUSK).add(EntityTypeIds.DROWNED).add(EntityTypeIds.ZOMBIE_VILLAGER);
         this.tag(EntityTypeTags.UNDEAD).add(PhantomismContent.ZOMBIE_PHANTOM.key());

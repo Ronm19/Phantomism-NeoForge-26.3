@@ -28,6 +28,15 @@ public final class MirageDecoyRenderer extends GeoEntityRenderer<MirageDecoy, Mi
     public static final class State extends PhantomismRenderState implements GeoRenderState {
         public String species = "mirage_phantom";
         public boolean baby, combat;
+        public int eclipseVisual;
+        public int shadowVisual;
+        public int plagueVisual;
+        public int galeVisual;
+        public int galeVariant;
+        public int obsidianVisual;
+        public int obsidianVariant;
+        public int crystalVisual;
+        public int crystalVariant;
         public float appearanceScale = 1;
     }
     public MirageDecoyRenderer(EntityRendererProvider.Context context) {
@@ -36,16 +45,32 @@ public final class MirageDecoyRenderer extends GeoEntityRenderer<MirageDecoy, Mi
             @Override protected Identifier getTextureResource(State state) { return texture(state, true); }
         });
         withRenderLayer(new Accessories(this));
+        for (String bone : new String[]{"right_wing", "right_wing_tip"}) { withRenderLayer(new EclipseWing(this, bone)); }
     }
     private static Identifier id(String path) { return Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, path); }
     public static Profile profile(String species) { return MirageDisguiseProfiles.get(species); }
     public static Identifier texture(State state, boolean eyes) {
+        if (state.species.equals("gale_phantom")) { return GalePhantomRenderer.texture(state.baby, state.galeVariant, state.galeVisual, eyes); }
+        if (state.species.equals("obsidian_phantom")) { return ObsidianPhantomRenderer.texture(state.baby, state.obsidianVariant, state.obsidianVisual, eyes); }
+        if (state.species.equals("crystal_phantom")) { return CrystalPhantomRenderer.texture(state.baby, state.crystalVariant, state.crystalVisual, eyes); }
+        if (state.species.equals("plague_phantom")) { return PlaguePhantomRenderer.texture(state.baby, state.plagueVisual, eyes); }
+        if (state.species.equals("shadow_phantom")) { return ShadowPhantomRenderer.texture(state.baby, state.shadowVisual, eyes); }
+        if (state.species.equals("eclipse_phantom")) { return EclipsePhantomRenderer.texture(state.baby, state.eclipseVisual, eyes); }
         String name = profile(state.species).texture() + (state.baby ? "_baby" : "");
         boolean combat = state.combat && (state.species.equals("golem_phantom") || state.species.equals("mirage_phantom"));
         return id("textures/entity/" + name + (eyes ? combat ? "_combat_eyes" : "_eyes" : "") + ".png");
     }
     @Override public State createRenderState(MirageDecoy entity, @Nullable Void ignored) { return new State(); }
     @Override public void addRenderData(MirageDecoy entity, @Nullable Void ignored, State state, float partial) {
+        state.galeVisual = entity.galeVisual();
+        state.galeVariant = entity.galeVariant();
+        state.obsidianVisual = entity.obsidianVisual();
+        state.obsidianVariant = entity.obsidianVariant();
+        state.crystalVisual = entity.crystalVisual();
+        state.crystalVariant = entity.crystalVariant();
+        state.plagueVisual = entity.plagueVisual();
+        state.shadowVisual = entity.shadowVisual();
+        state.eclipseVisual = entity.eclipseVisual();
         state.species = entity.species(); state.baby = entity.copiedBaby(); state.combat = entity.combatEyes(); state.appearanceScale = entity.visualScale(); state.accessories = profile(state.species).accessories();
     }
     @Override public int getRenderColor(MirageDecoy entity, @Nullable Void ignored, float partial) { return net.minecraft.util.ARGB.color((int) (210 + Math.sin((entity.tickCount + partial) * .14D) * 16), 0xE9E0FF); }
@@ -58,6 +83,12 @@ public final class MirageDecoyRenderer extends GeoEntityRenderer<MirageDecoy, Mi
         String[] names = {"mushrooms", "spikes", "tail_spikes", "horns", "tendrils", "halo", "fangs", "left_wing", "right_wing", "tail"};
         boolean[] visible = {flags.mushrooms(), flags.spikes(), flags.spikes(), flags.horns(), flags.tendrils(), false, flags.fangs(), flags.wings(), flags.wings(), flags.tail()};
         for (int index = 0; index < names.length; index++) { final boolean show = visible[index]; snapshots.ifPresent(names[index], bone -> bone.skipRender(!show).skipChildrenRender(!show)); }
+    }
+    private static final class EclipseWing extends com.geckolib.renderer.layer.builtin.CustomBoneTextureGeoLayer<MirageDecoy, Void, State> {
+        private EclipseWing(MirageDecoyRenderer renderer, String bone) { super(renderer, bone, EclipsePhantomRenderer.moonTexture(false, 0)); }
+        @Override public boolean shouldRenderBone(State state) { return state.species.equals("eclipse_phantom") && !state.isInvisible && state.accessories.wings(); }
+        @Override protected Identifier getTextureResource(State state) { return EclipsePhantomRenderer.moonTexture(state.baby, state.eclipseVisual); }
+        @Override protected RenderType getRenderType(State state, Identifier texture) { return state.eclipseVisual == 2 ? RenderTypes.entityTranslucentEmissive(texture) : super.getRenderType(state, texture); }
     }
     private static final class Model extends GeoModel<MirageDecoy> {
         @Override public Identifier getModelResource(GeoRenderState state) { return ((State) state).baby ? PhantomAnimations.BABY_MODEL : PhantomAnimations.ADULT_MODEL; }

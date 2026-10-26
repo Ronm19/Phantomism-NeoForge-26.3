@@ -1,0 +1,13 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#phantomism:solar_phantom_spawns",
+  "spawners": {
+    "type": "phantomism:solar_phantom",
+    "count": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 1,
+      "min_inclusive": 1
+    },
+    "weight": 4
+  }
+}

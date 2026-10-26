@@ -479,4 +479,9 @@ public final class FirePhantom extends AbstractPhantom {
                 && !this.isAlliedTo(target)
                 && !this.isTargetSuppressed(target);
     }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Mounted Fireball Cooldown Ticks: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(MOUNTED_FIREBALL_COOLDOWN_TICKS), "Fire Charge Cooldown Ticks: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(FIRE_CHARGE_COOLDOWN_TICKS), "Fire Veil Cooldown Ticks: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(FIRE_VEIL_COOLDOWN_TICKS), "Fire Projectile Cooldown Ticks: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(FIRE_PROJECTILE_COOLDOWN_TICKS), "Fire Shield Cooldown Ticks: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(FIRE_SHIELD_COOLDOWN_TICKS), "Firestorm Cooldown Ticks: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(FIRESTORM_COOLDOWN_TICKS));
+    }
 }

@@ -107,7 +107,9 @@ public final class VampirePhantom extends AbstractPhantom {
     public UUID combatSession() { return this.combatSession; }
     public boolean combatEnabled() { return this.isAlive() && !this.isRemoved() && !this.isBaby() && this.getOrder() != Order.STAY && this.getOrder() != Order.RETURN_HOME && (this.getTask() == Task.NONE || this.getTask() == Task.HUNT); }
     public boolean canInfluence() { return this.combatEnabled() && (!this.isTame() || this.getOwner() != null && this.getOwner().isAlive() && this.getOwner().level() == this.level()); }
-    public static boolean lure(Player player) { return player.getMainHandItem().is(Items.NETHER_WART) || player.getOffhandItem().is(Items.NETHER_WART); }
+    private static final net.minecraft.world.item.Item LURE_ITEM = Items.NETHER_WART;
+    public static boolean lure(Player player) { return player.getMainHandItem().is(LURE_ITEM) || player.getOffhandItem().is(LURE_ITEM); }
+    @Override public java.util.Optional<net.minecraft.world.item.Item> preferredLure() { return java.util.Optional.of(LURE_ITEM); }
     private boolean provoked(Player player) { return this.getLastHurtByMob() == player && this.tickCount - this.getLastHurtByMobTimestamp() <= 200; }
     @Override protected boolean isSpeciesCombatTarget(LivingEntity target) {
         if (target instanceof AbstractPhantom || target instanceof OwnableEntity owned && owned.getOwnerReference() != null || this.isAlliedTo(target) || VampireInfluence.isControlledBy(this, target)) { return false; }
@@ -324,4 +326,16 @@ public final class VampirePhantom extends AbstractPhantom {
         this.mistCooldown = Math.clamp(input.getIntOr("VampireMistCooldown", 0), 0, 400); this.hypnosisCooldown = Math.clamp(input.getIntOr("VampireHypnosisCooldown", 0), 0, 600);
         this.rageCooldown = Math.clamp(input.getIntOr("VampireRageCooldown", 0), 0, 900); this.moonCooldown = Math.clamp(input.getIntOr("VampireMoonCooldown", 0), 0, 1600);
     }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "launch_crimson_bolt" -> this.boltCooldown;
+            case "activate_crimson_mist" -> this.mistCooldown;
+            case "hypnotize" -> this.hypnosisCooldown;
+            case "activate_vampire_rage" -> this.rageCooldown;
+            case "activate_blood_moon" -> this.moonCooldown;
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { this.boltCooldown = ticks; }
 }

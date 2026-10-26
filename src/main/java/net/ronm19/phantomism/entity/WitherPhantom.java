@@ -190,7 +190,7 @@ public final class WitherPhantom extends AbstractPhantom implements net.ronm19.p
     }
     @Override public InteractionResult mobInteract(Player player, InteractionHand hand) {
         var stack = player.getItemInHand(hand);
-        if (!this.isTame() && stack.is(Items.WITHER_ROSE)) {
+        if (!this.isTame() && stack.is(preferredTaming().item())) {
             if (!this.level().isClientSide()) { this.tame(player); this.clearCombatTarget(true); if (!player.isCreative()) { stack.shrink(1); } this.level().broadcastEntityEvent(this, (byte) 7); }
             return InteractionResult.SUCCESS;
         }
@@ -428,4 +428,23 @@ public final class WitherPhantom extends AbstractPhantom implements net.ronm19.p
             net.ronm19.phantomism.entity.ai.CooldownDiscipline.Slot.normal("wither_bite_cooldown", 100, () -> this.biteCooldown, value -> this.biteCooldown = value),
             net.ronm19.phantomism.entity.ai.CooldownDiscipline.Slot.normal("wither_multishot_cooldown", 240, () -> this.multishotCooldown, value -> this.multishotCooldown = value),
             net.ronm19.phantomism.entity.ai.CooldownDiscipline.Slot.normal("wither_siege_cooldown", 400, () -> this.siegeCooldown, value -> this.siegeCooldown = value)); }
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(Items.WITHER_ROSE, 1F, 1, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Skull Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SKULL_COOLDOWN), "Mounted Skull Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(MOUNTED_SKULL_COOLDOWN));
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "siege_barrage" -> this.siegeCooldown;
+            case "activate_rush" -> this.rushCooldown;
+            case "wither_storm" -> this.stormCooldown;
+            default -> -1;
+        };
+    }
 }

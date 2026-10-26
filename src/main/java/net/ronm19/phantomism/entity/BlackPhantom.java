@@ -255,5 +255,9 @@ public final class BlackPhantom extends AbstractPhantom {
             this.clearSkyKnight();
         }
     }
-}
 
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Shield Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SHIELD_COOLDOWN), "Sky Knight Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SKY_KNIGHT_COOLDOWN));
+    }
+}

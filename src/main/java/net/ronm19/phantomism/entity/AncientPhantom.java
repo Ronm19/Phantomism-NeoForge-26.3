@@ -122,7 +122,7 @@ public final class AncientPhantom extends AbstractPhantom implements CooldownDis
     }
     private void action(String clip,int ticks){actionTicks=ticks;sessionOpen=true;triggerAnim("ancient",clip);}
     @Override public void registerControllers(AnimatableManager.ControllerRegistrar controllers){super.registerControllers(controllers);var controller=new AnimationController<AncientPhantom>("ancient",3,state->actionTicks>0?PlayState.CONTINUE:PlayState.STOP);for(String clip:CLIPS){controller.triggerableAnim(clip,RawAnimation.begin().thenPlay("animation.ancient."+clip));}controllers.add(controller);}
-    @Override public InteractionResult mobInteract(Player player,InteractionHand hand){if(isAlive()&&!isTame()&&!player.isSpectator()&&player.getItemInHand(hand).is(PhantomismContent.ANCIENT_RELIC.get())){if(!level().isClientSide()){if(!player.isCreative()){player.getItemInHand(hand).shrink(1);}tame(player);clearCombatTarget(true);level().broadcastEntityEvent(this,(byte)7);}return InteractionResult.SUCCESS;}return super.mobInteract(player,hand);}
+    @Override public InteractionResult mobInteract(Player player,InteractionHand hand){if(isAlive()&&!isTame()&&!player.isSpectator()&&player.getItemInHand(hand).is(preferredTaming().item())){if(!level().isClientSide()){if(!player.isCreative()){player.getItemInHand(hand).shrink(1);}tame(player);clearCombatTarget(true);level().broadcastEntityEvent(this,(byte)7);}return InteractionResult.SUCCESS;}return super.mobInteract(player,hand);}
     public void endAncient(){if(sessionOpen&&level() instanceof ServerLevel){AncientVfx.cancel(this);session=UUID.randomUUID();sessionOpen=false;}AncientControl.release(this);markedId=null;orderedId=null;markTicks=0;shieldTicks=0;sanctuaryTicks=0;forgottenTicks=0;diveTicks=0;actionTicks=0;sanctuaryCenter=null;forgottenCenter=null;divePoint=null;}
     @Override public void clearCombatTarget(boolean suppress){super.clearCombatTarget(suppress);if(suppress&&cooldowns!=null){endAncient();}}
     @Override public void setOrder(Order order){super.setOrder(order);if(cooldowns!=null&&(order==Order.STAY||order==Order.RETURN_HOME)){endAncient();}}
@@ -131,4 +131,27 @@ public final class AncientPhantom extends AbstractPhantom implements CooldownDis
     @Override protected void addAdditionalSaveData(ValueOutput output){super.addAdditionalSaveData(output);output.putInt("AncientMelee",meleeTicks);for(int index=0;index<cooldowns.length;index++){output.putInt("AncientCooldown"+index,cooldowns[index]);}}
     @Override protected void readAdditionalSaveData(ValueInput input){super.readAdditionalSaveData(input);endAncient();session=UUID.randomUUID();meleeTicks=Math.clamp(input.getIntOr("AncientMelee",0),0,38);for(int index=0;index<cooldowns.length;index++){cooldowns[index]=Math.clamp(input.getIntOr("AncientCooldown"+index,0),0,INTERVALS[index]);}}
     @Override public List<CooldownDiscipline.Slot> temporalCooldowns(){var slots=new ArrayList<CooldownDiscipline.Slot>();for(int index=0;index<5;index++){final int slot=index;slots.add(CooldownDiscipline.Slot.normal("ancient_"+CLIPS[index],INTERVALS[index],()->cooldowns[slot],value->cooldowns[slot]=value));}return List.copyOf(slots);}
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(PhantomismContent.ANCIENT_RELIC.get(), 1F, 1, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Strike: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[0]), "Stone: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[1]), "Shield: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[2]), "Dive: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[3]), "Sanctuary: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[4]), "Forgotten: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[5]));
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "ruin_strike" -> cooldowns[0];
+            case "stone" -> cooldowns[1];
+            case "ruin_shield" -> cooldowns[2];
+            case "sanctuary" -> cooldowns[4];
+            case "dive" -> cooldowns[3];
+            case "forgotten_land" -> cooldowns[5];
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { cooldowns[1] = ticks; }
 }

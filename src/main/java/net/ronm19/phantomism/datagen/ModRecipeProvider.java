@@ -17,6 +17,11 @@ public final class ModRecipeProvider extends RecipeProvider {
     protected void buildRecipes() {
         new ModAdvancementProvider(this.advancementOutput).generate();
         new ModBrewingRecipeProvider(this.output).generate();
+        this.shapeless(RecipeCategory.TOOLS, PhantomismContent.PHANTOM_CODEX.get())
+                .requires(Items.BOOK)
+                .requires(Items.PHANTOM_MEMBRANE, 2)
+                .unlockedBy("has_phantom_membrane", this.has(Items.PHANTOM_MEMBRANE))
+                .save(this.output);
         this.shaped(RecipeCategory.TOOLS, PhantomismContent.PHANTOM_STAFF.get())
                 .pattern(" M ")
                 .pattern(" S ")

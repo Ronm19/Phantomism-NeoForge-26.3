@@ -28,7 +28,7 @@ public final class VfxMesh {
         public int echoColor(int index) { int alpha = this.spectralEcho() ? (int) (this.opacity * (80 + index * 18)) : this.spatialEcho() ? (int) (this.opacity * 110 * (.6F + .4F * index / 3F)) : (int) (this.opacity * (index / 3F) * 65); return (alpha << 24) | this.tint; }
         public void submit(SubmitNodeCollector collector) {
             PoseStack stack = new PoseStack();
-            collector.submitCustomGeometry(stack, this.texture.getNamespace().equals(Phantomism.MOD_ID) && (this.texture.getPath().startsWith("textures/vfx/rift_") || this.texture.getPath().startsWith("textures/vfx/sentinel_") || this.texture.getPath().startsWith("textures/vfx/demon_") || (this.texture.getPath().startsWith("textures/vfx/spectral_") || (this.texture.getPath().startsWith("textures/vfx/angel_") || (this.texture.getPath().startsWith("textures/vfx/omen_") || (this.texture.getPath().startsWith("textures/vfx/ancient_") || (this.texture.getPath().startsWith("textures/vfx/reaper_") || (this.texture.getPath().startsWith("textures/vfx/primordial_") || (this.texture.getPath().startsWith("textures/vfx/void_") || (this.texture.getPath().startsWith("textures/vfx/dark_") || (this.texture.getPath().startsWith("textures/vfx/royal_") || (this.texture.getPath().startsWith("textures/vfx/mirage_") || this.texture.getPath().startsWith("textures/vfx/titanium_")))))))))))) ? RenderTypes.entityTranslucentEmissive(this.texture) : RenderTypes.entityTranslucent(this.texture), (pose, buffer) -> {
+            collector.submitCustomGeometry(stack, this.texture.getNamespace().equals(Phantomism.MOD_ID) && ((this.texture.getPath().startsWith("textures/vfx/rift_") || this.texture.getPath().startsWith("textures/vfx/halloween_")) || this.texture.getPath().startsWith("textures/vfx/sentinel_") || this.texture.getPath().startsWith("textures/vfx/demon_") || (this.texture.getPath().startsWith("textures/vfx/spectral_") || (this.texture.getPath().startsWith("textures/vfx/angel_") || (this.texture.getPath().startsWith("textures/vfx/omen_") || (this.texture.getPath().startsWith("textures/vfx/ancient_") || (this.texture.getPath().startsWith("textures/vfx/reaper_") || (this.texture.getPath().startsWith("textures/vfx/primordial_") || (this.texture.getPath().startsWith("textures/vfx/void_") || (this.texture.getPath().startsWith("textures/vfx/dark_") || (this.texture.getPath().startsWith("textures/vfx/royal_") || (((((((((((this.texture.getPath().startsWith("textures/vfx/autumn_") || this.texture.getPath().startsWith("textures/vfx/lunar_")) || this.texture.getPath().startsWith("textures/vfx/infernal_phantom_")) || this.texture.getPath().startsWith("textures/vfx/illager_")) || this.texture.getPath().startsWith("textures/vfx/solar_")) || this.texture.getPath().startsWith("textures/vfx/spore_")) || this.texture.getPath().startsWith("textures/vfx/gale_")) || this.texture.getPath().startsWith("textures/vfx/obsidian_") || this.texture.getPath().startsWith("textures/vfx/crystal_") || this.texture.getPath().startsWith("textures/vfx/plague_")) || this.texture.getPath().startsWith("textures/vfx/shadow_")) || this.texture.getPath().startsWith("textures/vfx/eclipse_")) || this.texture.getPath().startsWith("textures/vfx/mirage_")) || this.texture.getPath().startsWith("textures/vfx/titanium_")))))))))))) ? RenderTypes.entityTranslucentEmissive(this.texture) : RenderTypes.entityTranslucent(this.texture), (pose, buffer) -> {
                 for (int index = 0; index < this.colors.length; index++) {
                     int offset = index * 5;
                     buffer.addVertex(pose, this.vertices[offset], this.vertices[offset + 1], this.vertices[offset + 2]).setColor(this.colors[index])
@@ -66,9 +66,24 @@ public final class VfxMesh {
         return spectralSilhouette;
     }
     public static List<Batch> build(VfxEffect effect, Vec3 camera, float partial, int limit) {
+        if (HalloweenEffects.supports(effect.packet.effect())) { return HalloweenEffects.build(effect, camera, partial, limit); }
+        if (EasterEffects.supports(effect.packet.effect())) { return EasterEffects.build(effect, camera, partial, limit); }
+        if (ChristmasEffects.supports(effect.packet.effect())) { return ChristmasEffects.build(effect, camera, partial, limit); }
+        if (AutumnEffects.supports(effect.packet.effect())) { return AutumnEffects.build(effect, camera, partial, limit); }
         if (OminousVfx.supports(effect.definition.form())) { return OminousVfx.build(effect, camera, partial, limit); }
         if (AncientEffects.supports(effect.definition.form())) { return AncientEffects.build(effect, camera, partial, limit); }
         if (ReaperEffects.supports(effect.definition.form())) { return ReaperEffects.build(effect, camera, partial, limit); }
+        if (LunarEffects.supports(effect.definition.form())) { return LunarEffects.build(effect, camera, partial, limit); }
+        if (InfernalPhantomEffects.supports(effect.definition.form())) { return InfernalPhantomEffects.build(effect, camera, partial, limit); }
+        if (IllagerEffects.supports(effect.definition.form())) { return IllagerEffects.build(effect, camera, partial, limit); }
+        if (SolarEffects.supports(effect.definition.form())) { return SolarEffects.build(effect, camera, partial, limit); }
+        if (SporeEffects.supports(effect.definition.form())) { return SporeEffects.build(effect, camera, partial, limit); }
+        if (GaleEffects.supports(effect.definition.form())) { return GaleEffects.build(effect, camera, partial, limit); }
+        if (ObsidianEffects.supports(effect.definition.form())) { return ObsidianEffects.build(effect, camera, partial, limit); }
+        if (CrystalEffects.supports(effect.definition.form())) { return CrystalEffects.build(effect, camera, partial, limit); }
+        if (PlagueEffects.supports(effect.definition.form())) { return PlagueEffects.build(effect, camera, partial, limit); }
+        if (ShadowEffects.supports(effect.definition.form())) { return ShadowEffects.build(effect, camera, partial, limit); }
+        if (EclipseEffects.supports(effect.definition.form())) { return EclipseEffects.build(effect, camera, partial, limit); }
         if (MirageEffects.supports(effect.definition.form())) { return MirageEffects.build(effect, camera, partial, limit); }
         if (TitaniumEffects.supports(effect.definition.form())) { return TitaniumEffects.build(effect, camera, partial, limit); }
         if (RoyalEffects.supports(effect.definition.form())) { return RoyalEffects.build(effect, camera, partial, limit); }

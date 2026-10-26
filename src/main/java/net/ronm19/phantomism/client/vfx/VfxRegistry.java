@@ -7,7 +7,7 @@ import net.ronm19.phantomism.Phantomism;
 import net.ronm19.phantomism.vfx.CinematicVfx;
 
 public final class VfxRegistry {
-    public enum Form { PROJECTILE, IMPACT, SUPPORT, AFTERIMAGE, REVERSE, SIGIL, STASIS, AREA, CINEMATIC, BEAM, SLASH, ORBIT, SPATIAL_PROJECTILE, TEAR, PORTAL, SHARDS, SPATIAL_LOCK, SPATIAL_ULTIMATE, SPATIAL_AFTERIMAGE, SPATIAL_IMPACT, SPATIAL_ANCHOR, SPATIAL_SENSE, SPATIAL_TRANSIT, SPATIAL_SLASH, GUARDIAN, BASTION, INFERNAL, INFERNAL_BREATH, INFERNAL_METEOR, APOCALYPSE, SPECTRAL, SPECTRAL_AFTERIMAGE, SPECTRAL_LANCE, ETHEREAL_PLANE, CELESTIAL, CELESTIAL_SMITE, CELESTIAL_EYE, OMEN, OMEN_BOLT, CALAMITY, ANCIENT, ANCIENT_STONE, FORGOTTEN_LAND, REAPER, REAPER_SHARD, LAST_BELL, PRIMORDIAL, PRIMORDIAL_STAR, PRIMAL_DOMAIN, VOID, VOID_BOLT, VOID_AFTERIMAGE, NULL_HORIZON, DARK, DARK_BOLT, DARK_BLADE, DARK_HOUR, ROYAL, KINGS_DOMINION, TITANIUM, TITANS_IMPACT, MIRAGE, HALL_OF_MIRRORS }
+    public enum Form { PROJECTILE, IMPACT, SUPPORT, AFTERIMAGE, REVERSE, SIGIL, STASIS, AREA, CINEMATIC, BEAM, SLASH, ORBIT, SPATIAL_PROJECTILE, TEAR, PORTAL, SHARDS, SPATIAL_LOCK, SPATIAL_ULTIMATE, SPATIAL_AFTERIMAGE, SPATIAL_IMPACT, SPATIAL_ANCHOR, SPATIAL_SENSE, SPATIAL_TRANSIT, SPATIAL_SLASH, GUARDIAN, BASTION, INFERNAL, INFERNAL_BREATH, INFERNAL_METEOR, APOCALYPSE, SPECTRAL, SPECTRAL_AFTERIMAGE, SPECTRAL_LANCE, ETHEREAL_PLANE, CELESTIAL, CELESTIAL_SMITE, CELESTIAL_EYE, OMEN, OMEN_BOLT, CALAMITY, ANCIENT, ANCIENT_STONE, FORGOTTEN_LAND, REAPER, REAPER_SHARD, LAST_BELL, PRIMORDIAL, PRIMORDIAL_STAR, PRIMAL_DOMAIN, VOID, VOID_BOLT, VOID_AFTERIMAGE, NULL_HORIZON, DARK, DARK_BOLT, DARK_BLADE, DARK_HOUR, ROYAL, KINGS_DOMINION, TITANIUM, TITANS_IMPACT, MIRAGE, HALL_OF_MIRRORS, ECLIPSE, TOTAL_ECLIPSE, SHADOW, NIGHTFALL, PLAGUE, PANDEMIC, CRYSTAL, PRISMATIC, OBSIDIAN, CITADEL, GALE, SKY_DOMINION, SPORE, FUNGAL_STORM, SOLAR, SUPERNOVA, ILLAGER, CONQUEST, INFERNAL_PHANTOM, HELL_ASCENDANT, LUNAR, FULL_MOON_ASCENDANCY }
     public record Definition(Form form, Identifier face, Identifier ring, Identifier hand, Identifier trail, Identifier silhouette, VfxSequence sequence, float width) {
         public Definition { if (!Float.isFinite(width) || width <= 0 || width > 4) { throw new IllegalArgumentException("Invalid effect width"); } }
     }
@@ -16,10 +16,81 @@ public final class VfxRegistry {
     public static void register(Identifier id, Definition definition) { if (DEFINITIONS.putIfAbsent(id, definition) != null) { throw new IllegalArgumentException("Duplicate VFX " + id); } }
     public static Definition get(Identifier id) { return DEFINITIONS.get(id); }
     private static Identifier texture(String name) { return Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/vfx/" + name + ".png"); }
-    public static boolean cinematic(Definition definition) { return definition.form() == Form.CINEMATIC || definition.form() == Form.SPATIAL_ULTIMATE || definition.form() == Form.BASTION || definition.form() == Form.APOCALYPSE || definition.form() == Form.ETHEREAL_PLANE || definition.form() == Form.CELESTIAL_EYE || definition.form() == Form.CALAMITY || definition.form() == Form.FORGOTTEN_LAND || definition.form() == Form.LAST_BELL || definition.form() == Form.PRIMAL_DOMAIN || definition.form() == Form.NULL_HORIZON || definition.form() == Form.DARK_HOUR || definition.form() == Form.KINGS_DOMINION || definition.form() == Form.TITANS_IMPACT || definition.form() == Form.HALL_OF_MIRRORS; }
+    public static boolean cinematic(Definition definition) { return definition.form() == Form.CINEMATIC || definition.form() == Form.SPATIAL_ULTIMATE || definition.form() == Form.BASTION || definition.form() == Form.APOCALYPSE || definition.form() == Form.ETHEREAL_PLANE || definition.form() == Form.CELESTIAL_EYE || definition.form() == Form.CALAMITY || definition.form() == Form.FORGOTTEN_LAND || definition.form() == Form.LAST_BELL || definition.form() == Form.PRIMAL_DOMAIN || definition.form() == Form.NULL_HORIZON || definition.form() == Form.DARK_HOUR || definition.form() == Form.KINGS_DOMINION || definition.form() == Form.TITANS_IMPACT || definition.form() == Form.HALL_OF_MIRRORS || definition.form() == Form.TOTAL_ECLIPSE || definition.form() == Form.NIGHTFALL || definition.form() == Form.PANDEMIC || definition.form() == Form.PRISMATIC || definition.form() == Form.CITADEL || definition.form() == Form.SKY_DOMINION || definition.form() == Form.FUNGAL_STORM || definition.form() == Form.SUPERNOVA || definition.form() == Form.CONQUEST || definition.form() == Form.HELL_ASCENDANT || definition.form() == Form.FULL_MOON_ASCENDANCY; }
     public static boolean afterimage(Definition definition) { return definition.form() == Form.VOID_AFTERIMAGE || definition.form() == Form.AFTERIMAGE || definition.form() == Form.SPATIAL_AFTERIMAGE || definition.form() == Form.SPECTRAL_AFTERIMAGE || definition.form() == Form.ETHEREAL_PLANE; }
     private static void spatial(Identifier id, Form form, VfxSequence sequence) { register(id, new Definition(form, texture("rift_surface"), texture("rift_shard"), texture("rift_sigil"), texture("rift_trail"), Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/rift_phantom.png"), sequence, 1)); }
     static {
+        for (Identifier effect : net.ronm19.phantomism.vfx.EasterVfx.ALL) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.EasterVfx.AWAKENING) ? Form.CINEMATIC : Form.AREA,
+                    texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/easter_phantom.png"), new VfxSequence(4, 120, 12), 1));
+        }
+        for (Identifier effect : net.ronm19.phantomism.vfx.ChristmasVfx.ALL) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.ChristmasVfx.MIRACLE) ? Form.CINEMATIC : Form.AREA,
+                    texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/christmas_phantom.png"), new VfxSequence(4, 120, 12), 1));
+        }
+        for (Identifier effect : net.ronm19.phantomism.vfx.HalloweenVfx.ALL) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.HalloweenVfx.FRIGHT) ? Form.CINEMATIC : Form.AREA,
+                    texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"),
+                    texture("spectral_silhouette"), new VfxSequence(20, 73, 7), 1));
+        }
+        for (Identifier effect : net.ronm19.phantomism.vfx.AutumnVfx.ALL) { register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.AutumnVfx.GALE) ? Form.SKY_DOMINION : Form.GALE, texture("autumn_sigil"), texture("autumn_ring"), texture("autumn_leaf"), texture("autumn_trail"), Identifier.fromNamespaceAndPath("phantomism", "textures/entity/autumn_phantom.png"), new VfxSequence(20, 120, 20), 1)); }
+        for (Identifier effect : net.ronm19.phantomism.vfx.LunarVfx.ALL) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.LunarVfx.ASCENDANCY) ? Form.FULL_MOON_ASCENDANCY : Form.LUNAR,
+                    texture("lunar_sigil"), texture("lunar_ring"), texture("lunar_spark"), texture("lunar_trail"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/lunar_phantom.png"), new VfxSequence(50, 165, 25), 1));
+        }
+        for (Identifier effect : net.ronm19.phantomism.vfx.InfernalPhantomVfx.ALL) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.InfernalPhantomVfx.ASCENDANT) ? Form.HELL_ASCENDANT : Form.INFERNAL_PHANTOM,
+                    texture("infernal_phantom_sigil"), texture("infernal_phantom_ring"), texture("infernal_phantom_spark"), texture("infernal_phantom_trail"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/infernal_phantom.png"), new VfxSequence(40, 160, 40), 1));
+        }
+        for (Identifier effect : net.ronm19.phantomism.vfx.IllagerVfx.ALL) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.IllagerVfx.CONQUEST) ? Form.CONQUEST : Form.ILLAGER,
+                    texture("illager_sigil"), texture("illager_ring"), texture("illager_spark"), texture("illager_trail"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/illager_phantom.png"), new VfxSequence(30, 130, 20), 1));
+        }
+        for (Identifier effect : net.ronm19.phantomism.vfx.SolarVfx.ALL) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.SolarVfx.SUPERNOVA) || effect.equals(net.ronm19.phantomism.vfx.SolarVfx.ECLIPSE) ? Form.SUPERNOVA : Form.SOLAR,
+                    texture("solar_sigil"), texture("solar_ring"), texture("solar_spark"), texture("solar_trail"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/solar_phantom.png"), new VfxSequence(50, 160, 30), 1));
+        }
+        for (Identifier effect : java.util.List.of(net.ronm19.phantomism.vfx.SporeVfx.BREATH, net.ronm19.phantomism.vfx.SporeVfx.CLOUD, net.ronm19.phantomism.vfx.SporeVfx.BLOOM, net.ronm19.phantomism.vfx.SporeVfx.DIVE, net.ronm19.phantomism.vfx.SporeVfx.STORM)) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.SporeVfx.STORM) ? Form.FUNGAL_STORM : Form.SPORE,
+                    texture("spore_sigil"), texture("spore_ring"), texture("spore_mushroom"), texture("spore_trail"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/spore_phantom.png"), new VfxSequence(40, 160, 40), 1));
+        }
+        for (Identifier effect : java.util.List.of(net.ronm19.phantomism.vfx.GaleVfx.BOLT, net.ronm19.phantomism.vfx.GaleVfx.SLIPSTREAM, net.ronm19.phantomism.vfx.GaleVfx.UPDRAFT, net.ronm19.phantomism.vfx.GaleVfx.CROSSWIND, net.ronm19.phantomism.vfx.GaleVfx.RUSH, net.ronm19.phantomism.vfx.GaleVfx.BLADE, net.ronm19.phantomism.vfx.GaleVfx.VORTEX, net.ronm19.phantomism.vfx.GaleVfx.RESCUE, net.ronm19.phantomism.vfx.GaleVfx.TAILWIND, net.ronm19.phantomism.vfx.GaleVfx.DOMINION, net.ronm19.phantomism.vfx.GaleVfx.TEMPEST, net.ronm19.phantomism.vfx.GaleVfx.JUDGMENT, net.ronm19.phantomism.vfx.GaleVfx.IMPACT)) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.GaleVfx.DOMINION) ? Form.SKY_DOMINION : Form.GALE,
+                    texture("gale_sigil"), texture("gale_currents"), texture("gale_blade"), texture("gale_trail"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/gale_phantom.png"), new VfxSequence(40, 160, 40), 1));
+        }
+        for (Identifier effect : java.util.List.of(net.ronm19.phantomism.vfx.ObsidianVfx.SHARD, net.ronm19.phantomism.vfx.ObsidianVfx.RAM, net.ronm19.phantomism.vfx.ObsidianVfx.SLAM, net.ronm19.phantomism.vfx.ObsidianVfx.BASTION, net.ronm19.phantomism.vfx.ObsidianVfx.SHELTER, net.ronm19.phantomism.vfx.ObsidianVfx.FRACTURE, net.ronm19.phantomism.vfx.ObsidianVfx.GUARD, net.ronm19.phantomism.vfx.ObsidianVfx.CITADEL, net.ronm19.phantomism.vfx.ObsidianVfx.WALL, net.ronm19.phantomism.vfx.ObsidianVfx.JUDGMENT, net.ronm19.phantomism.vfx.ObsidianVfx.IMPACT, net.ronm19.phantomism.vfx.ObsidianVfx.ABSORB)) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.ObsidianVfx.CITADEL) ? Form.CITADEL : Form.OBSIDIAN,
+                    texture("obsidian_sigil"), texture("obsidian_facets"), texture("obsidian_shard"), texture("obsidian_trail"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/obsidian_phantom.png"), new VfxSequence(40, 160, 40), 1));
+        }
+        for (Identifier effect : java.util.List.of(net.ronm19.phantomism.vfx.CrystalVfx.SHARD, net.ronm19.phantomism.vfx.CrystalVfx.BURST, net.ronm19.phantomism.vfx.CrystalVfx.COUNTER, net.ronm19.phantomism.vfx.CrystalVfx.BARRIER, net.ronm19.phantomism.vfx.CrystalVfx.SHELL, net.ronm19.phantomism.vfx.CrystalVfx.IMPACT_CHARGE, net.ronm19.phantomism.vfx.CrystalVfx.REFLECT, net.ronm19.phantomism.vfx.CrystalVfx.RECOVER, net.ronm19.phantomism.vfx.CrystalVfx.DOMINION, net.ronm19.phantomism.vfx.CrystalVfx.REFRACTION, net.ronm19.phantomism.vfx.CrystalVfx.SHATTER, net.ronm19.phantomism.vfx.CrystalVfx.IMPACT, net.ronm19.phantomism.vfx.CrystalVfx.SHIELD_HIT)) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.CrystalVfx.DOMINION) ? Form.PRISMATIC : Form.CRYSTAL,
+                    texture("crystal_sigil"), texture("crystal_facets"), texture("crystal_shard"), texture("crystal_trail"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/crystal_phantom.png"), new VfxSequence(40, 160, 40), 1));
+        }
+        for (Identifier effect : java.util.List.of(net.ronm19.phantomism.vfx.PlagueVfx.INFECT, net.ronm19.phantomism.vfx.PlagueVfx.CHAIN, net.ronm19.phantomism.vfx.PlagueVfx.MUTATION, net.ronm19.phantomism.vfx.PlagueVfx.HERD, net.ronm19.phantomism.vfx.PlagueVfx.SPIT, net.ronm19.phantomism.vfx.PlagueVfx.DIVE, net.ronm19.phantomism.vfx.PlagueVfx.CLOUD, net.ronm19.phantomism.vfx.PlagueVfx.HUSK, net.ronm19.phantomism.vfx.PlagueVfx.PANDEMIC, net.ronm19.phantomism.vfx.PlagueVfx.SURGE, net.ronm19.phantomism.vfx.PlagueVfx.COLLAPSE, net.ronm19.phantomism.vfx.PlagueVfx.IMPACT)) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.PlagueVfx.PANDEMIC) ? Form.PANDEMIC : Form.PLAGUE,
+                    texture("plague_sigil"), texture("plague_sphere"), texture("plague_spore"), texture("plague_trail"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/plague_phantom.png"), new VfxSequence(32, 176, 32), 1));
+        }
+        for (Identifier effect : java.util.List.of(net.ronm19.phantomism.vfx.ShadowVfx.MARK, net.ronm19.phantomism.vfx.ShadowVfx.BOLT, net.ronm19.phantomism.vfx.ShadowVfx.STRIKE, net.ronm19.phantomism.vfx.ShadowVfx.DIVE, net.ronm19.phantomism.vfx.ShadowVfx.STEP, net.ronm19.phantomism.vfx.ShadowVfx.VANISH, net.ronm19.phantomism.vfx.ShadowVfx.RECON, net.ronm19.phantomism.vfx.ShadowVfx.GUARD, net.ronm19.phantomism.vfx.ShadowVfx.NIGHTFALL, net.ronm19.phantomism.vfx.ShadowVfx.FINALE, net.ronm19.phantomism.vfx.ShadowVfx.IMPACT)) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.ShadowVfx.NIGHTFALL) ? Form.NIGHTFALL : Form.SHADOW,
+                    texture("shadow_sigil"), texture("shadow_crescent"), texture("shadow_fragment"), texture("shadow_trail"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/shadow_phantom.png"), new VfxSequence(40, 176, 24), 1));
+        }
+        for (Identifier effect : java.util.List.of(net.ronm19.phantomism.vfx.EclipseVfx.SHIFT, net.ronm19.phantomism.vfx.EclipseVfx.HEAL, net.ronm19.phantomism.vfx.EclipseVfx.GUARD, net.ronm19.phantomism.vfx.EclipseVfx.PULSE, net.ronm19.phantomism.vfx.EclipseVfx.FANG, net.ronm19.phantomism.vfx.EclipseVfx.RUSH, net.ronm19.phantomism.vfx.EclipseVfx.BOLT, net.ronm19.phantomism.vfx.EclipseVfx.REND, net.ronm19.phantomism.vfx.EclipseVfx.HYBRID_GUARD, net.ronm19.phantomism.vfx.EclipseVfx.TOTAL, net.ronm19.phantomism.vfx.EclipseVfx.JUDGMENT, net.ronm19.phantomism.vfx.EclipseVfx.IMPACT)) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.EclipseVfx.TOTAL) ? Form.TOTAL_ECLIPSE : Form.ECLIPSE,
+                    texture("eclipse_sigil"), texture("eclipse_crescent"), texture("eclipse_star"), texture("eclipse_trail"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/eclipse_phantom.png"), new VfxSequence(40, 236, 24), 1));
+        }
         for (Identifier effect : java.util.List.of(net.ronm19.phantomism.vfx.MirageVfx.FORM, net.ronm19.phantomism.vfx.MirageVfx.BOLT, net.ronm19.phantomism.vfx.MirageVfx.FAKE_BOLT, net.ronm19.phantomism.vfx.MirageVfx.STRIKE, net.ronm19.phantomism.vfx.MirageVfx.RESCUE, net.ronm19.phantomism.vfx.MirageVfx.FIELD, net.ronm19.phantomism.vfx.MirageVfx.GUARD, net.ronm19.phantomism.vfx.MirageVfx.SHATTER, net.ronm19.phantomism.vfx.MirageVfx.OPENING, net.ronm19.phantomism.vfx.MirageVfx.HALL, net.ronm19.phantomism.vfx.MirageVfx.CONVERGE, net.ronm19.phantomism.vfx.MirageVfx.FINALE)) {
             register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.MirageVfx.HALL) ? Form.HALL_OF_MIRRORS : Form.MIRAGE,
                     texture("mirage_sigil"), texture("mirage_panel"), texture("mirage_fragment"), texture("mirage_trail"),

@@ -58,8 +58,6 @@ public final class GolemExcavation {
             case GOLEM_CANCEL -> cancel();
             case GOLEM_DELIVER -> deliver = true;
             case GOLEM_OWNER -> { destination = null; deliver = true; }
-            case GOLEM_GUARD -> { return source.guard((ServerLevel) source.level()); }
-            case GOLEM_TITAN -> { return source.titan((ServerLevel) source.level()); }
             case GOLEM_STATUS -> { }
             default -> { return false; }
         }

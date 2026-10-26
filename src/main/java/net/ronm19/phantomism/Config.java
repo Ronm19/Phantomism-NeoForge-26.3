@@ -76,6 +76,46 @@ public final class Config {
     public static final PhantomStats PRIMORDIAL_PHANTOM_STATS = stats("primordialPhantom", 88, 10, 14, .6D, 6, 64, .25D, .475D);
     public static final ModConfigSpec.IntValue GOLEM_MAX_VOLUME = BUILDER.defineInRange("golemPhantom.maxExcavationVolume", 512, 1, 4096);
     public static final ModConfigSpec.IntValue GOLEM_WORK_TICKS = BUILDER.defineInRange("golemPhantom.miningTicks", 12, 4, 200);
+    public static final ModConfigSpec.BooleanValue ALLOW_OUT_OF_SEASON_HOLIDAY_SPAWNS = BUILDER.translation("config.phantomism.holidays.allowOutOfSeasonHolidaySpawns").comment("Allow Holiday Phantoms to spawn naturally outside their full festival month. Default false. Never restricts owned companions, commands or creative eggs.").define("holidays.allowOutOfSeasonHolidaySpawns", false);
+    public static final ModConfigSpec.ConfigValue<String> HOLIDAY_TIME_ZONE = BUILDER.translation("config.phantomism.holidays.calendarTimeZone").comment("IANA server calendar timezone. UTC by default; independent of player timezone and Minecraft daylight. Example: Asia/Jerusalem.").define("holidays.calendarTimeZone", "UTC", Config::validHolidayZone);
+    public static final ModConfigSpec.IntValue FIREWORK_FESTIVAL_MONTH = BUILDER.translation("config.phantomism.holidays.fireworkFestivalMonth").comment("Firework Phantom celebrates U.S. Independence Day for all of July, July 1-31 inclusive. The official default is 7; servers may explicitly choose another festival month.").defineInRange("holidays.fireworkFestivalMonth", 7, 1, 12);
+    public static final ModConfigSpec.DoubleValue HOLIDAY_ALTERNATIVE_TAMING_CHANCE = BUILDER.translation("config.phantomism.holidays.provisionalTamingChance").comment("Provisional per-attempt chance for future Holiday alternative foods without fixed canon. Does not change Halloween's approved 50% seeds / 100% pumpkins or Staff's 100%.").defineInRange("holidays.provisionalTamingChance", .5D, 0, 1);
+    private static boolean validHolidayZone(Object value) { try { if (!(value instanceof String zone)) { return false; } java.time.ZoneId.of(zone); return true; } catch (java.time.DateTimeException error) { return false; } }
+    public static boolean allowOutOfSeasonHolidaySpawns() { return SPEC.isLoaded() && ALLOW_OUT_OF_SEASON_HOLIDAY_SPAWNS.get(); }
+    public static String holidayTimeZone() { return SPEC.isLoaded() ? HOLIDAY_TIME_ZONE.get() : "UTC"; }
+    public static int fireworkFestivalMonth() { return SPEC.isLoaded() ? FIREWORK_FESTIVAL_MONTH.get() : 7; }
+    public static double holidayAlternativeTamingChance() { return SPEC.isLoaded() ? HOLIDAY_ALTERNATIVE_TAMING_CHANCE.get() : .5D; }
+    public static final PhantomStats EASTER_PHANTOM_STATS = stats("easterPhantom", 88, 7, 6, .25D, 2, 48, .27D, .49D);
+    public static final PhantomStats CHRISTMAS_PHANTOM_STATS = stats("christmasPhantom", 96, 7, 8, .35D, 3, 48, .25D, .44D);
+    public static final PhantomStats HALLOWEEN_PHANTOM_STATS = stats("halloweenPhantom", 120, 10, 12, .45D, 4, 48, .25D, .48D);
+    public static final ModConfigSpec.BooleanValue HALLOWEEN_NATURAL_SPAWNING = BUILDER.translation("config.phantomism.halloweenPhantom.naturalSpawning").comment("Permit common, population-limited pumpkin encounters in the Overworld during October, day and night. The holiday override permits other months. Disabling this never disables owned companions.").define("halloweenPhantom.naturalSpawning", true);
+    public static final ModConfigSpec.IntValue HALLOWEEN_PUMPKIN_RADIUS = BUILDER.translation("config.phantomism.halloweenPhantom.pumpkinRadius").comment("Maximum distance from a visible Pumpkin, Carved Pumpkin or Jack o'Lantern. Natural encounters search around actual pumpkin patches, not random distant points.").defineInRange("halloweenPhantom.pumpkinRadius", 16, 1, 32);
+    public static final ModConfigSpec.IntValue HALLOWEEN_PUMPKIN_VERTICAL = BUILDER.translation("config.phantomism.halloweenPhantom.pumpkinVerticalRange").comment("Maximum vertical difference from the pumpkin, still bounded by the total pumpkin radius and direct visibility.").defineInRange("halloweenPhantom.pumpkinVerticalRange", 16, 1, 32);
+    public static final ModConfigSpec.IntValue HALLOWEEN_SPAWN_INTERVAL = BUILDER.translation("config.phantomism.halloweenPhantom.spawnInterval").defineInRange("halloweenPhantom.spawnInterval", 100, 20, 2400);
+    public static final ModConfigSpec.IntValue HALLOWEEN_SPAWN_CHANCE = BUILDER.translation("config.phantomism.halloweenPhantom.spawnChance").comment("One successful roll in this many encounter checks, before pumpkin, safety and population checks. One permits common in-season encounters.").defineInRange("halloweenPhantom.spawnChance", 1, 1, 1000);
+    public static final ModConfigSpec.IntValue HALLOWEEN_POPULATION_LIMIT = BUILDER.translation("config.phantomism.halloweenPhantom.populationLimit").comment("Maximum nearby wild Halloween Phantoms within 48 blocks. Tamed companions do not consume encounter slots.").defineInRange("halloweenPhantom.populationLimit", 4, 1, 8);
+    public static final ModConfigSpec.IntValue HALLOWEEN_ULTIMATE_COOLDOWN = BUILDER.translation("config.phantomism.halloweenPhantom.ultimateCooldown").defineInRange("halloweenPhantom.ultimateCooldown", 1800, 600, 12000);
+    public static boolean halloweenSpawningEnabled() { return !SPEC.isLoaded() || HALLOWEEN_NATURAL_SPAWNING.get(); }
+    public static int halloweenPumpkinRadius() { return SPEC.isLoaded() ? HALLOWEEN_PUMPKIN_RADIUS.get() : 16; }
+    public static int halloweenPumpkinVerticalRange() { return SPEC.isLoaded() ? HALLOWEEN_PUMPKIN_VERTICAL.get() : 16; }
+    public static int halloweenSpawnInterval() { return SPEC.isLoaded() ? HALLOWEEN_SPAWN_INTERVAL.get() : 100; }
+    public static int halloweenSpawnChance() { return SPEC.isLoaded() ? HALLOWEEN_SPAWN_CHANCE.get() : 1; }
+    public static int halloweenPopulationLimit() { return SPEC.isLoaded() ? HALLOWEEN_POPULATION_LIMIT.get() : 4; }
+    public static int halloweenUltimateCooldown() { return SPEC.isLoaded() ? HALLOWEEN_ULTIMATE_COOLDOWN.get() : 1800; }
+    public static final PhantomStats AUTUMN_PHANTOM_STATS = stats("autumnPhantom", 240, 15, 14, .55D, 4, 48, .3D, .48D);
+    public static final ModConfigSpec.BooleanValue AUTUMN_FOREST_FALLBACK = BUILDER.translation("config.phantomism.autumnPhantom.forestFallback").comment("Allow suitable temperate forests when no Dappled Forest biome is registered. Autumn is available all year.").define("autumnPhantom.forestFallback", true);
+    public static boolean autumnFallbackLoaded() { return SPEC.isLoaded(); }
+    public static final PhantomStats LUNAR_PHANTOM_STATS = stats("lunarPhantom", 300, 20, 18, .7D, 6, 56, .3D, .5D);
+    public static final PhantomStats INFERNAL_PHANTOM_STATS = stats("infernalPhantom", 280, 18, 16, .8D, 6, 48, .3D, .5D);
+    public static final PhantomStats ILLAGER_PHANTOM_STATS = stats("illagerPhantom", 280, 18, 16, .65D, 6, 56, .3D, .45D);
+    public static final PhantomStats SOLAR_PHANTOM_STATS = stats("solarPhantom", 300, 20, 18, .85D, 6, 56, .3D, .5D);
+    public static final PhantomStats SPORE_PHANTOM_STATS = stats("sporePhantom", 72, 6, 10, .35D, 2, 48, .3D, .4D);
+    public static final PhantomStats GALE_PHANTOM_STATS = stats("galePhantom", 56, 7, 6, .4D, 2, 48, .3D, .6D);
+    public static final PhantomStats OBSIDIAN_PHANTOM_STATS = stats("obsidianPhantom", 144, 10, 28, .95D, 10, 48, .2D, .3D);
+    public static final PhantomStats CRYSTAL_PHANTOM_STATS = stats("crystalPhantom", 100, 8, 22, .75D, 8, 48, .25D, .35D);
+    public static final PhantomStats PLAGUE_PHANTOM_STATS = stats("plaguePhantom", 68, 6, 8, .35D, 2, 48, .25D, .4D);
+    public static final PhantomStats SHADOW_PHANTOM_STATS = stats("shadowPhantom", 60, 10, 6, .25D, 2, 48, .25D, .55D);
+    public static final PhantomStats ECLIPSE_PHANTOM_STATS = stats("eclipsePhantom", 104, 12, 16, .65D, 6, 56, .25D, .475D);
     public static final PhantomStats MIRAGE_PHANTOM_STATS = stats("miragePhantom", 60, 6, 6, .25D, 2, 48, .25D, .5D);
     public static final PhantomStats GOLEM_PHANTOM_STATS = stats("golemPhantom", 400, 16, 30, .95D, 12, 48, .2D, .3D);
     public static final PhantomStats PHANTOM_KING_STATS = stats("phantomKing", 144, 14, 22, .85D, 8, 64, .25D, .45D);
@@ -156,6 +196,11 @@ public final class Config {
     }
     public static double voidValue(String name) { return SPEC.isLoaded() ? VOID_ABILITIES.get(name).get() : VOID_DEFAULTS.get(name); }
 
+    public static final ModConfigSpec.BooleanValue SOLAR_AURA = BUILDER.define("solarPhantom.environment.aura", true);
+    public static final ModConfigSpec.BooleanValue SOLAR_ILLUMINATION = BUILDER.define("solarPhantom.environment.temporaryVision", true);
+    public static final ModConfigSpec.BooleanValue SOLAR_MELTING = BUILDER.define("solarPhantom.environment.meltSnowAndFrostedIce", false);
+    public static final ModConfigSpec.BooleanValue SOLAR_SCORCHING = BUILDER.define("solarPhantom.environment.scorchGrass", false);
+    public static boolean solarFlag(ModConfigSpec.BooleanValue flag, boolean fallback) { return SPEC.isLoaded() ? flag.get() : fallback; }
     static final ModConfigSpec SPEC = BUILDER.build();
 
     private Config() {

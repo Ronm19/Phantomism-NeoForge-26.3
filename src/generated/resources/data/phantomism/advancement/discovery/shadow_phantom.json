@@ -1,0 +1,31 @@
+{
+  "parent": "phantomism:discovery/root",
+  "criteria": {
+    "discovered": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.phantomism.discovery.shadow_phantom.description"
+    },
+    "icon": {
+      "components": {
+        "minecraft:custom_data": {
+          "phantomism_discovery_icon": "shadow_phantom"
+        }
+      },
+      "id": "phantomism:shadow_phantom_spawn_egg"
+    },
+    "title": {
+      "translate": "advancements.phantomism.discovery.shadow_phantom.title"
+    }
+  },
+  "requirements": [
+    [
+      "discovered"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

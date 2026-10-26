@@ -105,7 +105,9 @@ public final class BloodPhantom extends AbstractPhantom implements net.ronm19.ph
     public boolean isRelentlessHunt() { return this.huntTicks > 0; }
     public boolean hasBloodShield() { return this.guardTicks > 0; }
     public boolean hasCrimsonDominion() { return this.dominionTicks > 0; }
-    public static boolean lure(Player player) { return player.getMainHandItem().is(Items.CRIMSON_FUNGUS) || player.getOffhandItem().is(Items.CRIMSON_FUNGUS); }
+    private static final net.minecraft.world.item.Item LURE_ITEM = Items.CRIMSON_FUNGUS;
+    public static boolean lure(Player player) { return player.getMainHandItem().is(LURE_ITEM) || player.getOffhandItem().is(LURE_ITEM); }
+    @Override public java.util.Optional<net.minecraft.world.item.Item> preferredLure() { return java.util.Optional.of(LURE_ITEM); }
     @Override protected boolean isSpeciesCombatTarget(LivingEntity target) {
         if (target instanceof Player || target instanceof AbstractPhantom || target instanceof OwnableEntity owned && owned.getOwnerReference() != null || this.isAlliedTo(target)) { return false; }
         boolean justified = target.getUUID().equals(this.explicitTarget) || target == this.getLastHurtByMob()
@@ -359,4 +361,17 @@ public final class BloodPhantom extends AbstractPhantom implements net.ronm19.ph
     @Override public java.util.List<net.ronm19.phantomism.entity.ai.CooldownDiscipline.Slot> temporalCooldowns() { return java.util.List.of(
             net.ronm19.phantomism.entity.ai.CooldownDiscipline.Slot.normal("blood_strike_cooldown", 80, () -> this.strikeCooldown, value -> this.strikeCooldown = value),
             net.ronm19.phantomism.entity.ai.CooldownDiscipline.Slot.normal("blood_wings_cooldown", 240, () -> this.wingsCooldown, value -> this.wingsCooldown = value)); }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "launch_blood_projectile" -> this.projectileCooldown;
+            case "drain_blood" -> this.drainCooldown;
+            case "activate_relentless_hunt" -> this.huntCooldown;
+            case "crimson_wings" -> this.wingsCooldown;
+            case "activate_blood_shield" -> this.guardCooldown;
+            case "activate_crimson_dominion" -> this.dominionCooldown;
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { this.projectileCooldown = ticks; }
 }

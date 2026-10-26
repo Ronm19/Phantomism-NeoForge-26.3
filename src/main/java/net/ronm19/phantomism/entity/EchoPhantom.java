@@ -383,4 +383,15 @@ public final class EchoPhantom extends AbstractPhantom {
         private final UUID target; private final UUID ally; private final UUID event; private final Deque<UUID> shots; private final long expires; private final boolean chain; private long due;
         private Pending(UUID target, UUID ally, UUID event, Deque<UUID> shots, long due, long expires, boolean chain) { this.target = target; this.ally = ally; this.event = event; this.shots = shots; this.due = due; this.expires = expires; this.chain = chain; }
     }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "launch_pulse" -> this.pulseCooldown;
+            case "begin_strike" -> this.strikeCooldown;
+            case "activate_echo_guard" -> this.guardCooldown;
+            case "activate_perfect_resonance" -> this.perfectCooldown;
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { this.pulseCooldown = ticks; }
 }

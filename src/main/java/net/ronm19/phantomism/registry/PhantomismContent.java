@@ -208,8 +208,10 @@ public final class PhantomismContent {
             builder -> builder.sized(0.25F, 0.25F).clientTrackingRange(6).updateInterval(1).noSave());
     public static final DeferredItem<SpawnEggItem> VAMPIRE_PHANTOM_SPAWN_EGG = ITEMS.registerItem(
             "vampire_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(VAMPIRE_PHANTOM.get())));
+    public static final DeferredHolder<MobEffect, net.ronm19.phantomism.effect.InfectedEffect> INFECTED = MOB_EFFECTS.register("infected", net.ronm19.phantomism.effect.InfectedEffect::new);
     public static final DeferredHolder<MobEffect, net.ronm19.phantomism.effect.FinalityEffect> FINALITY = MOB_EFFECTS.register("finality", net.ronm19.phantomism.effect.FinalityEffect::new);
     public static final DeferredHolder<MobEffect, net.ronm19.phantomism.effect.BleedingEffect> BLEEDING = MOB_EFFECTS.register("bleeding", net.ronm19.phantomism.effect.BleedingEffect::new);
+    public static final net.neoforged.neoforge.registries.DeferredItem<net.ronm19.phantomism.item.PhantomCodexItem> PHANTOM_CODEX = ITEMS.registerItem("phantom_codex", net.ronm19.phantomism.item.PhantomCodexItem::new, properties -> properties.stacksTo(1));
     public static final DeferredItem<PhantomStaffItem> PHANTOM_STAFF = ITEMS.registerItem(
             "phantom_staff",
             PhantomStaffItem::new,
@@ -307,6 +309,126 @@ public final class PhantomismContent {
     public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.PhantomKing>> PHANTOM_KING = ENTITY_TYPES.registerEntityType(
             "phantom_king", net.ronm19.phantomism.entity.PhantomKing::new, MobCategory.CREATURE,
             builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.HalloweenPhantom>> HALLOWEEN_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "halloween_phantom", net.ronm19.phantomism.entity.HalloweenPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(10).updateInterval(3));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.PumpkinGaze>> PUMPKIN_GAZE = ENTITY_TYPES.registerEntityType(
+            "pumpkin_gaze", net.ronm19.phantomism.entity.PumpkinGaze::new, MobCategory.MISC,
+            builder -> builder.sized(.25F, .25F).clientTrackingRange(8).updateInterval(2));
+    public static final DeferredItem<SpawnEggItem> HALLOWEEN_PHANTOM_SPAWN_EGG = ITEMS.registerItem("halloween_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(HALLOWEEN_PHANTOM.get())));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.EasterPhantom>> EASTER_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "easter_phantom", net.ronm19.phantomism.entity.EasterPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(10).updateInterval(2));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.EasterEggProjectile>> EASTER_EGG_PROJECTILE = ENTITY_TYPES.registerEntityType(
+            "easter_egg_projectile", net.ronm19.phantomism.entity.EasterEggProjectile::new, MobCategory.MISC,
+            builder -> builder.sized(.25F, .25F).clientTrackingRange(8).updateInterval(2));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.EasterOrbitEgg>> EASTER_ORBIT_EGG = ENTITY_TYPES.registerEntityType(
+            "easter_orbit_egg", net.ronm19.phantomism.entity.EasterOrbitEgg::new, MobCategory.MISC,
+            builder -> builder.sized(1, 1).clientTrackingRange(10).updateInterval(2));
+    public static final DeferredItem<SpawnEggItem> EASTER_PHANTOM_SPAWN_EGG = ITEMS.registerItem("easter_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(EASTER_PHANTOM.get())));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.ChristmasPhantom>> CHRISTMAS_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "christmas_phantom", net.ronm19.phantomism.entity.ChristmasPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(10).updateInterval(2));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.ChristmasSnowball>> CHRISTMAS_SNOWBALL = ENTITY_TYPES.registerEntityType(
+            "christmas_snowball", net.ronm19.phantomism.entity.ChristmasSnowball::new, MobCategory.MISC,
+            builder -> builder.sized(.25F, .25F).clientTrackingRange(8).updateInterval(2));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.ChristmasGift>> CHRISTMAS_GIFT = ENTITY_TYPES.registerEntityType(
+            "christmas_gift", net.ronm19.phantomism.entity.ChristmasGift::new, MobCategory.MISC,
+            builder -> builder.sized(1, 1).clientTrackingRange(10).updateInterval(2));
+    public static final DeferredItem<SpawnEggItem> CHRISTMAS_PHANTOM_SPAWN_EGG = ITEMS.registerItem("christmas_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(CHRISTMAS_PHANTOM.get())));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.AutumnPhantom>> AUTUMN_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "autumn_phantom", net.ronm19.phantomism.entity.AutumnPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(3));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.AutumnBolt>> AUTUMN_BOLT = ENTITY_TYPES.registerEntityType(
+            "autumn_bolt", net.ronm19.phantomism.entity.AutumnBolt::new, MobCategory.MISC,
+            builder -> builder.sized(.25F, .25F).clientTrackingRange(6).updateInterval(1).noSave());
+    public static final DeferredItem<SpawnEggItem> AUTUMN_PHANTOM_SPAWN_EGG = ITEMS.registerItem("autumn_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(AUTUMN_PHANTOM.get())));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.LunarPhantom>> LUNAR_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "lunar_phantom", net.ronm19.phantomism.entity.LunarPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(3));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.MoonLance>> MOON_LANCE = ENTITY_TYPES.registerEntityType(
+            "moon_lance", net.ronm19.phantomism.entity.MoonLance::new, MobCategory.MISC,
+            builder -> builder.sized(.25F, .25F).clientTrackingRange(6).updateInterval(1).noSave());
+    public static final DeferredItem<SpawnEggItem> LUNAR_PHANTOM_SPAWN_EGG = ITEMS.registerItem("lunar_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(LUNAR_PHANTOM.get())));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.InfernalPhantom>> INFERNAL_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "infernal_phantom", net.ronm19.phantomism.entity.InfernalPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(3).fireImmune());
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.InfernalBolt>> INFERNAL_BOLT = ENTITY_TYPES.registerEntityType(
+            "infernal_bolt", net.ronm19.phantomism.entity.InfernalBolt::new, MobCategory.MISC,
+            builder -> builder.sized(.25F, .25F).clientTrackingRange(6).updateInterval(1).noSave().fireImmune());
+    public static final DeferredItem<SpawnEggItem> INFERNAL_PHANTOM_SPAWN_EGG = ITEMS.registerItem("infernal_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(INFERNAL_PHANTOM.get())));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.IllagerPhantom>> ILLAGER_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "illager_phantom", net.ronm19.phantomism.entity.IllagerPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(3));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.IllagerBolt>> ILLAGER_BOLT = ENTITY_TYPES.registerEntityType(
+            "illager_bolt", net.ronm19.phantomism.entity.IllagerBolt::new, MobCategory.MISC,
+            builder -> builder.sized(.25F, .25F).clientTrackingRange(6).updateInterval(1).noSave());
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.IllagerSpectralVex>> ILLAGER_SPECTRAL_VEX = ENTITY_TYPES.registerEntityType(
+            "illager_spectral_vex", net.ronm19.phantomism.entity.IllagerSpectralVex::new, MobCategory.MISC,
+            builder -> builder.sized(.4F, .8F).clientTrackingRange(8).updateInterval(2).noSave());
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.IllagerFangs>> ILLAGER_FANGS = ENTITY_TYPES.registerEntityType(
+            "illager_fangs", net.ronm19.phantomism.entity.IllagerFangs::new, MobCategory.MISC,
+            builder -> builder.sized(.5F, .8F).clientTrackingRange(6).updateInterval(2).noSave());
+    public static final DeferredItem<SpawnEggItem> ILLAGER_PHANTOM_SPAWN_EGG = ITEMS.registerItem("illager_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(ILLAGER_PHANTOM.get())));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.SolarPhantom>> SOLAR_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "solar_phantom", net.ronm19.phantomism.entity.SolarPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(3).fireImmune());
+    public static final DeferredItem<SpawnEggItem> SOLAR_PHANTOM_SPAWN_EGG = ITEMS.registerItem("solar_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(SOLAR_PHANTOM.get())));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.SporePhantom>> SPORE_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "spore_phantom", net.ronm19.phantomism.entity.SporePhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.SporeBreath>> SPORE_BREATH = ENTITY_TYPES.registerEntityType(
+            "spore_breath", net.ronm19.phantomism.entity.SporeBreath::new, MobCategory.MISC,
+            builder -> builder.sized(.2F, .2F).clientTrackingRange(12).updateInterval(1).noSave());
+    public static final DeferredItem<SpawnEggItem> SPORE_PHANTOM_SPAWN_EGG = ITEMS.registerItem("spore_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(SPORE_PHANTOM.get())));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.GalePhantom>> GALE_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "gale_phantom", net.ronm19.phantomism.entity.GalePhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.WindBolt>> WIND_BOLT = ENTITY_TYPES.registerEntityType(
+            "wind_bolt", net.ronm19.phantomism.entity.WindBolt::new, MobCategory.MISC,
+            builder -> builder.sized(.2F, .2F).clientTrackingRange(12).updateInterval(1).noSave());
+    public static final DeferredItem<SpawnEggItem> GALE_PHANTOM_SPAWN_EGG = ITEMS.registerItem("gale_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(GALE_PHANTOM.get())));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.ObsidianPhantom>> OBSIDIAN_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "obsidian_phantom", net.ronm19.phantomism.entity.ObsidianPhantom::new, MobCategory.CREATURE,
+            builder -> builder.fireImmune().sized(1.4F, .9F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.ObsidianShard>> OBSIDIAN_SHARD = ENTITY_TYPES.registerEntityType(
+            "obsidian_shard", net.ronm19.phantomism.entity.ObsidianShard::new, MobCategory.MISC,
+            builder -> builder.sized(.2F, .2F).clientTrackingRange(12).updateInterval(1).noSave());
+    public static final DeferredItem<SpawnEggItem> OBSIDIAN_PHANTOM_SPAWN_EGG = ITEMS.registerItem("obsidian_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(OBSIDIAN_PHANTOM.get())));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.CrystalPhantom>> CRYSTAL_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "crystal_phantom", net.ronm19.phantomism.entity.CrystalPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.CrystalShard>> CRYSTAL_SHARD = ENTITY_TYPES.registerEntityType(
+            "crystal_shard", net.ronm19.phantomism.entity.CrystalShard::new, MobCategory.MISC,
+            builder -> builder.sized(.2F, .2F).clientTrackingRange(12).updateInterval(1).noSave());
+    public static final DeferredItem<SpawnEggItem> CRYSTAL_PHANTOM_SPAWN_EGG = ITEMS.registerItem("crystal_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(CRYSTAL_PHANTOM.get())));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.PlaguePhantom>> PLAGUE_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "plague_phantom", net.ronm19.phantomism.entity.PlaguePhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.PlagueSpit>> PLAGUE_SPIT = ENTITY_TYPES.registerEntityType(
+            "plague_spit", net.ronm19.phantomism.entity.PlagueSpit::new, MobCategory.MISC,
+            builder -> builder.sized(.2F, .2F).clientTrackingRange(12).updateInterval(1).noSave());
+    public static final DeferredItem<SpawnEggItem> PLAGUE_PHANTOM_SPAWN_EGG = ITEMS.registerItem("plague_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(PLAGUE_PHANTOM.get())));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.ShadowPhantom>> SHADOW_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "shadow_phantom", net.ronm19.phantomism.entity.ShadowPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.ShadowBolt>> SHADOW_BOLT = ENTITY_TYPES.registerEntityType(
+            "shadow_bolt", net.ronm19.phantomism.entity.ShadowBolt::new, MobCategory.MISC,
+            builder -> builder.sized(.2F, .2F).clientTrackingRange(12).updateInterval(1).noSave());
+    public static final DeferredItem<SpawnEggItem> SHADOW_PHANTOM_SPAWN_EGG = ITEMS.registerItem("shadow_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(SHADOW_PHANTOM.get())));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.EclipsePhantom>> ECLIPSE_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "eclipse_phantom", net.ronm19.phantomism.entity.EclipsePhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.EclipseBolt>> ECLIPSE_BOLT = ENTITY_TYPES.registerEntityType(
+            "eclipse_bolt", net.ronm19.phantomism.entity.EclipseBolt::new, MobCategory.MISC,
+            builder -> builder.sized(.2F, .2F).clientTrackingRange(12).updateInterval(1).noSave());
+    public static final DeferredItem<SpawnEggItem> ECLIPSE_PHANTOM_SPAWN_EGG = ITEMS.registerItem("eclipse_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(ECLIPSE_PHANTOM.get())));
     public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.MiragePhantom>> MIRAGE_PHANTOM = ENTITY_TYPES.registerEntityType(
             "mirage_phantom", net.ronm19.phantomism.entity.MiragePhantom::new, MobCategory.CREATURE,
             builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(1));
@@ -425,6 +547,21 @@ public final class PhantomismContent {
                         output.accept(VOID_PHANTOM_SPAWN_EGG.get());
                         output.accept(DARK_PHANTOM_SPAWN_EGG.get());
                         output.accept(PHANTOM_KING_SPAWN_EGG.get());
+                        output.accept(AUTUMN_PHANTOM_SPAWN_EGG.get());
+                        output.accept(LUNAR_PHANTOM_SPAWN_EGG.get());
+                        output.accept(HALLOWEEN_PHANTOM_SPAWN_EGG.get());
+                        output.accept(EASTER_PHANTOM_SPAWN_EGG.get());
+                        output.accept(CHRISTMAS_PHANTOM_SPAWN_EGG.get());
+                        output.accept(INFERNAL_PHANTOM_SPAWN_EGG.get());
+                        output.accept(ILLAGER_PHANTOM_SPAWN_EGG.get());
+                        output.accept(SOLAR_PHANTOM_SPAWN_EGG.get());
+                        output.accept(SPORE_PHANTOM_SPAWN_EGG.get());
+                        output.accept(GALE_PHANTOM_SPAWN_EGG.get());
+                        output.accept(OBSIDIAN_PHANTOM_SPAWN_EGG.get());
+                        output.accept(CRYSTAL_PHANTOM_SPAWN_EGG.get());
+                        output.accept(PLAGUE_PHANTOM_SPAWN_EGG.get());
+                        output.accept(SHADOW_PHANTOM_SPAWN_EGG.get());
+                        output.accept(ECLIPSE_PHANTOM_SPAWN_EGG.get());
                         output.accept(MIRAGE_PHANTOM_SPAWN_EGG.get());
                         output.accept(GOLEM_PHANTOM_SPAWN_EGG.get());
                         output.accept(PRIMORDIAL_PHANTOM_SPAWN_EGG.get());
@@ -441,6 +578,7 @@ public final class PhantomismContent {
                     .icon(() -> new ItemStack(PHANTOM_STAFF.get()))
                     .displayItems((parameters, output) -> {
                         output.accept(PHANTOM_STAFF.get());
+                        output.accept(PHANTOM_CODEX.get());
                         output.accept(HEART_OF_THE_WORLD.get());
                         output.accept(ANCIENT_RELIC.get());
                         output.accept(PotionContents.createItemStack(Items.POTION, FROSTBOUND_POTION));

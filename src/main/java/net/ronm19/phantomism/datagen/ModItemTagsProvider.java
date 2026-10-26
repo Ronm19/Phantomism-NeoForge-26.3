@@ -55,6 +55,13 @@ public final class ModItemTagsProvider extends ItemTagsProvider {
                 .add(PhantomismContent.DARK_PHANTOM_SPAWN_EGG.key())
                 .add(PhantomismContent.PHANTOM_KING_SPAWN_EGG.key())
                 .add(PhantomismContent.GOLEM_PHANTOM_SPAWN_EGG.key())
-                .add(PhantomismContent.MIRAGE_PHANTOM_SPAWN_EGG.key());
+                .add(PhantomismContent.MIRAGE_PHANTOM_SPAWN_EGG.key())
+                .add(PhantomismContent.ECLIPSE_PHANTOM_SPAWN_EGG.key())
+                .add(PhantomismContent.SHADOW_PHANTOM_SPAWN_EGG.key())
+                .add(PhantomismContent.PLAGUE_PHANTOM_SPAWN_EGG.key())
+                .add(PhantomismContent.CRYSTAL_PHANTOM_SPAWN_EGG.key())
+                .add(PhantomismContent.OBSIDIAN_PHANTOM_SPAWN_EGG.key())
+                .add(PhantomismContent.GALE_PHANTOM_SPAWN_EGG.key())
+                .add(PhantomismContent.SPORE_PHANTOM_SPAWN_EGG.key()).add(PhantomismContent.SOLAR_PHANTOM_SPAWN_EGG.key()).add(PhantomismContent.ILLAGER_PHANTOM_SPAWN_EGG.key()).add(PhantomismContent.INFERNAL_PHANTOM_SPAWN_EGG.key()).add(PhantomismContent.LUNAR_PHANTOM_SPAWN_EGG.key()).add(PhantomismContent.AUTUMN_PHANTOM_SPAWN_EGG.key()).add(PhantomismContent.HALLOWEEN_PHANTOM_SPAWN_EGG.key()).add(PhantomismContent.CHRISTMAS_PHANTOM_SPAWN_EGG.key()).add(PhantomismContent.EASTER_PHANTOM_SPAWN_EGG.key());
     }
 }

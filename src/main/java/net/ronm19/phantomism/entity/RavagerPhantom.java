@@ -623,4 +623,13 @@ public final class RavagerPhantom extends AbstractPhantom {
         this.cancelCombatAbilities();
         this.recoveryTicks = 0;
     }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "use_ram" -> this.ramCooldown;
+            case "use_roar" -> this.roarCooldown;
+            case "start_slam" -> this.slamCooldown;
+            default -> -1;
+        };
+    }
 }

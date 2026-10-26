@@ -309,16 +309,16 @@ public final class DarkPhantom extends AbstractPhantom implements CooldownDiscip
     }
     @Override public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!isTame() && !level().isClientSide()) {
-            if (!isAlive() || player.isSpectator() || !player.getItemInHand(hand).is(Items.OBSIDIAN)) { failedTamer = null; failedUntil = 0; }
+            if (!isAlive() || player.isSpectator() || !player.getItemInHand(hand).is(preferredTaming().item())) { failedTamer = null; failedUntil = 0; }
             else {
                 boolean guaranteed = player.getUUID().equals(failedTamer) && level().getGameTime() <= failedUntil;
                 if (!player.isCreative()) { player.getItemInHand(hand).shrink(1); }
-                if (guaranteed || getRandom().nextFloat() < .75F) { tame(player); clearCombatTarget(true); failedTamer = null; failedUntil = 0; warnedPlayer = null; warningTicks = 0; level().broadcastEntityEvent(this, (byte) 7); }
+                if (guaranteed || getRandom().nextFloat() < preferredTaming().chance()) { tame(player); clearCombatTarget(true); failedTamer = null; failedUntil = 0; warnedPlayer = null; warningTicks = 0; level().broadcastEntityEvent(this, (byte) 7); }
                 else { failedTamer = player.getUUID(); failedUntil = level().getGameTime() + 6000; level().broadcastEntityEvent(this, (byte) 6); }
                 return InteractionResult.SUCCESS;
             }
         }
-        if (!isTame() && isAlive() && !player.isSpectator() && player.getItemInHand(hand).is(Items.OBSIDIAN)) { return InteractionResult.SUCCESS; }
+        if (!isTame() && isAlive() && !player.isSpectator() && player.getItemInHand(hand).is(preferredTaming().item())) { return InteractionResult.SUCCESS; }
         return super.mobInteract(player, hand);
     }
     public void endCombat() {
@@ -343,4 +343,26 @@ public final class DarkPhantom extends AbstractPhantom implements CooldownDiscip
     @Override public List<CooldownDiscipline.Slot> temporalCooldowns() {
         List<CooldownDiscipline.Slot> slots = new ArrayList<>(); for (int index = 0; index < 6; index++) { final int slot = index; slots.add(CooldownDiscipline.Slot.normal("dark_" + CLIPS[index], INTERVALS[index], () -> cooldowns[slot], value -> cooldowns[slot] = value)); } return List.copyOf(slots);
     }
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(Items.OBSIDIAN, .75F, 2, "Same player must retry within 300 seconds; another item resets the retry.");
+    }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Bolt: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[0]), "Rend: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[1]), "Rush: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[2]), "Blackout: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[3]), "Bubble: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[4]), "Shield: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[5]), "Hour: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[6]));
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "bolt" -> cooldowns[0];
+            case "rend" -> cooldowns[1];
+            case "rush" -> cooldowns[2];
+            case "blackout" -> cooldowns[3];
+            case "dark_hour" -> cooldowns[6];
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { cooldowns[0] = ticks; }
 }

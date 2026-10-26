@@ -502,4 +502,14 @@ public final class EndPhantom extends AbstractPhantom {
         this.biteCooldown = Math.clamp(input.getIntOr("EndBiteCooldown", 0), 0, 32);
         this.evasionCooldown = Math.clamp(input.getIntOr("EndEvasionCooldown", 0), 0, 40);
     }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "blink" -> this.blinkCooldown;
+            case "rift_strike" -> this.riftCooldown;
+            case "end_shield" -> this.shieldCooldown;
+            case "eye_of_ender" -> this.eyeCooldown;
+            default -> -1;
+        };
+    }
 }

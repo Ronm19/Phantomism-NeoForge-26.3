@@ -129,7 +129,7 @@ public final class GravityPhantom extends AbstractPhantom implements net.ronm19.
     }
     @Override public InteractionResult mobInteract(Player player, InteractionHand hand) {
         var stack = player.getItemInHand(hand);
-        if (!this.isTame() && stack.is(Items.HEAVY_CORE)) {
+        if (!this.isTame() && stack.is(preferredTaming().item())) {
             if (!this.level().isClientSide()) { this.tame(player); this.clearCombatTarget(true); if (!player.isCreative()) { stack.shrink(1); } this.level().broadcastEntityEvent(this, (byte) 7); }
             return InteractionResult.SUCCESS;
         }
@@ -332,4 +332,23 @@ public final class GravityPhantom extends AbstractPhantom implements net.ronm19.
             net.ronm19.phantomism.entity.ai.CooldownDiscipline.Slot.normal("gravity_lift_cooldown", 360, () -> this.liftCooldown, value -> this.liftCooldown = value),
             net.ronm19.phantomism.entity.ai.CooldownDiscipline.Slot.normal("gravity_throw_cooldown", 320, () -> this.throwCooldown, value -> this.throwCooldown = value),
             net.ronm19.phantomism.entity.ai.CooldownDiscipline.Slot.normal("gravity_lock_cooldown", 400, () -> this.lockCooldown, value -> this.lockCooldown = value)); }
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(Items.HEAVY_CORE, 1F, 1, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "launch_well" -> this.wellCooldown;
+            case "gravity_crush" -> this.crushCooldown;
+            case "zero_lift" -> this.liftCooldown;
+            case "orbital_throw" -> this.throwCooldown;
+            case "mass_lock" -> this.lockCooldown;
+            case "gravity_field" -> this.fieldCooldown;
+            case "event_horizon" -> this.horizonCooldown;
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { this.wellCooldown = ticks; }
 }

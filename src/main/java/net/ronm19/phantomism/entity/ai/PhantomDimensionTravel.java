@@ -1,6 +1,8 @@
 package net.ronm19.phantomism.entity.ai;
 
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -10,6 +12,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
@@ -26,8 +29,11 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.ronm19.phantomism.Phantomism;
 import net.ronm19.phantomism.entity.AbstractPhantom;
 import org.jspecify.annotations.Nullable;
@@ -36,6 +42,8 @@ import org.jspecify.annotations.Nullable;
 public final class PhantomDimensionTravel {
     private static final String PORTAL_RIDER = "phantomism:portal_rider";
     private static final Map<ServerLevel, Budget> BUDGETS = new WeakHashMap<>();
+    private static final Map<AbstractPhantom, Retry> RETRIES = new WeakHashMap<>();
+    private static final Set<AbstractPhantom> IN_TRANSIT = Collections.newSetFromMap(new WeakHashMap<>());
 
     private PhantomDimensionTravel() {}
 
@@ -61,6 +69,7 @@ public final class PhantomDimensionTravel {
 
     public static boolean followsOwner(AbstractPhantom phantom) {
         return phantom.isAlive() && !phantom.isRemoved() && phantom.isTame() && phantom.getOwnerReference() != null
+                && !IN_TRANSIT.contains(phantom)
                 && !phantom.isPassenger() && !phantom.isLeashed() && phantom.getTask() == PhantomAssignments.Task.NONE
                 && (phantom.getOrder() == AbstractPhantom.Order.FOLLOW || phantom.getOrder() == AbstractPhantom.Order.GUARD)
                 && ownedPassengers(phantom, phantom, 0);
@@ -137,29 +146,67 @@ public final class PhantomDimensionTravel {
     }
 
     public static @Nullable AbstractPhantom followOwner(AbstractPhantom phantom) {
+        return followOwner(phantom, false);
+    }
+
+    private static @Nullable ServerPlayer owner(AbstractPhantom phantom) {
+        if (!(phantom.level() instanceof ServerLevel source) || phantom.getOwnerReference() == null || !phantom.isAlive() || phantom.isRemoved()) { return null; }
+        var owner = source.getServer().getPlayerList().getPlayer(phantom.getOwnerReference().getUUID());
+        return owner != null && owner.isAlive() && !owner.isRemoved() && !owner.wonGame && owner.isAddedToLevel() && phantom.isOwnedBy(owner) ? owner : null;
+    }
+
+    private static @Nullable AbstractPhantom followOwner(AbstractPhantom phantom, boolean immediate) {
         if (!(phantom.level() instanceof ServerLevel source) || phantom.getOwnerReference() == null || !phantom.isAlive() || phantom.isRemoved()) { return null; }
         UUID pending = phantom.getPersistentData().read(PORTAL_RIDER, UUIDUtil.CODEC).orElse(null);
         if (pending != null && !pending.equals(phantom.getOwnerReference().getUUID())) {
             phantom.getPersistentData().remove(PORTAL_RIDER);
             pending = null;
         }
-        if (!followsOwner(phantom) && pending == null) { return null; }
-        var owner = source.getServer().getPlayerList().getPlayer(phantom.getOwnerReference().getUUID());
-        if (owner == null || !owner.isAlive() || owner.isRemoved() || owner.wonGame || !owner.isAddedToLevel() || !phantom.isOwnedBy(owner)) { return null; }
+        if (IN_TRANSIT.contains(phantom) || !followsOwner(phantom) && pending == null) { return null; }
+        var owner = owner(phantom);
+        if (owner == null) { return null; }
         ServerLevel destination = owner.level();
         if (destination == source) {
+            if (!PhantomHornRally.returning(phantom)) { RETRIES.remove(phantom); }
             if (pending != null) { remount(phantom, owner, pending); }
             return null;
         }
-        if (phantom.isPassenger() || !ownedPassengers(phantom, phantom, 0) || destination.getEntity(phantom.getUUID()) != null || !reserve(destination)) { return null; }
+        AbstractPhantom moved = moveToOwner(phantom, owner, immediate);
+        if (moved != null && pending != null) { remount(moved, owner, pending); }
+        return moved;
+    }
+
+    public static @Nullable AbstractPhantom recallOwner(AbstractPhantom phantom, ServerPlayer owner, boolean immediate) {
+        if (owner(phantom) != owner || !followsOwner(phantom)) { return null; }
+        return moveToOwner(phantom, owner, immediate);
+    }
+
+    private static @Nullable AbstractPhantom moveToOwner(AbstractPhantom phantom, ServerPlayer owner, boolean immediate) {
+        ServerLevel destination = owner.level();
+        if (IN_TRANSIT.contains(phantom) || phantom.isPassenger() || !ownedPassengers(phantom, phantom, 0)
+                || destination.getEntity(phantom.getUUID()) != null && destination.getEntity(phantom.getUUID()) != phantom) { return null; }
+        Retry retry = RETRIES.get(phantom);
+        if (retry == null || retry.destination != destination.dimension() || !retry.owner.equals(owner.getUUID())) {
+            retry = new Retry(owner, destination);
+            RETRIES.put(phantom, retry);
+            phantom.interruptCombatForRecall();
+        }
+        long now = destination.getGameTime();
+        if (!immediate && (now < retry.nextAttempt && owner.position().distanceToSqr(retry.position) < 16.0D || !reserve(destination))) { return null; }
+        retry.nextAttempt = now + 5;
+        retry.position = owner.position();
         var position = near(destination, phantom, owner.position(), null, true);
         if (position.isEmpty()) { return null; }
         Entity transferred = phantom.teleport(new TeleportTransition(destination, position.get(), Vec3.ZERO, phantom.getYRot(), phantom.getXRot(), TeleportTransition.PLACE_PORTAL_TICKET));
         if (!(transferred instanceof AbstractPhantom moved)) { return null; }
+        RETRIES.remove(phantom);
         arrived(moved);
-        if (pending != null) { remount(moved, owner, pending); }
         return moved;
     }
+
+    public static boolean beginTransfer(AbstractPhantom phantom) { return IN_TRANSIT.add(phantom); }
+
+    public static void endTransfer(AbstractPhantom phantom) { IN_TRANSIT.remove(phantom); }
 
     private static void arrived(AbstractPhantom phantom) {
         phantom.clearCombatTarget(false);
@@ -220,9 +267,57 @@ public final class PhantomDimensionTravel {
     }
 
     @SubscribeEvent
+    public static void ownerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer owner) || owner.wonGame || !owner.isAlive()) { return; }
+        var followers = new ArrayList<AbstractPhantom>();
+        for (ServerLevel level : owner.level().getServer().getAllLevels()) {
+            if (level == owner.level()) { continue; }
+            for (Entity entity : level.getAllEntities()) {
+                if (entity instanceof AbstractPhantom phantom && phantom.isOwnedBy(owner) && followsOwner(phantom)) { followers.add(phantom); }
+            }
+        }
+        for (AbstractPhantom phantom : followers) { followOwner(phantom, true); }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void beforeTick(EntityTickEvent.Pre event) {
+        if (!(event.getEntity() instanceof AbstractPhantom phantom) || !(phantom.level() instanceof ServerLevel) || !followsOwner(phantom)) { return; }
+        ServerPlayer owner = owner(phantom);
+        if (owner != null && owner.level() != phantom.level()) {
+            followOwner(phantom);
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void retryTransfers(ServerTickEvent.Post event) {
+        for (AbstractPhantom phantom : new ArrayList<>(RETRIES.keySet())) {
+            if (phantom.level().getServer() != event.getServer()) { continue; }
+            ServerPlayer owner = owner(phantom);
+            if (owner == null || !followsOwner(phantom)) { RETRIES.remove(phantom); continue; }
+            if (owner.level() != phantom.level()) { followOwner(phantom); }
+            else if (PhantomHornRally.returning(phantom) && phantom.distanceToSqr(owner) > 1600.0D) { recallOwner(phantom, owner, false); }
+            else { RETRIES.remove(phantom); }
+        }
+    }
+
+    @SubscribeEvent
     public static void tick(EntityTickEvent.Post event) {
         if (event.getEntity() instanceof AbstractPhantom phantom && phantom.level() instanceof ServerLevel
-                && !phantom.isRemoved() && Math.floorMod(phantom.tickCount + phantom.getId(), 20) == 0) { followOwner(phantom); }
+                && !phantom.isRemoved()) { followOwner(phantom); }
+    }
+
+    private static final class Retry {
+        private final UUID owner;
+        private final ResourceKey<Level> destination;
+        private long nextAttempt;
+        private Vec3 position;
+
+        private Retry(ServerPlayer owner, ServerLevel destination) {
+            this.owner = owner.getUUID();
+            this.destination = destination.dimension();
+            this.position = owner.position();
+        }
     }
 
     private static final class Budget {

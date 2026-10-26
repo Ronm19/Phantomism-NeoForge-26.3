@@ -58,6 +58,17 @@ public final class ModBiomeModifierProvider implements SingleRegistryBootstrap<B
                 PhantomismContent.VAMPIRE_PHANTOM.get(), PhantomDiscovery.VAMPIRE.rarity().spawnWeight());
         addSpawns(context, "gravity_phantom_spawns", ModTags.Biomes.GRAVITY_PHANTOM_SPAWNS,
                 PhantomismContent.GRAVITY_PHANTOM.get(), 6);
+        addSpawns(context, "obsidian_phantom_spawns", ModTags.Biomes.OBSIDIAN_PHANTOM_SPAWNS, PhantomismContent.OBSIDIAN_PHANTOM.get(), 6);
+        addSpawns(context, "infernal_phantom_spawns", ModTags.Biomes.INFERNAL_PHANTOM_SPAWNS, PhantomismContent.INFERNAL_PHANTOM.get(), 3);
+        addSpawns(context, "autumn_phantom_spawns", ModTags.Biomes.AUTUMN_PHANTOM_SPAWNS, PhantomismContent.AUTUMN_PHANTOM.get(), 3);
+        addSpawns(context, "lunar_phantom_spawns", ModTags.Biomes.LUNAR_PHANTOM_SPAWNS, PhantomismContent.LUNAR_PHANTOM.get(), 3);
+        addSpawns(context, "solar_phantom_spawns", ModTags.Biomes.SOLAR_PHANTOM_SPAWNS, PhantomismContent.SOLAR_PHANTOM.get(), 4);
+        addSpawns(context, "spore_phantom_spawns", ModTags.Biomes.SPORE_PHANTOM_SPAWNS, PhantomismContent.SPORE_PHANTOM.get(), 12);
+        addSpawns(context, "gale_phantom_spawns", ModTags.Biomes.GALE_PHANTOM_SPAWNS, PhantomismContent.GALE_PHANTOM.get(), 12);
+        addSpawns(context, "crystal_phantom_spawns", ModTags.Biomes.CRYSTAL_PHANTOM_SPAWNS, PhantomismContent.CRYSTAL_PHANTOM.get(), 6);
+        addSpawns(context, "plague_phantom_spawns", ModTags.Biomes.PLAGUE_PHANTOM_SPAWNS, PhantomismContent.PLAGUE_PHANTOM.get(), 6);
+        addSpawns(context, "shadow_phantom_spawns", ModTags.Biomes.SHADOW_PHANTOM_SPAWNS, PhantomismContent.SHADOW_PHANTOM.get(), 6);
+        addSpawns(context, "eclipse_phantom_spawns", ModTags.Biomes.ECLIPSE_PHANTOM_SPAWNS, PhantomismContent.ECLIPSE_PHANTOM.get(), 3);
         addSpawns(context, "mirage_phantom_spawns", ModTags.Biomes.MIRAGE_PHANTOM_SPAWNS, PhantomismContent.MIRAGE_PHANTOM.get(), 6);
         addSpawns(context, "omen_phantom_spawns", ModTags.Biomes.OMEN_PHANTOM_SPAWNS, PhantomismContent.OMEN_PHANTOM.get(), 6);
         addSpawns(context, "ancient_phantom_spawns", ModTags.Biomes.ANCIENT_PHANTOM_SPAWNS, PhantomismContent.ANCIENT_PHANTOM.get(), 3);
@@ -87,7 +98,7 @@ public final class ModBiomeModifierProvider implements SingleRegistryBootstrap<B
         context.register(key, BiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(
                 context.lookup(Registries.BIOME).getOrThrow(biomes),
                 new Weighted<>(new MobSpawnSettings.SpawnerData(type, UniformInt.of(1,
-                        type == PhantomismContent.PHANTOM_KING.get() || type == PhantomismContent.REAPER_PHANTOM.get() || type == PhantomismContent.PRIMORDIAL_PHANTOM.get() || type == PhantomismContent.OMEN_PHANTOM.get() || type == PhantomismContent.VOID_PHANTOM.get() || type == PhantomismContent.ANGEL_PHANTOM.get() || type == PhantomismContent.SPECTRAL_PHANTOM.get() || type == PhantomismContent.DEMON_PHANTOM.get() || type == PhantomismContent.SENTINEL_PHANTOM.get() || type == PhantomismContent.RIFT_PHANTOM.get() || type == PhantomismContent.CHRONO_PHANTOM.get() || type == PhantomismContent.GRAVITY_PHANTOM.get() || type == PhantomismContent.WITHER_PHANTOM.get() ? 1 : type == PhantomismContent.ZOMBIE_PHANTOM.get() ? 3
+                        type == PhantomismContent.INFERNAL_PHANTOM.get() || type == PhantomismContent.AUTUMN_PHANTOM.get() || type == PhantomismContent.LUNAR_PHANTOM.get() || type == PhantomismContent.SOLAR_PHANTOM.get() || type == PhantomismContent.OBSIDIAN_PHANTOM.get() || type == PhantomismContent.CRYSTAL_PHANTOM.get() || type == PhantomismContent.PLAGUE_PHANTOM.get() || type == PhantomismContent.ECLIPSE_PHANTOM.get() || type == PhantomismContent.PHANTOM_KING.get() || type == PhantomismContent.REAPER_PHANTOM.get() || type == PhantomismContent.PRIMORDIAL_PHANTOM.get() || type == PhantomismContent.OMEN_PHANTOM.get() || type == PhantomismContent.VOID_PHANTOM.get() || type == PhantomismContent.ANGEL_PHANTOM.get() || type == PhantomismContent.SPECTRAL_PHANTOM.get() || type == PhantomismContent.DEMON_PHANTOM.get() || type == PhantomismContent.SENTINEL_PHANTOM.get() || type == PhantomismContent.RIFT_PHANTOM.get() || type == PhantomismContent.CHRONO_PHANTOM.get() || type == PhantomismContent.GRAVITY_PHANTOM.get() || type == PhantomismContent.WITHER_PHANTOM.get() ? 1 : type == PhantomismContent.ZOMBIE_PHANTOM.get() ? 3
                                 : type == PhantomismContent.GOLD_PHANTOM.get() || type == PhantomismContent.PHANTOM_DRAGON.get() ? 1 : 2)), weight)));
     }
 }

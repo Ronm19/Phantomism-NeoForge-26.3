@@ -23,6 +23,18 @@ public final class MirageDisguiseProfiles {
             case "golem_phantom" -> new MirageDecoyRenderer.Profile("golem_phantom", PhantomismAccessoryVisibility.NO_ACCESSORIES);
             case "gravity_phantom" -> new MirageDecoyRenderer.Profile("gravity_phantom", GravityPhantomRenderer.ACCESSORIES);
             case "husk_phantom" -> new MirageDecoyRenderer.Profile("husk_phantom", HuskPhantomRenderer.ACCESSORIES);
+            case "gale_phantom" -> new MirageDecoyRenderer.Profile("gale_phantom", PhantomismAccessoryVisibility.NO_ACCESSORIES);
+            case "autumn_phantom" -> new MirageDecoyRenderer.Profile("autumn_phantom", AutumnPhantomRenderer.ACCESSORIES);
+            case "lunar_phantom" -> new MirageDecoyRenderer.Profile("lunar_phantom", LunarPhantomRenderer.ACCESSORIES);
+            case "infernal_phantom" -> new MirageDecoyRenderer.Profile("infernal_phantom", InfernalPhantomRenderer.ACCESSORIES);
+            case "illager_phantom" -> new MirageDecoyRenderer.Profile("illager_phantom", IllagerPhantomRenderer.ACCESSORIES);
+            case "solar_phantom" -> new MirageDecoyRenderer.Profile("solar_phantom", SolarPhantomRenderer.ACCESSORIES);
+            case "spore_phantom" -> new MirageDecoyRenderer.Profile("spore_phantom", SporePhantomRenderer.ACCESSORIES);
+            case "obsidian_phantom" -> new MirageDecoyRenderer.Profile("obsidian_phantom", PhantomismAccessoryVisibility.NO_ACCESSORIES);
+            case "crystal_phantom" -> new MirageDecoyRenderer.Profile("crystal_phantom", PhantomismAccessoryVisibility.NO_ACCESSORIES);
+            case "plague_phantom" -> new MirageDecoyRenderer.Profile("plague_phantom", PhantomismAccessoryVisibility.NO_ACCESSORIES);
+            case "shadow_phantom" -> new MirageDecoyRenderer.Profile("shadow_phantom", PhantomismAccessoryVisibility.NO_ACCESSORIES);
+            case "eclipse_phantom" -> new MirageDecoyRenderer.Profile("eclipse_phantom", PhantomismAccessoryVisibility.NO_ACCESSORIES);
             case "mirage_phantom" -> new MirageDecoyRenderer.Profile("mirage_phantom", PhantomismAccessoryVisibility.NO_ACCESSORIES);
             case "omen_phantom" -> new MirageDecoyRenderer.Profile("omen_phantom", OmenPhantomRenderer.ACCESSORIES);
             case "phantom_dragon" -> new MirageDecoyRenderer.Profile("phantom_dragon", PhantomDragonRenderer.ACCESSORIES);

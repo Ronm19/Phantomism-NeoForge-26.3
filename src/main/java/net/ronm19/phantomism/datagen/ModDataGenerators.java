@@ -49,6 +49,18 @@ public final class ModDataGenerators {
         event.addProvider(new ModAncientAnimationProvider(event.getGenerator().getPackOutput()));
         event.addProvider(new ModReaperAnimationProvider(event.getGenerator().getPackOutput()));
         event.addProvider(new ModPrimordialAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModAutumnAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModLunarAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModInfernalAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModIllagerAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModSolarAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModSporeAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModGaleAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModObsidianAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModCrystalAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModPlagueAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModShadowAnimationProvider(event.getGenerator().getPackOutput()));
+        event.addProvider(new ModEclipseAnimationProvider(event.getGenerator().getPackOutput()));
         event.addProvider(new ModMirageAnimationProvider(event.getGenerator().getPackOutput()));
         event.addProvider(new ModGolemAnimationProvider(event.getGenerator().getPackOutput()));
         event.addProvider(new ModKingAnimationProvider(event.getGenerator().getPackOutput()));
@@ -68,6 +80,7 @@ public final class ModDataGenerators {
     }
 
     private static void addSharedProviders(GatherDataEvent event) {
+        event.addProvider(new ModCodexLootModifiersProvider(event.getGenerator().getPackOutput(), event.getWorldLookupProvider()));
         PackOutput output = event.getGenerator().getPackOutput();
         var lookup = event.getWorldLookupProvider();
         event.addProvider(new ModBiomeTagsProvider(output, lookup));

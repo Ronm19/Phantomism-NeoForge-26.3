@@ -57,7 +57,22 @@ public enum PhantomDiscovery {
     DARK("dark_phantom", PhantomismContent.DARK_PHANTOM, PhantomismContent.DARK_PHANTOM_SPAWN_EGG, Rarity.EPIC),
     KING("phantom_king", PhantomismContent.PHANTOM_KING, PhantomismContent.PHANTOM_KING_SPAWN_EGG, Rarity.EPIC),
     GOLEM("golem_phantom", PhantomismContent.GOLEM_PHANTOM, PhantomismContent.GOLEM_PHANTOM_SPAWN_EGG, Rarity.EPIC),
-    MIRAGE("mirage_phantom", PhantomismContent.MIRAGE_PHANTOM, PhantomismContent.MIRAGE_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON);
+    MIRAGE("mirage_phantom", PhantomismContent.MIRAGE_PHANTOM, PhantomismContent.MIRAGE_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    ECLIPSE("eclipse_phantom", PhantomismContent.ECLIPSE_PHANTOM, PhantomismContent.ECLIPSE_PHANTOM_SPAWN_EGG, Rarity.EPIC),
+    SHADOW("shadow_phantom", PhantomismContent.SHADOW_PHANTOM, PhantomismContent.SHADOW_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    PLAGUE("plague_phantom", PhantomismContent.PLAGUE_PHANTOM, PhantomismContent.PLAGUE_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    CRYSTAL("crystal_phantom", PhantomismContent.CRYSTAL_PHANTOM, PhantomismContent.CRYSTAL_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    OBSIDIAN("obsidian_phantom", PhantomismContent.OBSIDIAN_PHANTOM, PhantomismContent.OBSIDIAN_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    GALE("gale_phantom", PhantomismContent.GALE_PHANTOM, PhantomismContent.GALE_PHANTOM_SPAWN_EGG, Rarity.COMMON),
+    SPORE("spore_phantom", PhantomismContent.SPORE_PHANTOM, PhantomismContent.SPORE_PHANTOM_SPAWN_EGG, Rarity.COMMON),
+    SOLAR("solar_phantom", PhantomismContent.SOLAR_PHANTOM, PhantomismContent.SOLAR_PHANTOM_SPAWN_EGG, Rarity.RARE),
+    ILLAGER("illager_phantom", PhantomismContent.ILLAGER_PHANTOM, PhantomismContent.ILLAGER_PHANTOM_SPAWN_EGG, Rarity.UNCOMMON),
+    INFERNAL("infernal_phantom", PhantomismContent.INFERNAL_PHANTOM, PhantomismContent.INFERNAL_PHANTOM_SPAWN_EGG, Rarity.RARE),
+    LUNAR("lunar_phantom", PhantomismContent.LUNAR_PHANTOM, PhantomismContent.LUNAR_PHANTOM_SPAWN_EGG, Rarity.RARE),
+    AUTUMN("autumn_phantom", PhantomismContent.AUTUMN_PHANTOM, PhantomismContent.AUTUMN_PHANTOM_SPAWN_EGG, Rarity.RARE),
+    HALLOWEEN("halloween_phantom", PhantomismContent.HALLOWEEN_PHANTOM, PhantomismContent.HALLOWEEN_PHANTOM_SPAWN_EGG, Rarity.COMMON),
+    CHRISTMAS("christmas_phantom", PhantomismContent.CHRISTMAS_PHANTOM, PhantomismContent.CHRISTMAS_PHANTOM_SPAWN_EGG, Rarity.COMMON),
+    EASTER("easter_phantom", PhantomismContent.EASTER_PHANTOM, PhantomismContent.EASTER_PHANTOM_SPAWN_EGG, Rarity.COMMON);
 
     public static final String ICON_DATA_KEY = "phantomism_discovery_icon";
     public static final String CRITERION = "discovered";
@@ -78,6 +93,8 @@ public enum PhantomDiscovery {
     public String modelName() {
         return this.name;
     }
+
+    public int codexNumber() { return this == HALLOWEEN ? 52 : this == CHRISTMAS ? 53 : this == EASTER ? 54 : ordinal() + 1; }
 
     public EntityType<?> entityType() {
         return this.entityType.get();

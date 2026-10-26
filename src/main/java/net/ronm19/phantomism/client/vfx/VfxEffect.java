@@ -18,8 +18,11 @@ public final class VfxEffect extends Particle {
     private final ArrayDeque<Vec3> history = new ArrayDeque<>();
     private final ArrayDeque<Pose> echoes = new ArrayDeque<>();
     private int missing;
+    private final TotalEclipseEffects.State eclipse;
+    public TotalEclipseEffects.State eclipseState() { return eclipse; }
     public record Pose(Vec3 position, float yaw, float pitch) {}
     public VfxEffect(ClientLevel level, VfxPacket packet, VfxRegistry.Definition definition, int quality) {
+        this.eclipse = packet.effect().equals(net.ronm19.phantomism.vfx.SolarVfx.ECLIPSE) ? new TotalEclipseEffects.State() : null;
         super(level, packet.position().x, packet.position().y, packet.position().z); this.packet = packet; this.definition = definition; this.quality = quality; this.lifetime = packet.duration(); this.hasPhysics = false; this.history.add(packet.position());
         if (definition.form() == VfxRegistry.Form.SPATIAL_AFTERIMAGE || definition.form() == VfxRegistry.Form.SPECTRAL_AFTERIMAGE || definition.form() == VfxRegistry.Form.ETHEREAL_PLANE) { Entity attached = level == null ? null : level.getEntity(packet.entityId()); this.echoes.add(new Pose(packet.position(), attached == null ? 0 : attached.getYRot(), attached == null ? 0 : attached.getXRot())); }
     }
@@ -33,17 +36,23 @@ public final class VfxEffect extends Particle {
     public List<Pose> echoes() { return List.copyOf(this.echoes); }
     public net.minecraft.world.phys.AABB bounds() {
         var box = new net.minecraft.world.phys.AABB(this.position(), this.position()).inflate(this.packet.radius() + 5);
+        if (this.packet.effect().equals(net.ronm19.phantomism.vfx.SolarVfx.ECLIPSE)) { box = box.inflate(8, 24, 8); }
         if (this.definition.form() == VfxRegistry.Form.INFERNAL_BREATH || this.packet.effect().equals(net.ronm19.phantomism.vfx.DemonVfx.DRAIN)) { box = box.minmax(InfernalVfx.beamBounds(this)); }
         if (this.packet.effect().equals(net.ronm19.phantomism.vfx.AngelVfx.TOUCH) || this.packet.effect().equals(net.ronm19.phantomism.vfx.AngelVfx.TRAIL)) { box = box.minmax(new net.minecraft.world.phys.AABB(this.packet.position(), this.packet.position().add(this.packet.direction())).inflate(3)); }
         if (this.packet.effect().equals(net.ronm19.phantomism.vfx.PrimordialVfx.SHIFT)) { box = box.minmax(new net.minecraft.world.phys.AABB(this.packet.position(), this.packet.position().add(this.packet.direction())).inflate(3)); }
         if (this.packet.effect().equals(net.ronm19.phantomism.vfx.VoidVfx.STEP) || this.packet.effect().equals(net.ronm19.phantomism.vfx.VoidVfx.RESCUE)) { box = box.minmax(new net.minecraft.world.phys.AABB(this.packet.position(),this.packet.position().add(this.packet.direction())).inflate(3)); }
         if (this.definition.form() == VfxRegistry.Form.SPATIAL_TRANSIT) { box = box.minmax(new net.minecraft.world.phys.AABB(this.packet.position(), this.packet.position().add(this.packet.direction())).inflate(this.packet.radius() + 3)); }
         if (this.packet.effect().equals(net.ronm19.phantomism.vfx.ReaperVfx.HARVEST) || this.packet.effect().equals(net.ronm19.phantomism.vfx.ReaperVfx.PASSAGE)) { box = box.minmax(new net.minecraft.world.phys.AABB(this.packet.position(), this.packet.position().add(this.packet.direction())).inflate(3)); }
+        if (this.packet.effect().equals(net.ronm19.phantomism.vfx.SolarVfx.BEAM)) { box = box.minmax(new net.minecraft.world.phys.AABB(this.packet.position(), this.packet.position().add(this.packet.direction())).inflate(3)); }
         for (Vec3 point : this.history) { box = box.minmax(new net.minecraft.world.phys.AABB(point, point).inflate(.5D)); } return box;
     }
     @Override public void tick() {
         this.xo = this.x; this.yo = this.y; this.zo = this.z;
         if (Minecraft.getInstance().level != this.level || ++this.age >= this.lifetime) { this.remove(); return; }
+        if (this.packet.effect().equals(net.ronm19.phantomism.vfx.SolarVfx.ECLIPSE)) {
+            if (!this.eclipse.tick(this.level, this.packet, this.age)) { this.remove(); }
+            return;
+        }
         Entity attached = this.packet.entityId() < 0 ? null : this.level.getEntity(this.packet.entityId());
         if (attached != null && attached.getUUID().equals(this.packet.attached()) && !attached.isRemoved()) {
             if (this.age % 3 == 0 && VfxRegistry.afterimage(this.definition)) { while (this.echoes.size() >= 3) { this.echoes.removeFirst(); } this.echoes.addLast(new Pose(this.position(), attached.getYRot(), attached.getXRot())); }

@@ -98,8 +98,8 @@ public final class RiftPhantom extends AbstractPhantom implements CooldownDiscip
     @Override protected boolean shouldHuntAutomatically(LivingEntity target, ServerLevel level) { return this.isTame() && this.getOrder() == Order.GUARD && this.getOwner() != null && target instanceof Enemy && this.getOwner().distanceToSqr(target) <= 24 * 24; }
     @Override protected double getAutomaticTargetPriority(LivingEntity target) { return this.distanceToSqr(target) - (target instanceof Mob mob && this.acceptsAllyTarget(mob) ? 400 : 0); }
     @Override public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        var stack = player.getItemInHand(hand); if (isAlive() && !player.isSpectator() && !isTame() && stack.is(Items.CRYING_OBSIDIAN)) {
-            if (!level().isClientSide()) { boolean success = tamingAttempts++ >= 1 || random.nextFloat() < .75F; if (!player.isCreative()) { stack.shrink(1); }
+        var stack = player.getItemInHand(hand); if (isAlive() && !player.isSpectator() && !isTame() && stack.is(preferredTaming().item())) {
+            if (!level().isClientSide()) { boolean success = tamingAttempts++ >= preferredTaming().guaranteedAttempt() - 1 || random.nextFloat() < preferredTaming().chance(); if (!player.isCreative()) { stack.shrink(1); }
                 if (success) { tame(player); clearCombatTarget(true); level().broadcastEntityEvent(this, (byte) 7); } else { level().broadcastEntityEvent(this, (byte) 6); } } return InteractionResult.SUCCESS;
         } return super.mobInteract(player, hand);
     }
@@ -305,4 +305,20 @@ public final class RiftPhantom extends AbstractPhantom implements CooldownDiscip
     @Override protected void addAdditionalSaveData(ValueOutput output) { super.addAdditionalSaveData(output); output.putInt("RiftTamingAttempts", tamingAttempts); output.putInt("RiftMeleeCooldown", meleeCooldown); for (int index = 0; index < cooldowns.length; index++) { output.putInt("RiftCooldown" + index, cooldowns[index]); } }
     @Override protected void readAdditionalSaveData(ValueInput input) { super.readAdditionalSaveData(input); closeSpatial(); tamingAttempts = Math.clamp(input.getIntOr("RiftTamingAttempts", 0), 0, 1); meleeCooldown = Math.clamp(input.getIntOr("RiftMeleeCooldown", 0), 0, 36); int[] maxima = {240, 560, 320, 600, 200, 400, 900, 1800, 240}; for (int index = 0; index < cooldowns.length; index++) { cooldowns[index] = Math.clamp(input.getIntOr("RiftCooldown" + index, 0), 0, maxima[index]); } }
     @Override public List<CooldownDiscipline.Slot> temporalCooldowns() { return List.of(CooldownDiscipline.Slot.normal("rift_dash", 240, () -> cooldowns[8], value -> cooldowns[8] = value), CooldownDiscipline.Slot.normal("rift_throw", 320, () -> cooldowns[2], value -> cooldowns[2] = value)); }
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(Items.CRYING_OBSIDIAN, .75F, 2, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "rift_bolt" -> this.cooldowns[0];
+            case "dash" -> this.cooldowns[8];
+            case "lock" -> cooldowns[5];
+            case "fractured_space" -> cooldowns[7];
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { this.cooldowns[0] = ticks; }
 }

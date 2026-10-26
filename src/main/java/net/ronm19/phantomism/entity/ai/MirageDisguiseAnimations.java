@@ -4,6 +4,17 @@ public final class MirageDisguiseAnimations {
     private MirageDisguiseAnimations() {}
     public static String attack(String resource) {
         return switch (resource) {
+            case "entity/lunar_phantom" -> "animation.lunar.lance";
+            case "entity/infernal_phantom" -> "animation.infernal.bolt";
+            case "entity/illager_phantom" -> "animation.illager.barrage";
+            case "entity/solar_phantom" -> "animation.solar.quick_beam";
+            case "entity/spore_phantom" -> "animation.spore.breath";
+            case "entity/gale_phantom" -> "animation.gale.combat";
+            case "entity/obsidian_phantom" -> "animation.obsidian.combat";
+            case "entity/crystal_phantom" -> "animation.crystal.combat";
+            case "entity/plague_phantom" -> "animation.plague.combat";
+            case "entity/shadow_phantom" -> "animation.shadow.strike";
+            case "entity/eclipse_phantom" -> "animation.eclipse.hybrid_rend";
             case "entity/mirage_phantom" -> "animation.mirage.strike";
             case "entity/ancient_phantom" -> "animation.ancient.strike";
             case "entity/angel_phantom" -> "animation.angel.smite";

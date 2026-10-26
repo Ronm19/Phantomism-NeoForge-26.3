@@ -312,6 +312,7 @@ public final class PhantomAssignments {
             this.resetWork();
             return false;
         }
+        if (this.task == Task.HARVEST && this.phantom instanceof net.ronm19.phantomism.entity.AutumnPhantom autumn) { return autumn.harvest().tick(level, player); }
         return this.task == Task.HARVEST ? this.tickHarvest(level, player, center) : this.tickCollect(level, player, center);
     }
 
@@ -375,6 +376,12 @@ public final class PhantomAssignments {
                 && level.getBlockState(position).is(Blocks.SHORT_GRASS);
     }
 
+    public void offerHarvest(ItemStack stack) {
+        if (stack.isEmpty()) { return; }
+        if (this.cargo.isEmpty()) { this.cargo = stack.split(Math.min(stack.getCount(), stack.getMaxStackSize())); }
+        else if (ItemStack.isSameItemSameComponents(this.cargo, stack)) { int moved = Math.min(stack.getCount(), this.cargo.getMaxStackSize() - this.cargo.getCount()); this.cargo.grow(moved); stack.shrink(moved); }
+    }
+    public boolean deliverHarvest(ServerLevel level, ServerPlayer owner) { Vec3 center = this.center(); return !this.cargo.isEmpty() && center != null && this.tickCollect(level, owner, center); }
     private boolean tickCollect(ServerLevel level, ServerPlayer owner, Vec3 center) {
         if (!this.cargo.isEmpty()) {
             if (this.phantom.distanceToSqr(owner) <= 9.0D && this.canSee(owner)) {

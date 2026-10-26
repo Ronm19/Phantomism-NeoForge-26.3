@@ -301,7 +301,7 @@ public final class DemonPhantom extends AbstractPhantom implements CooldownDisci
         entityData.set(STATE, (byte) ((formTicks > 0 ? 1 : 0) | (apocalypseTicks > 0 ? 2 : 0)));
     }
     @Override public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (isAlive() && !isTame() && !player.isSpectator() && player.getItemInHand(hand).is(Items.BLAZE_ROD)) {
+        if (isAlive() && !isTame() && !player.isSpectator() && player.getItemInHand(hand).is(preferredTaming().item())) {
             if (!level().isClientSide()) { if (!player.isCreative()) { player.getItemInHand(hand).shrink(1); } tame(player); clearCombatTarget(true); level().broadcastEntityEvent(this, (byte) 7); } return InteractionResult.SUCCESS;
         } return super.mobInteract(player, hand);
     }
@@ -324,4 +324,29 @@ public final class DemonPhantom extends AbstractPhantom implements CooldownDisci
     @Override public List<CooldownDiscipline.Slot> temporalCooldowns() {
         List<CooldownDiscipline.Slot> slots = new ArrayList<>(); for (int index = 0; index < 8; index++) { final int slot = index; slots.add(CooldownDiscipline.Slot.normal("demon_" + CLIPS[index], INTERVALS[index], () -> cooldowns[slot], value -> cooldowns[slot] = value)); } return List.copyOf(slots);
     }
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(Items.BLAZE_ROD, 1F, 1, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Bite: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[0]), "Breath: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[1]), "Dash: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[2]), "Wave: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[3]), "Meteor: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[4]), "Drain: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[5]), "Howl: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[6]), "Form: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[7]), "Apocalypse: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[8]));
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "drain" -> cooldowns[5];
+            case "breath" -> cooldowns[1];
+            case "dash" -> cooldowns[2];
+            case "wave" -> cooldowns[3];
+            case "flame_meteor" -> cooldowns[4];
+            case "howl" -> cooldowns[6];
+            case "demon_form" -> cooldowns[7];
+            case "apocalypse" -> cooldowns[8];
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { cooldowns[1] = ticks; }
 }

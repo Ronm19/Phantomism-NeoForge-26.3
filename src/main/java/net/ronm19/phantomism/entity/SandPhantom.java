@@ -326,4 +326,9 @@ public final class SandPhantom extends AbstractPhantom {
         this.sandstormTicks = 0;
         this.stormDustedTargets.clear();
     }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Bolt Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(BOLT_COOLDOWN), "Dive Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(DIVE_COOLDOWN), "Sandstorm Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(SANDSTORM_COOLDOWN));
+    }
 }

@@ -224,7 +224,7 @@ public final class GolemPhantom extends AbstractPhantom {
     public void action(String clip, int ticks) { actionTicks = Math.max(actionTicks, ticks); if (isAddedToLevel()) { triggerAnim("golem", clip); } }
     private void sound(net.minecraft.sounds.SoundEvent sound, float volume, float pitch) { if (level() instanceof ServerLevel level) { level.playSound(null, blockPosition(), sound, SoundSource.NEUTRAL, volume, pitch); } }
     @Override protected void registerSpeciesAnimationControllers(AnimatableManager.ControllerRegistrar registrar) { var controller = new AnimationController<GolemPhantom>("golem", 2, state -> PlayState.STOP); for (String clip : CLIPS) { controller.triggerableAnim(clip, RawAnimation.begin().thenPlay("animation.golem." + clip)); } registrar.add(controller.additiveAnimations()); }
-    @Override public InteractionResult mobInteract(Player player, InteractionHand hand) { if (!isTame() && isAlive() && !player.isSpectator() && player.getItemInHand(hand).is(Items.IRON_BLOCK)) { if (!level().isClientSide()) { if (!player.isCreative()) { player.getItemInHand(hand).shrink(1); } tame(player); clearCombatTarget(true); level().broadcastEntityEvent(this, (byte) 7); } return InteractionResult.SUCCESS; } return super.mobInteract(player, hand); }
+    @Override public InteractionResult mobInteract(Player player, InteractionHand hand) { if (!isTame() && isAlive() && !player.isSpectator() && player.getItemInHand(hand).is(preferredTaming().item())) { if (!level().isClientSide()) { if (!player.isCreative()) { player.getItemInHand(hand).shrink(1); } tame(player); clearCombatTarget(true); level().broadcastEntityEvent(this, (byte) 7); } return InteractionResult.SUCCESS; } return super.mobInteract(player, hand); }
     public void stopActions() { if (session != null && level() instanceof ServerLevel) { TitaniumVfx.cancel(this); } session = UUID.randomUUID(); forceMotion(false); guardTicks = 0; impactTicks = 0; comboTicks = 0; comboTarget = null; actionTicks = 0; ordered = null; aggressor = null; threatTicks = 0; }
     @Override public void setOrder(Order order) { super.setOrder(order); if (excavation != null) { excavation.cancel(); if (order == Order.STAY || order == Order.RETURN_HOME) { stopActions(); } } }
     @Override public void setTask(PhantomAssignments.Task task) { super.setTask(task); if (excavation != null) { excavation.cancel(); } }
@@ -233,4 +233,26 @@ public final class GolemPhantom extends AbstractPhantom {
     @Override public void remove(RemovalReason reason) { if (excavation != null) { stopActions(); } super.remove(reason); }
     @Override protected void addAdditionalSaveData(ValueOutput output) { super.addAdditionalSaveData(output); for (int index = 0; index < cooldowns.length; index++) { output.putInt("TitaniumCooldown" + index, cooldowns[index]); } output.putInt("TitaniumAnger", angerTicks); output.putInt("TitaniumMountedPunch", mountedPunchTicks); excavation.save(output); }
     @Override protected void readAdditionalSaveData(ValueInput input) { super.readAdditionalSaveData(input); stopActions(); for (int index = 0; index < cooldowns.length; index++) { cooldowns[index] = Math.clamp(input.getIntOr("TitaniumCooldown" + index, 0), 0, INTERVALS[index]); } mountedPunchTicks = Math.clamp(input.getIntOr("TitaniumMountedPunch", 0), 0, 6); angerTicks = Math.clamp(input.getIntOr("TitaniumAnger", 0), 0, 100); entityData.set(ANGRY, angerTicks > 0); excavation.load(input); }
+
+    @Override
+    public net.ronm19.phantomism.codex.TamingProfile preferredTaming() {
+        return new net.ronm19.phantomism.codex.TamingProfile(Items.IRON_BLOCK, 1F, 1, "Use on an untamed Phantom. No item-based temptation goal is registered.");
+    }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Hook: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[0]), "Fist: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[1]), "Ram: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[2]), "Slam: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[3]), "Followup: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(INTERVALS[4]));
+    }
+
+    @Override public int staffAbilityCooldown(String ability) {
+        return switch (ability) {
+            case "ram" -> cooldowns[0];
+            case "slam" -> cooldowns[1];
+            case "punch" -> cooldowns[2];
+            case "guard" -> cooldowns[3];
+            case "titan" -> cooldowns[4];
+            default -> -1;
+        };
+    }
+    @Override protected void staffMountedCooldown(int ticks) { cooldowns[2] = ticks; }
 }

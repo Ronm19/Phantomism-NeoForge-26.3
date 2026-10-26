@@ -392,4 +392,9 @@ public final class VioletPhantom extends AbstractPhantom {
         this.entityData.set(OVERDRIVE, this.overdriveTicks > 0);
         if (this.overdriveTicks > 0) { this.applyOverdriveMovement(); } else { this.endOverdrive(); }
     }
+
+    @Override
+    public java.util.List<String> codexCooldowns() {
+        return java.util.List.of("Lance Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(LANCE_COOLDOWN), "Dive Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(DIVE_COOLDOWN), "Crosscut Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(CROSSCUT_COOLDOWN), "Rupture Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(RUPTURE_COOLDOWN), "Guard Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(GUARD_COOLDOWN), "Overdrive Cooldown: " + net.ronm19.phantomism.codex.CodexCatalog.seconds(OVERDRIVE_COOLDOWN));
+    }
 }
