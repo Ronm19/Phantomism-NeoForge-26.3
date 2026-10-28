@@ -18,6 +18,13 @@ public final class VfxManager {
     private static final List<VfxEffect> ACTIVE = new ArrayList<>();
     private static ClientLevel world;
     private VfxManager() {}
+    public static VfxEffect find(java.util.UUID caster, net.minecraft.resources.Identifier kind) {
+        if (world != Minecraft.getInstance().level) { return null; }
+        for (VfxEffect effect : ACTIVE) {
+            if (effect.isAlive() && effect.packet.caster().equals(caster) && effect.packet.effect().equals(kind)) { return effect; }
+        }
+        return null;
+    }
     @SubscribeEvent public static void worldTick(net.neoforged.neoforge.client.event.ClientTickEvent.Post event) {
         ClientLevel current = Minecraft.getInstance().level;
         if (current != world) { for (VfxEffect effect : ACTIVE) { effect.remove(); } ACTIVE.clear(); world = current; }

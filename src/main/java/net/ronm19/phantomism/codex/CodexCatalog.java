@@ -23,14 +23,13 @@ import net.ronm19.phantomism.advancement.PhantomDiscovery;
 public final class CodexCatalog {
     public static final int TOTAL = 58;
     public static final Gson JSON = new Gson();
-    private static final java.util.Set<Integer> FEMALE = java.util.Set.of(3, 5, 6, 9, 11, 12, 15, 21, 22, 25, 28, 29, 30, 33, 38, 42, 49, 50, 53, 54, 57, 58);
-    private static final List<String> PLANNED = List.of("Spore", "Solar", "Illager", "Infernal", "Lunar", "Autumn",
-            "Creator / Aethar", "Halloween", "Christmas", "Easter", "Firework", "St. Patrick's", "New Year's", "Valentine's");
+    private static final java.util.Set<Integer> FEMALE = java.util.Set.of(3, 5, 6, 9, 11, 12, 15, 21, 22, 25, 28, 29, 30, 33, 38, 42, 49, 50, 53, 54, 58);
+
 
     private CodexCatalog() {
     }
 
-    public static final int VERSION = 3;
+    public static final int VERSION = 5;
     public static final int MAX_DATA = 196608;
 
     public record Entry(int number, String nameKey, String officialName, String gender, String category,
@@ -63,6 +62,7 @@ public final class CodexCatalog {
             int number = discovery.codexNumber();
             var advancement = player.level().getServer().getAdvancements().get(discovery.advancementId());
             boolean discovered = advancement != null && player.getAdvancements().getOrStartProgress(advancement).isDone();
+            if (discovery == PhantomDiscovery.CREATOR) { discovered = discovered && net.ronm19.phantomism.progression.CreatorRevelation.revealed(player); }
             String species = discovery.modelName();
             Guide guide = null;
             if (discovered) {
@@ -75,32 +75,29 @@ public final class CodexCatalog {
             var tag = TagKey.create(Registries.BIOME, id(species + "_spawns"));
             List<String> habitats = biomeRegistry.get(tag).map(set -> set.stream().map(holder -> holder.unwrapKey().map(key -> key.identifier().toString()).orElse("Unknown biome")).sorted().toList()).orElse(List.of());
             entries.add(new Entry(number, discovery.entityType().getDescriptionId(), number == 7 ? "Desert" : "",
-                    gender(number), number >= 52 ? "Holiday" : number == 51 ? "Creator" : "Standard", species,
+                    gender(number), number == 59 ? "Creator" : number >= 52 ? "Holiday" : "Standard", species,
                     advancement != null, discovered, discovery.rarity().name(), habitats, "codex.field." + species + ".spawn", guide));
         }
-        for (int index = 0; index < PLANNED.size(); index++) {
-            int number = 45 + index;
-            if (java.util.Arrays.stream(PhantomDiscovery.values()).anyMatch(discovery -> discovery.codexNumber() == number)) { continue; }
-            entries.add(new Entry(number, "", PLANNED.get(index), gender(number), number >= 52 ? "Holiday" : number == 51 ? "Creator" : "Standard",
-                    "", false, false, "", List.of(), "", null));
-        }
         entries.sort(java.util.Comparator.comparingInt(Entry::number));
-        return new Snapshot(VERSION, List.copyOf(entries), List.of(recipe(player, "phantom_codex"), recipe(player, "phantom_staff")));
+        return new Snapshot(VERSION, List.copyOf(entries), List.of(recipe(player, "phantom_codex"), recipe(player, "phantom_staff"), recipe(player, "eye_of_creation")));
     }
 
     public static boolean valid(Snapshot snapshot) {
         try {
             if (snapshot == null || snapshot.version() != VERSION || snapshot.entries() == null || snapshot.entries().size() != TOTAL
-                    || snapshot.recipes() == null || snapshot.recipes().size() != 2) { return false; }
+                    || snapshot.recipes() == null || snapshot.recipes().size() != 3) { return false; }
+            List<PhantomDiscovery> roster = java.util.Arrays.stream(PhantomDiscovery.values())
+                    .sorted(java.util.Comparator.comparingInt(PhantomDiscovery::codexNumber)).toList();
+            if (roster.size() != TOTAL) { return false; }
             for (int index = 0; index < TOTAL; index++) {
+                PhantomDiscovery discovery = roster.get(index);
+                int number = discovery.codexNumber();
                 Entry entry = snapshot.entries().get(index);
-                if (entry == null || entry.number() != index + 1 || !text(entry.nameKey(), 160) || !text(entry.officialName(), 80)
-                        || !entry.gender().equals(gender(index + 1)) || !List.of("Standard", "Creator", "Holiday").contains(entry.category())
+                if (entry == null || entry.number() != number || !text(entry.nameKey(), 160) || !text(entry.officialName(), 80)
+                        || !entry.gender().equals(gender(number)) || !List.of("Standard", "Creator", "Holiday").contains(entry.category())
                         || !text(entry.rarity(), 32) || !keys(entry.habitats(), 128, 256) || !text(entry.spawnKey(), 160)
                         || entry.discovered() && !entry.available() || !entry.discovered() && entry.guide() != null) { return false; }
-                int number = index + 1;
-                String expected = java.util.Arrays.stream(PhantomDiscovery.values()).filter(discovery -> discovery.codexNumber() == number)
-                        .map(PhantomDiscovery::modelName).findFirst().orElse("");
+                String expected = discovery.modelName();
                 if (!expected.equals(entry.species()) || expected.isEmpty() && (entry.available() || entry.discovered() || entry.guide() != null)) { return false; }
                 for (String habitat : entry.habitats()) { if (Identifier.tryParse(habitat) == null) { return false; } }
                 Guide guide = entry.guide();
@@ -125,7 +122,7 @@ public final class CodexCatalog {
             }
             var recipeIds = new java.util.HashSet<String>();
             for (RecipePage recipe : snapshot.recipes()) {
-                if (recipe == null || !text(recipe.nameKey(), 160) || !List.of(id("phantom_codex").toString(), id("phantom_staff").toString()).contains(recipe.id())
+                if (recipe == null || !text(recipe.nameKey(), 160) || !List.of(id("phantom_codex").toString(), id("phantom_staff").toString(), id("eye_of_creation").toString()).contains(recipe.id())
                         || !recipeIds.add(recipe.id())
                         || recipe.ingredients() == null || recipe.ingredients().size() != 9 || !itemValid(recipe.output()) || recipe.outputCount() < 0 || recipe.outputCount() > 99) { return false; }
                 for (List<String> choices : recipe.ingredients()) {

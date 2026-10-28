@@ -44,6 +44,7 @@ public final class VfxEffect extends Particle {
         if (this.definition.form() == VfxRegistry.Form.SPATIAL_TRANSIT) { box = box.minmax(new net.minecraft.world.phys.AABB(this.packet.position(), this.packet.position().add(this.packet.direction())).inflate(this.packet.radius() + 3)); }
         if (this.packet.effect().equals(net.ronm19.phantomism.vfx.ReaperVfx.HARVEST) || this.packet.effect().equals(net.ronm19.phantomism.vfx.ReaperVfx.PASSAGE)) { box = box.minmax(new net.minecraft.world.phys.AABB(this.packet.position(), this.packet.position().add(this.packet.direction())).inflate(3)); }
         if (this.packet.effect().equals(net.ronm19.phantomism.vfx.SolarVfx.BEAM)) { box = box.minmax(new net.minecraft.world.phys.AABB(this.packet.position(), this.packet.position().add(this.packet.direction())).inflate(3)); }
+        if (CreatorEffects.supports(this.packet.effect())) { box = box.minmax(CreatorEffects.bounds(this)); }
         for (Vec3 point : this.history) { box = box.minmax(new net.minecraft.world.phys.AABB(point, point).inflate(.5D)); } return box;
     }
     @Override public void tick() {

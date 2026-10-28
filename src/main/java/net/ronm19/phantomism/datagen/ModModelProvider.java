@@ -51,6 +51,12 @@ public final class ModModelProvider extends ModelProvider {
         itemModels.generateFlatItem(PhantomismContent.PHANTOM_KING_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.AUTUMN_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.HALLOWEEN_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.NEW_YEARS_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.CREATOR_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.EYE_OF_CREATION.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.VALENTINES_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.ST_PATRICKS_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(PhantomismContent.FIREWORK_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.EASTER_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.CHRISTMAS_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(PhantomismContent.LUNAR_PHANTOM_SPAWN_EGG.get(), ModelTemplates.FLAT_ITEM);

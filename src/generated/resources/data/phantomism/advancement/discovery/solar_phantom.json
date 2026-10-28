@@ -20,7 +20,8 @@
     },
     "title": {
       "translate": "advancements.phantomism.discovery.solar_phantom.title"
-    }
+    },
+    "frame": "goal"
   },
   "requirements": [
     [

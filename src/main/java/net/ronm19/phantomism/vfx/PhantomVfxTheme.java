@@ -47,7 +47,9 @@ public enum PhantomVfxTheme {
     PRIMORDIAL(0xA68AFF, 0x79EFFF),
     VOID(0x963CFA, 0xD6ADFF),
     DARK(0x6516B3, 0xDC89FA),
-    KING(0xEFB73E, 0xFFECB0), GOLEM(0x20BBF5, 0xD8EEFA), MIRAGE(0xBE92EF, 0x72F5F5), ECLIPSE(0xFFC757, 0xAD6DFF), SHADOW(0x934BDF, 0xCEBDE8), PLAGUE(0x86C92D, 0xDBF79C), CRYSTAL(0xBA87FF, 0x8AECFF), OBSIDIAN(0x8D27D9, 0xE5B9FF), GALE(0x2FCBFF, 0xE5FAFF), SPORE(0x94C846, 0xE5E9B3);
+    KING(0xEFB73E, 0xFFECB0), GOLEM(0x20BBF5, 0xD8EEFA), MIRAGE(0xBE92EF, 0x72F5F5), ECLIPSE(0xFFC757, 0xAD6DFF), SHADOW(0x934BDF, 0xCEBDE8), PLAGUE(0x86C92D, 0xDBF79C), CRYSTAL(0xBA87FF, 0x8AECFF), OBSIDIAN(0x8D27D9, 0xE5B9FF), GALE(0x2FCBFF, 0xE5FAFF), SPORE(0x94C846, 0xE5E9B3), NEW_YEARS(0xFFF0C4, 0x8EADE8), VALENTINES(0xFFD1E2, 0xD6337A), CREATOR(0xFFFFFF, 0x191919),
+    SOLAR(0xFFB52C, 0xFFF5DB), AUTUMN(0xED802D, 0xF7D786), HALLOWEEN(0xFF991F, 0xAD65ED),
+    CHRISTMAS(0xFFE2A0, 0xB7283B), EASTER(0xE7A7CE, 0xA8D8C2), FIREWORK(0xF2F4FF, 0x3D8DFF), ST_PATRICKS(0x67DF7B, 0xF5D488);
 
     private final int color;
     private final int fadeColor;
@@ -66,10 +68,20 @@ public enum PhantomVfxTheme {
     }
 
     public static PhantomVfxTheme of(AbstractPhantom phantom) {
+        if (phantom instanceof net.ronm19.phantomism.entity.AutumnPhantom) { return AUTUMN; }
+        if (phantom instanceof net.ronm19.phantomism.entity.HalloweenPhantom) { return HALLOWEEN; }
+        if (phantom instanceof net.ronm19.phantomism.entity.ChristmasPhantom) { return CHRISTMAS; }
+        if (phantom instanceof net.ronm19.phantomism.entity.EasterPhantom) { return EASTER; }
+        if (phantom instanceof net.ronm19.phantomism.entity.FireworkPhantom) { return FIREWORK; }
+        if (phantom instanceof net.ronm19.phantomism.entity.StPatricksPhantom) { return ST_PATRICKS; }
+
+        if (phantom instanceof net.ronm19.phantomism.entity.CreatorPhantom) { return CREATOR; }
+        if (phantom instanceof net.ronm19.phantomism.entity.ValentinesPhantom) { return VALENTINES; }
+        if (phantom instanceof net.ronm19.phantomism.entity.NewYearsPhantom) { return NEW_YEARS; }
         if (phantom instanceof net.ronm19.phantomism.entity.LunarPhantom) { return LUNAR; }
         if (phantom instanceof net.ronm19.phantomism.entity.InfernalPhantom) { return INFERNAL_PHANTOM; }
         if (phantom instanceof net.ronm19.phantomism.entity.IllagerPhantom) { return ILLAGER; }
-        if (phantom instanceof net.ronm19.phantomism.entity.SolarPhantom) { return GOLD; }
+        if (phantom instanceof net.ronm19.phantomism.entity.SolarPhantom) { return SOLAR; }
         if (phantom instanceof net.ronm19.phantomism.entity.SporePhantom) { return SPORE; }
         if (phantom instanceof net.ronm19.phantomism.entity.GalePhantom) { return GALE; }
         if (phantom instanceof net.ronm19.phantomism.entity.ObsidianPhantom) { return OBSIDIAN; }

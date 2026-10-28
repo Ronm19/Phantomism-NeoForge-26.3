@@ -91,6 +91,11 @@ public class Phantomism {
         event.put(PhantomismContent.PRIMORDIAL_PHANTOM.get(), net.ronm19.phantomism.entity.PrimordialPhantom.createAttributes().build());
         event.put(PhantomismContent.AUTUMN_PHANTOM.get(), net.ronm19.phantomism.entity.AutumnPhantom.createAttributes().build());
         event.put(PhantomismContent.HALLOWEEN_PHANTOM.get(), net.ronm19.phantomism.entity.HalloweenPhantom.createAttributes().build());
+        event.put(PhantomismContent.NEW_YEARS_PHANTOM.get(), net.ronm19.phantomism.entity.NewYearsPhantom.createAttributes().build());
+        event.put(PhantomismContent.CREATOR_PHANTOM.get(), net.ronm19.phantomism.entity.CreatorPhantom.createAttributes().build());
+        event.put(PhantomismContent.VALENTINES_PHANTOM.get(), net.ronm19.phantomism.entity.ValentinesPhantom.createAttributes().build());
+        event.put(PhantomismContent.ST_PATRICKS_PHANTOM.get(), net.ronm19.phantomism.entity.StPatricksPhantom.createAttributes().build());
+        event.put(PhantomismContent.FIREWORK_PHANTOM.get(), net.ronm19.phantomism.entity.FireworkPhantom.createAttributes().build());
         event.put(PhantomismContent.EASTER_PHANTOM.get(), net.ronm19.phantomism.entity.EasterPhantom.createAttributes().build());
         event.put(PhantomismContent.CHRISTMAS_PHANTOM.get(), net.ronm19.phantomism.entity.ChristmasPhantom.createAttributes().build());
         event.put(PhantomismContent.LUNAR_PHANTOM.get(), net.ronm19.phantomism.entity.LunarPhantom.createAttributes().build());

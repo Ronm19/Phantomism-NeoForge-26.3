@@ -52,6 +52,11 @@
     "phantomism:autumn_phantom_spawn_egg",
     "phantomism:halloween_phantom_spawn_egg",
     "phantomism:christmas_phantom_spawn_egg",
-    "phantomism:easter_phantom_spawn_egg"
+    "phantomism:easter_phantom_spawn_egg",
+    "phantomism:firework_phantom_spawn_egg",
+    "phantomism:st_patricks_phantom_spawn_egg",
+    "phantomism:new_years_phantom_spawn_egg",
+    "phantomism:valentines_phantom_spawn_egg",
+    "phantomism:creator_phantom_spawn_egg"
   ]
 }

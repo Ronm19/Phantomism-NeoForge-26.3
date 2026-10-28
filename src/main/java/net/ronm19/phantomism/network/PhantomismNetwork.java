@@ -34,6 +34,31 @@ public final class PhantomismNetwork {
     public static void registerPayloads(RegisterPayloadHandlersEvent event) {
         net.ronm19.phantomism.codex.CodexService.register(event);
         net.ronm19.phantomism.ability.StaffAbilityService.register(event);
+        event.registrar("1").playToServer(RiddenNewYearsDashPayload.TYPE, RiddenNewYearsDashPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.NewYearsPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenDash(player); }
+                }));
+        event.registrar("1").playToServer(RiddenCreatorStepPayload.TYPE, RiddenCreatorStepPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.CreatorPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenDash(player); }
+                }));
+        event.registrar("1").playToServer(RiddenValentinesDashPayload.TYPE, RiddenValentinesDashPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.ValentinesPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenDash(player); }
+                }));
+        event.registrar("1").playToServer(RiddenStPatricksDashPayload.TYPE, RiddenStPatricksDashPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.StPatricksPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenDash(player); }
+                }));
+        event.registrar("1").playToServer(RiddenFireworkRushPayload.TYPE, RiddenFireworkRushPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> {
+                    if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.FireworkPhantom phantom
+                            && phantom.getId() == payload.phantomId()) { phantom.activateRiddenRush(player); }
+                }));
         event.registrar("1").playToServer(RiddenEasterLeapPayload.TYPE, RiddenEasterLeapPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> {
                     if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.EasterPhantom phantom
@@ -54,6 +79,7 @@ public final class PhantomismNetwork {
                     if (context.player() instanceof ServerPlayer player && player.getVehicle() instanceof net.ronm19.phantomism.entity.SpectralPhantom phantom
                             && phantom.getId() == payload.phantomId()) { phantom.requestSafeDismount(player); }
                 }));
+        event.registrar("1").playToClient(CreatorBeamPacket.TYPE, CreatorBeamPacket.STREAM_CODEC);
         event.registrar("1").playToClient(net.ronm19.phantomism.vfx.VfxPacket.TYPE, net.ronm19.phantomism.vfx.VfxPacket.STREAM_CODEC);
         event.registrar("1").playToServer(RiddenOmenDivePayload.TYPE, RiddenOmenDivePayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> {
@@ -612,6 +638,31 @@ public final class PhantomismNetwork {
     public record RiddenHalloweenDivePayload(int phantomId) implements CustomPacketPayload {
         public static final Type<RiddenHalloweenDivePayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_halloween_dive"));
         public static final StreamCodec<ByteBuf, RiddenHalloweenDivePayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenHalloweenDivePayload::phantomId, RiddenHalloweenDivePayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenNewYearsDashPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenNewYearsDashPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_new_years_dash"));
+        public static final StreamCodec<ByteBuf, RiddenNewYearsDashPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenNewYearsDashPayload::phantomId, RiddenNewYearsDashPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenCreatorStepPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenCreatorStepPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_creator_step"));
+        public static final StreamCodec<ByteBuf, RiddenCreatorStepPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenCreatorStepPayload::phantomId, RiddenCreatorStepPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenValentinesDashPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenValentinesDashPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_valentines_dash"));
+        public static final StreamCodec<ByteBuf, RiddenValentinesDashPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenValentinesDashPayload::phantomId, RiddenValentinesDashPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenStPatricksDashPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenStPatricksDashPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_st_patricks_dash"));
+        public static final StreamCodec<ByteBuf, RiddenStPatricksDashPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenStPatricksDashPayload::phantomId, RiddenStPatricksDashPayload::new);
+        @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
+    }
+    public record RiddenFireworkRushPayload(int phantomId) implements CustomPacketPayload {
+        public static final Type<RiddenFireworkRushPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "ridden_firework_rush"));
+        public static final StreamCodec<ByteBuf, RiddenFireworkRushPayload> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.VAR_INT, RiddenFireworkRushPayload::phantomId, RiddenFireworkRushPayload::new);
         @Override public Type<? extends CustomPacketPayload> type() { return TYPE; }
     }
     public record RiddenEasterLeapPayload(int phantomId) implements CustomPacketPayload {

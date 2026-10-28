@@ -20,6 +20,31 @@ public final class VfxRegistry {
     public static boolean afterimage(Definition definition) { return definition.form() == Form.VOID_AFTERIMAGE || definition.form() == Form.AFTERIMAGE || definition.form() == Form.SPATIAL_AFTERIMAGE || definition.form() == Form.SPECTRAL_AFTERIMAGE || definition.form() == Form.ETHEREAL_PLANE; }
     private static void spatial(Identifier id, Form form, VfxSequence sequence) { register(id, new Definition(form, texture("rift_surface"), texture("rift_shard"), texture("rift_sigil"), texture("rift_trail"), Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/rift_phantom.png"), sequence, 1)); }
     static {
+        for (Identifier effect : net.ronm19.phantomism.vfx.NewYearsVfx.ALL) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.NewYearsVfx.COUNTDOWN) ? Form.CINEMATIC : Form.AREA,
+                    texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/new_years_phantom.png"), new VfxSequence(4, 240, 12), 1));
+        }
+        for (Identifier effect : net.ronm19.phantomism.vfx.CreatorVfx.ALL) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.CreatorVfx.EVOLUTION) ? Form.CINEMATIC : Form.AREA,
+                    texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/creator_phantom.png"), new VfxSequence(4, 240, 12), 1));
+        }
+        for (Identifier effect : net.ronm19.phantomism.vfx.ValentinesVfx.ALL) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.ValentinesVfx.SERENADE) ? Form.CINEMATIC : Form.AREA,
+                    texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/valentines_phantom.png"), new VfxSequence(4, 240, 12), 1));
+        }
+        for (Identifier effect : net.ronm19.phantomism.vfx.StPatricksVfx.ALL) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.StPatricksVfx.SKY) ? Form.CINEMATIC : Form.AREA,
+                    texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/st_patricks_phantom.png"), new VfxSequence(4, 240, 12), 1));
+        }
+        for (Identifier effect : net.ronm19.phantomism.vfx.FireworkVfx.ALL) {
+            register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.FireworkVfx.FINALE) ? Form.CINEMATIC : Form.AREA,
+                    texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"),
+                    Identifier.fromNamespaceAndPath(Phantomism.MOD_ID, "textures/entity/firework_phantom.png"), new VfxSequence(4, 240, 12), 1));
+        }
         for (Identifier effect : net.ronm19.phantomism.vfx.EasterVfx.ALL) {
             register(effect, new Definition(effect.equals(net.ronm19.phantomism.vfx.EasterVfx.AWAKENING) ? Form.CINEMATIC : Form.AREA,
                     texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"), texture("halloween_energy"),

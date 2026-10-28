@@ -20,6 +20,7 @@ public final class PhantomDiscoveryEvents {
     }
 
     public static boolean discover(ServerPlayer player, PhantomDiscovery discovery) {
+        if (discovery == PhantomDiscovery.CREATOR && !net.ronm19.phantomism.progression.CreatorRevelation.revealed(player)) { return false; }
         if (player.isSpectator() || !player.isAlive()) {
             return false;
         }

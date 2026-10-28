@@ -59,6 +59,7 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 @EventBusSubscriber(modid = Phantomism.MOD_ID, value = Dist.CLIENT)
 public class PhantomismClient {
     private static final net.ronm19.phantomism.client.screen.InfernalHeldFire INFERNAL_HELD_FIRE = new net.ronm19.phantomism.client.screen.InfernalHeldFire();
+    private static final net.ronm19.phantomism.client.screen.CreatorHeldFire CREATOR_HELD_FIRE = new net.ronm19.phantomism.client.screen.CreatorHeldFire();
     private static final KeyMapping RANGED_ABILITY_KEY = new KeyMapping(
             "key.phantomism.ranged_ability",
             InputConstants.KEY_G,
@@ -70,6 +71,11 @@ public class PhantomismClient {
     private static final KeyMapping PRIMORDIAL_MELEE_KEY = new KeyMapping("key.phantomism.primordial_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
     private static final KeyMapping AUTUMN_MELEE_KEY = new KeyMapping("key.phantomism.autumn_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
     private static final KeyMapping HALLOWEEN_MELEE_KEY = new KeyMapping("key.phantomism.halloween_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping NEW_YEARS_MELEE_KEY = new KeyMapping("key.phantomism.new_years_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping CREATOR_MELEE_KEY = new KeyMapping("key.phantomism.creator_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping VALENTINES_MELEE_KEY = new KeyMapping("key.phantomism.valentines_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping ST_PATRICKS_MELEE_KEY = new KeyMapping("key.phantomism.st_patricks_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
+    private static final KeyMapping FIREWORK_MELEE_KEY = new KeyMapping("key.phantomism.firework_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
     private static final KeyMapping EASTER_MELEE_KEY = new KeyMapping("key.phantomism.easter_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
     private static final KeyMapping CHRISTMAS_MELEE_KEY = new KeyMapping("key.phantomism.christmas_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
     private static final KeyMapping LUNAR_MELEE_KEY = new KeyMapping("key.phantomism.lunar_melee", InputConstants.KEY_LCONTROL, KeyMapping.Category.MISC);
@@ -129,6 +135,11 @@ public class PhantomismClient {
         event.register(KING_MELEE_KEY);
         event.register(AUTUMN_MELEE_KEY);
         event.register(HALLOWEEN_MELEE_KEY);
+        event.register(NEW_YEARS_MELEE_KEY);
+        event.register(CREATOR_MELEE_KEY);
+        event.register(VALENTINES_MELEE_KEY);
+        event.register(ST_PATRICKS_MELEE_KEY);
+        event.register(FIREWORK_MELEE_KEY);
         event.register(EASTER_MELEE_KEY);
         event.register(CHRISTMAS_MELEE_KEY);
         event.register(LUNAR_MELEE_KEY);
@@ -219,6 +230,31 @@ public class PhantomismClient {
         while (HALLOWEEN_MELEE_KEY.consumeClick()) {
             if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.HalloweenPhantom phantom) {
                 ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenHalloweenDivePayload(phantom.getId()));
+            }
+        }
+        while (NEW_YEARS_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.NewYearsPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenNewYearsDashPayload(phantom.getId()));
+            }
+        }
+        while (CREATOR_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.CreatorPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenCreatorStepPayload(phantom.getId()));
+            }
+        }
+        while (VALENTINES_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.ValentinesPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenValentinesDashPayload(phantom.getId()));
+            }
+        }
+        while (ST_PATRICKS_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.StPatricksPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenStPatricksDashPayload(phantom.getId()));
+            }
+        }
+        while (FIREWORK_MELEE_KEY.consumeClick()) {
+            if (minecraft.gui.screen() == null && minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.FireworkPhantom phantom) {
+                ClientPacketDistributor.sendToServer(new net.ronm19.phantomism.network.PhantomismNetwork.RiddenFireworkRushPayload(phantom.getId()));
             }
         }
         while (EASTER_MELEE_KEY.consumeClick()) {
@@ -335,7 +371,12 @@ public class PhantomismClient {
             if (minecraft.gui.screen() == null
                     && minecraft.player != null
                     && minecraft.player.getVehicle() instanceof AbstractPhantom phantom) {
-                if (!(phantom instanceof net.ronm19.phantomism.entity.InfernalPhantom)
+                if (phantom instanceof net.ronm19.phantomism.entity.CreatorPhantom) {
+                    if (minecraft.level != null && phantom.getControllingPassenger() == minecraft.player && phantom.isOwnedBy(minecraft.player)
+                            && CREATOR_HELD_FIRE.poll(true, phantom.getUUID(), minecraft.level, minecraft.level.getGameTime())) {
+                        ClientPacketDistributor.sendToServer(new RiddenProjectileAbilityPayload(phantom.getId()));
+                    }
+                } else if (!(phantom instanceof net.ronm19.phantomism.entity.InfernalPhantom)
                         || minecraft.level != null && phantom.getControllingPassenger() == minecraft.player && phantom.isOwnedBy(minecraft.player)
                         && INFERNAL_HELD_FIRE.poll(true, phantom.getUUID(), minecraft.level, minecraft.level.getGameTime())) {
                     ClientPacketDistributor.sendToServer(new RiddenProjectileAbilityPayload(phantom.getId()));
@@ -345,6 +386,9 @@ public class PhantomismClient {
         var rapidPhantom = minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.InfernalPhantom infernal ? infernal : null;
         boolean held = minecraft.gui.screen() == null && rapidPhantom != null && rapidPhantom.getControllingPassenger() == minecraft.player && rapidPhantom.isOwnedBy(minecraft.player) && RANGED_ABILITY_KEY.isDown();
         if (INFERNAL_HELD_FIRE.poll(held, rapidPhantom == null ? null : rapidPhantom.getUUID(), minecraft.level, minecraft.level == null ? 0 : minecraft.level.getGameTime())) { ClientPacketDistributor.sendToServer(new RiddenProjectileAbilityPayload(rapidPhantom.getId())); }
+        var creator = minecraft.player != null && minecraft.player.getVehicle() instanceof net.ronm19.phantomism.entity.CreatorPhantom aethar ? aethar : null;
+        boolean creatorHeld = minecraft.gui.screen() == null && creator != null && creator.getControllingPassenger() == minecraft.player && creator.isOwnedBy(minecraft.player) && RANGED_ABILITY_KEY.isDown();
+        if (CREATOR_HELD_FIRE.poll(creatorHeld, creator == null ? null : creator.getUUID(), minecraft.level, minecraft.level == null ? 0 : minecraft.level.getGameTime())) { ClientPacketDistributor.sendToServer(new RiddenProjectileAbilityPayload(creator.getId())); }
     }
 
     static void onRidingInput(MovementInputUpdateEvent event) {
@@ -598,6 +642,15 @@ public class PhantomismClient {
         event.registerEntityRenderer(PhantomismContent.PRIMORDIAL_STAR.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerEntityRenderer(PhantomismContent.AUTUMN_PHANTOM.get(), net.ronm19.phantomism.client.renderer.AutumnPhantomRenderer::new);
         event.registerEntityRenderer(PhantomismContent.HALLOWEEN_PHANTOM.get(), net.ronm19.phantomism.client.renderer.HalloweenPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.NEW_YEARS_PHANTOM.get(), net.ronm19.phantomism.client.renderer.NewYearsPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.CREATOR_PHANTOM.get(), net.ronm19.phantomism.client.renderer.CreatorPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.VALENTINES_PHANTOM.get(), net.ronm19.phantomism.client.renderer.ValentinesPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.ST_PATRICKS_PHANTOM.get(), net.ronm19.phantomism.client.renderer.StPatricksPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.NEW_YEARS_CLOCK_PROJECTILE.get(), net.ronm19.phantomism.client.renderer.NewYearsClockRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.VALENTINES_HEART_PROJECTILE.get(), net.ronm19.phantomism.client.renderer.ValentinesHeartRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.ST_PATRICKS_SHAMROCK_PROJECTILE.get(), net.ronm19.phantomism.client.renderer.StPatricksShamrockRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.FIREWORK_PHANTOM.get(), net.ronm19.phantomism.client.renderer.FireworkPhantomRenderer::new);
+        event.registerEntityRenderer(PhantomismContent.FIREWORK_ROCKET_PROJECTILE.get(), net.ronm19.phantomism.client.renderer.FireworkRocketRenderer::new);
         event.registerEntityRenderer(PhantomismContent.EASTER_PHANTOM.get(), net.ronm19.phantomism.client.renderer.EasterPhantomRenderer::new);
         event.registerEntityRenderer(PhantomismContent.CHRISTMAS_PHANTOM.get(), net.ronm19.phantomism.client.renderer.ChristmasPhantomRenderer::new);
         event.registerEntityRenderer(PhantomismContent.EASTER_EGG_PROJECTILE.get(), net.ronm19.phantomism.client.renderer.EasterEggProjectileRenderer::new);

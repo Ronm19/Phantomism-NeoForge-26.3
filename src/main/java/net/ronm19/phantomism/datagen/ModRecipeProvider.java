@@ -17,6 +17,11 @@ public final class ModRecipeProvider extends RecipeProvider {
     protected void buildRecipes() {
         new ModAdvancementProvider(this.advancementOutput).generate();
         new ModBrewingRecipeProvider(this.output).generate();
+        this.shaped(RecipeCategory.MISC, PhantomismContent.EYE_OF_CREATION.get())
+                .pattern("MEM").pattern("SNS").pattern("MDM")
+                .define('M', Items.PHANTOM_MEMBRANE).define('E', Items.ENDER_EYE)
+                .define('S', Items.ECHO_SHARD).define('N', Items.NETHER_STAR).define('D', Items.DRAGON_BREATH)
+                .unlockedBy("has_nether_star", this.has(Items.NETHER_STAR)).save(this.output);
         this.shapeless(RecipeCategory.TOOLS, PhantomismContent.PHANTOM_CODEX.get())
                 .requires(Items.BOOK)
                 .requires(Items.PHANTOM_MEMBRANE, 2)

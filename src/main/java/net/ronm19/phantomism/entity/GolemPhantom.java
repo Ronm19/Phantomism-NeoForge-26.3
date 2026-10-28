@@ -254,5 +254,6 @@ public final class GolemPhantom extends AbstractPhantom {
             default -> -1;
         };
     }
-    @Override protected void staffMountedCooldown(int ticks) { cooldowns[2] = ticks; }
+    // Mounted Punch already has its own timer; it must not rewrite AI Punch recovery.
+    @Override protected void staffMountedCooldown(int ticks) {}
 }

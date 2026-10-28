@@ -144,7 +144,7 @@ public final class LunarPhantom extends AbstractPhantom implements CooldownDisci
     }
     private boolean engaged(LivingEntity target) { return target.getUUID().equals(orderedTarget) || attacking(target, this) || attacking(target, getOwner()) || target instanceof Mob mob && recipient(mob.getTarget()); }
     @Override protected boolean isSpeciesCombatTarget(LivingEntity target) {
-        return safeEnemy(target) && (engaged(target) || getControllingPassenger() instanceof Player rider && isOwnedBy(rider));
+        return safeEnemy(target) && (isFamilyDefenseThreat(target) || engaged(target) || getControllingPassenger() instanceof Player rider && isOwnedBy(rider));
     }
     public boolean validTarget(LivingEntity target) { return isSpeciesCombatTarget(target) && getAssignments().permitsDefensivePursuit(target); }
     @Override protected boolean shouldHuntAutomatically(LivingEntity target, ServerLevel level) { return enabled() && validTarget(target) && line(getEyePosition(), target.getEyePosition()); }

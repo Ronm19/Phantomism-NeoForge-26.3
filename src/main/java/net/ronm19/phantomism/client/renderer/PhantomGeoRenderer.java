@@ -32,7 +32,9 @@ public class PhantomGeoRenderer<T extends AbstractPhantom> extends GeoEntityRend
         super(context, model);
         this.accessories = accessories;
         this.shadowRadius = 0.65F;
-        this.withRenderLayer(new EyesLayer<>(this, species));
+        EyesLayer<T> eyes = new EyesLayer<>(this, species);
+        this.withRenderLayer(eyes);
+        this.withRenderLayer(new DetailGlowLayer<>(this, eyes));
     }
 
     @Override
@@ -164,6 +166,76 @@ public class PhantomGeoRenderer<T extends AbstractPhantom> extends GeoEntityRend
 
     private static void visibility(BoneSnapshots snapshots, String bone, boolean visible) {
         snapshots.ifPresent(bone, snapshot -> snapshot.skipRender(!visible).skipChildrenRender(!visible));
+    }
+
+    /** Texture-only companion layer for marks previously combined with the eye atlas. */
+    private static final class DetailGlowLayer<T extends AbstractPhantom> extends TextureLayerGeoLayer<T, Void, PhantomGeoRenderState> {
+        private static final java.util.Set<String> AVAILABLE = java.util.Set.of(
+                "textures/entity/ancient_phantom_baby_detail_glow.png",
+                "textures/entity/ancient_phantom_detail_glow.png",
+                "textures/entity/angel_phantom_baby_detail_glow.png",
+                "textures/entity/angel_phantom_detail_glow.png",
+                "textures/entity/blood_phantom_baby_detail_glow.png",
+                "textures/entity/blood_phantom_detail_glow.png",
+                "textures/entity/chrono_phantom_baby_detail_glow.png",
+                "textures/entity/chrono_phantom_detail_glow.png",
+                "textures/entity/demon_phantom_baby_detail_glow.png",
+                "textures/entity/demon_phantom_detail_glow.png",
+                "textures/entity/echo_phantom_baby_detail_glow.png",
+                "textures/entity/echo_phantom_detail_glow.png",
+                "textures/entity/eclipse_phantom_baby_total_detail_glow.png",
+                "textures/entity/eclipse_phantom_total_detail_glow.png",
+                "textures/entity/gale_phantom_baby_combat_detail_glow.png",
+                "textures/entity/gale_phantom_baby_detail_glow.png",
+                "textures/entity/gale_phantom_baby_dominion_detail_glow.png",
+                "textures/entity/gale_phantom_baby_fast_detail_glow.png",
+                "textures/entity/gale_phantom_combat_detail_glow.png",
+                "textures/entity/gale_phantom_detail_glow.png",
+                "textures/entity/gale_phantom_dominion_detail_glow.png",
+                "textures/entity/gale_phantom_fast_detail_glow.png",
+                "textures/entity/gravity_phantom_baby_detail_glow.png",
+                "textures/entity/gravity_phantom_detail_glow.png",
+                "textures/entity/obsidian_phantom_baby_bastion_detail_glow.png",
+                "textures/entity/obsidian_phantom_baby_citadel_detail_glow.png",
+                "textures/entity/obsidian_phantom_baby_combat_detail_glow.png",
+                "textures/entity/obsidian_phantom_baby_detail_glow.png",
+                "textures/entity/obsidian_phantom_bastion_detail_glow.png",
+                "textures/entity/obsidian_phantom_citadel_detail_glow.png",
+                "textures/entity/obsidian_phantom_combat_detail_glow.png",
+                "textures/entity/obsidian_phantom_detail_glow.png",
+                "textures/entity/omen_phantom_baby_detail_glow.png",
+                "textures/entity/omen_phantom_detail_glow.png",
+                "textures/entity/phantom_king_baby_detail_glow.png",
+                "textures/entity/phantom_king_detail_glow.png",
+                "textures/entity/primordial_phantom_baby_detail_glow.png",
+                "textures/entity/primordial_phantom_detail_glow.png",
+                "textures/entity/reaper_phantom_baby_detail_glow.png",
+                "textures/entity/reaper_phantom_detail_glow.png",
+                "textures/entity/rift_phantom_baby_detail_glow.png",
+                "textures/entity/rift_phantom_detail_glow.png",
+                "textures/entity/sculk_phantom_baby_detail_glow.png",
+                "textures/entity/sculk_phantom_detail_glow.png",
+                "textures/entity/spectral_phantom_baby_detail_glow.png",
+                "textures/entity/spectral_phantom_detail_glow.png",
+                "textures/entity/vampire_phantom_baby_detail_glow.png",
+                "textures/entity/vampire_phantom_detail_glow.png",
+                "textures/entity/void_phantom_baby_detail_glow.png",
+                "textures/entity/void_phantom_detail_glow.png",
+                "textures/entity/wither_phantom_baby_detail_glow.png",
+                "textures/entity/wither_phantom_detail_glow.png");
+        private final EyesLayer<T> eyes;
+        private DetailGlowLayer(PhantomGeoRenderer<T> renderer, EyesLayer<T> eyes) {
+            super(renderer, Identifier.fromNamespaceAndPath("phantomism", "textures/entity/ancient_phantom_baby_detail_glow.png"), RenderTypes::eyes);
+            this.eyes = eyes;
+        }
+        @Override protected Identifier getTextureResource(PhantomGeoRenderState state) {
+            return eyes.getTextureResource(state).withPath(path -> path.replace("_eyes.png", "_detail_glow.png"));
+        }
+        @Override public void submitRenderTask(RenderPassInfo<PhantomGeoRenderState> pass, net.minecraft.client.renderer.SubmitNodeCollector collector) {
+            if (pass.renderState().halloweenVisual != 0 && AVAILABLE.contains(getTextureResource(pass.renderState()).getPath())) {
+                super.submitRenderTask(pass, collector);
+            }
+        }
     }
 
     private static final class EyesLayer<T extends AbstractPhantom> extends TextureLayerGeoLayer<T, Void, PhantomGeoRenderState> {

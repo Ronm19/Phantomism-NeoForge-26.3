@@ -22,6 +22,9 @@ public final class VfxGroup extends ParticleGroup<VfxEffect> {
             if (!effect.isAlive() || camera.position().distanceToSqr(effect.position()) > 80 * 80 || !frustum.isVisible(effect.bounds())) { continue; }
             int allowance = VfxRegistry.afterimage(effect.definition) ? 4096 : (effect.definition.form() == VfxRegistry.Form.SPATIAL_ULTIMATE || effect.definition.form() == VfxRegistry.Form.BASTION || effect.definition.form() == VfxRegistry.Form.APOCALYPSE || effect.definition.form() == VfxRegistry.Form.CELESTIAL_EYE || effect.definition.form() == VfxRegistry.Form.CALAMITY || effect.definition.form() == VfxRegistry.Form.FORGOTTEN_LAND || effect.definition.form() == VfxRegistry.Form.LAST_BELL || effect.definition.form() == VfxRegistry.Form.PRIMAL_DOMAIN || effect.definition.form() == VfxRegistry.Form.NULL_HORIZON || effect.definition.form() == VfxRegistry.Form.DARK_HOUR || effect.definition.form() == VfxRegistry.Form.KINGS_DOMINION || effect.definition.form() == VfxRegistry.Form.TITANS_IMPACT) ? 4096 : 1024;
             if (effect.packet.effect().equals(net.ronm19.phantomism.vfx.SolarVfx.ECLIPSE)) { allowance = 3072; }
+            if (effect.packet.effect().equals(net.ronm19.phantomism.vfx.FireworkVfx.FINALE)) { allowance = 3072; }
+            if (effect.packet.effect().equals(net.ronm19.phantomism.vfx.FireworkVfx.FINAL_BURST)) { allowance = 1536; }
+            if (effect.packet.effect().equals(net.ronm19.phantomism.vfx.CreatorVfx.BEAM)) { allowance = 2816; }
             List<VfxMesh.Batch> generated = VfxMesh.build(effect, camera.position(), partialTick, Math.min(allowance, 8192 - vertices));
             for (VfxMesh.Batch batch : generated) { vertices += batch.count(); batches.add(batch); } if (vertices >= 8192) { break; }
         }

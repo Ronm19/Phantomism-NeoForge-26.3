@@ -18,6 +18,7 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.ronm19.phantomism.client.gui.PhantomCodexPortraits;
+import net.ronm19.phantomism.advancement.PhantomDiscovery;
 import net.ronm19.phantomism.codex.CodexCatalog;
 import net.ronm19.phantomism.codex.CodexPacket;
 
@@ -85,7 +86,8 @@ public final class PhantomCodexScreen extends Screen {
 
     private void selectTab(int target) { tab = target; detailScroll = 0; refreshList(); }
     public static String name(CodexCatalog.Entry entry) {
-        if (!entry.officialName().isEmpty()) { return entry.officialName().contains("Phantom") || entry.number() == 51 ? entry.officialName() : entry.officialName() + " Phantom"; }
+        if (entry.number() == 59) { return net.ronm19.phantomism.progression.CreatorRevelation.name(entry.discovered()).getString(); }
+        if (!entry.officialName().isEmpty()) { return entry.officialName().contains("Phantom") ? entry.officialName() : entry.officialName() + " Phantom"; }
         String label = Component.translatable(entry.nameKey()).getString();
         return label.equals(entry.nameKey()) ? readable(entry.species()) : label;
     }
@@ -94,6 +96,9 @@ public final class PhantomCodexScreen extends Screen {
         String value = parsed == null ? identifier : parsed.getPath();
         return java.util.Arrays.stream(value.replace('/', ' ').replace('_', ' ').split(" +"))
                 .filter(word -> !word.isEmpty()).map(word -> word.substring(0, 1).toUpperCase(Locale.ROOT) + word.substring(1)).collect(java.util.stream.Collectors.joining(" "));
+    }
+    private static Component displayName(CodexCatalog.Entry entry) {
+        return entry.number() == 59 ? net.ronm19.phantomism.progression.CreatorRevelation.name(entry.discovered()) : Component.literal(name(entry));
     }
     public static String habitat(String identifier) {
         Identifier biome = Identifier.tryParse(identifier);
@@ -188,16 +193,23 @@ public final class PhantomCodexScreen extends Screen {
                 blank();
             }
             heading("taming"); var taming = guide.taming();
-            if (taming.staffOnly()) { paragraph(ui("staff.only")); }
-            if (taming.foods().isEmpty()) {
+            if (entry.number() == PhantomDiscovery.CREATOR.codexNumber()) {
                 for (String item : taming.items()) { itemLine(item); }
-                if (!taming.staffOnly()) { paragraph(taming.guaranteedAttempt() == 0 ? ui("tame.independent_chance", CodexCatalog.number(taming.chance() * 100D)) : ui("tame.chance", CodexCatalog.number(taming.chance() * 100D), taming.guaranteedAttempt())); }
+                // The Eye is an acquisition ritual, not a food roll or Survival Staff tame.
+                if (!taming.noteKey().isEmpty()) { paragraph(translated(taming.noteKey())); }
             } else {
-                for (var food : taming.foods()) { itemLine(food.item()); paragraph(food.guaranteedAttempt() == 0 ? ui("tame.independent_chance", CodexCatalog.number(food.chance() * 100D)) : ui("tame.chance", CodexCatalog.number(food.chance() * 100D), food.guaranteedAttempt())); }
+                if (taming.staffOnly()) { paragraph(ui("staff.only")); }
+                else { paragraph(ui("tame.interact")); }
+                if (taming.foods().isEmpty()) {
+                    for (String item : taming.items()) { itemLine(item); }
+                    if (!taming.staffOnly()) { paragraph(taming.guaranteedAttempt() == 0 ? ui("tame.independent_chance", CodexCatalog.number(taming.chance() * 100D)) : ui("tame.chance", CodexCatalog.number(taming.chance() * 100D), taming.guaranteedAttempt())); }
+                } else {
+                    for (var food : taming.foods()) { itemLine(food.item()); paragraph(food.guaranteedAttempt() == 0 ? ui("tame.independent_chance", CodexCatalog.number(food.chance() * 100D)) : ui("tame.chance", CodexCatalog.number(food.chance() * 100D), food.guaranteedAttempt())); }
+                }
+                if (!taming.staffOnly()) { paragraph(ui("staff.alternative")); }
+                if (!taming.noteKey().isEmpty()) { paragraph(translated(taming.noteKey())); }
+                if (!taming.lure().isEmpty()) { paragraph(ui("lure", stack(taming.lure(), 1).getHoverName())); itemLine(taming.lure()); }
             }
-            paragraph(ui("staff.alternative"));
-            if (!taming.noteKey().isEmpty()) { paragraph(translated(taming.noteKey())); }
-            if (!taming.lure().isEmpty()) { paragraph(ui("lure", stack(taming.lure(), 1).getHoverName())); itemLine(taming.lure()); }
             heading("riding"); var riding = guide.riding();
             paragraph(ui(riding.rideable() ? "rideable" : "unrideable")); paragraph(translated(riding.descriptionKey()));
             if (riding.secondary() && riding.secondaryCooldown() > 0) { text(ui("secondary.cooldown", CodexCatalog.seconds(riding.secondaryCooldown())), MUTED); blank(); }
@@ -220,11 +232,11 @@ public final class PhantomCodexScreen extends Screen {
             if (entry != null) {
                 int size = detailStart() - contentTop - 4;
                 portrait(graphics, entry, detailLeft(), contentTop, size);
-                String header = String.format(Locale.ROOT, "#%03d %s", entry.number(), name(entry));
+                Component header = Component.literal(String.format(Locale.ROOT, "#%03d ", entry.number())).append(displayName(entry));
                 int titleLeft = detailLeft() + size + 6, down = contentTop + 2;
-                for (FormattedCharSequence line : font.split(Component.literal(header), Math.max(24, textWidth() - size - 7)).stream().limit(3).toList()) { graphics.text(font, line, titleLeft, down, INK); down += 10; }
+                for (FormattedCharSequence line : font.split(header, Math.max(24, textWidth() - size - 7)).stream().limit(3).toList()) { graphics.text(font, line, titleLeft, down, INK); down += 10; }
                 graphics.text(font, font.plainSubstrByWidth(status(entry).getString(), Math.max(24, textWidth() - size - 7)), titleLeft, Math.max(down, detailStart() - 13), MUTED);
-                if (mouseY >= contentTop && mouseY < detailStart() && mouseX >= detailLeft() && mouseX < left + panelWidth - 16) { graphics.setTooltipForNextFrame(Component.literal(header).append(" - ").append(status(entry)), mouseX, mouseY); }
+                if (mouseY >= contentTop && mouseY < detailStart() && mouseX >= detailLeft() && mouseX < left + panelWidth - 16) { graphics.setTooltipForNextFrame(header.copy().append(" - ").append(status(entry)), mouseX, mouseY); }
             }
         } else { graphics.text(font, ui("tab." + TABS[tab]), detailLeft(), contentTop + 5, ACCENT); }
         graphics.enableScissor(detailLeft(), detailStart(), left + panelWidth - 12, contentBottom);
@@ -260,8 +272,8 @@ public final class PhantomCodexScreen extends Screen {
             graphics.fill(left + 10, positionY, left + listWidth - 3, positionY + 25, entry.number() == selected ? 0xFF453650 : hover ? 0xFF292538 : 0xFF1C1929);
             portrait(graphics, entry, left + 12, positionY + 2, 21);
             graphics.text(font, String.format(Locale.ROOT, "%03d", entry.number()), left + 37, positionY + 3, entry.discovered() ? 0xFF93D5B2 : MUTED);
-            graphics.text(font, font.plainSubstrByWidth(name(entry), listWidth - 48), left + 37, positionY + 14, entry.available() ? INK : MUTED);
-            if (hover) { graphics.setTooltipForNextFrame(Component.literal(name(entry)).append(" - ").append(status(entry)), mouseX, mouseY); }
+            graphics.text(font, Component.literal(font.plainSubstrByWidth(name(entry), listWidth - 48)).withStyle(displayName(entry).getStyle()), left + 37, positionY + 14, entry.available() ? INK : MUTED);
+            if (hover) { graphics.setTooltipForNextFrame(displayName(entry).copy().append(" - ").append(status(entry)), mouseX, mouseY); }
         }
         if (filtered.isEmpty()) { graphics.text(font, ui("empty"), left + 14, start + 6, MUTED); }
         scrollbar(graphics, left + listWidth - 1, start, contentBottom, listScroll, Math.max(1, filtered.size()), visibleRows());

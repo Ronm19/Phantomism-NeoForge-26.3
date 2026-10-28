@@ -52,6 +52,11 @@
     "phantomism:autumn_phantom",
     "phantomism:halloween_phantom",
     "phantomism:christmas_phantom",
-    "phantomism:easter_phantom"
+    "phantomism:easter_phantom",
+    "phantomism:firework_phantom",
+    "phantomism:st_patricks_phantom",
+    "phantomism:new_years_phantom",
+    "phantomism:valentines_phantom",
+    "phantomism:creator_phantom"
   ]
 }

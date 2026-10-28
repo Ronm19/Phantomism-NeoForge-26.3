@@ -218,6 +218,34 @@ public final class PhantomAbilities {
     static {
         register(AutumnPhantom.class, "autumn_phantom", "bolt", "2", Target.ENEMY, true, true, (phantom, level, target, position) -> phantom.bolt(level, target));
         register(HalloweenPhantom.class, "halloween_phantom", "gaze", "2", Target.ENEMY, true, true, (phantom, level, target, position) -> phantom.gaze(level, target));
+        register(net.ronm19.phantomism.entity.NewYearsPhantom.class, "new_years_phantom", "spark", "0", Target.ENEMY, true, true, (phantom, level, target, position) -> phantom.spark(level, target));
+        register(net.ronm19.phantomism.entity.NewYearsPhantom.class, "new_years_phantom", "dash", "1", Target.NONE, true, false, (phantom, level, target, position) -> phantom.dash(level, phantom.validTarget(phantom.getTarget()) ? phantom.getTarget() : null));
+        register(net.ronm19.phantomism.entity.NewYearsPhantom.class, "new_years_phantom", "shield", "2", Target.NONE, true, false, (phantom, level, target, position) -> phantom.shield(level));
+        register(net.ronm19.phantomism.entity.NewYearsPhantom.class, "new_years_phantom", "ward", "3", Target.NONE, true, false, (phantom, level, target, position) -> phantom.ward(level));
+        register(net.ronm19.phantomism.entity.NewYearsPhantom.class, "new_years_phantom", "countdown", "5", Target.NONE, true, false, (phantom, level, target, position) -> phantom.countdown(level));
+        register(net.ronm19.phantomism.entity.CreatorPhantom.class, "creator_phantom", "pulse", "1", Target.NONE, true, false, (phantom, level, target, position) -> phantom.pulse(level));
+        register(net.ronm19.phantomism.entity.CreatorPhantom.class, "creator_phantom", "step", "2", Target.NONE, true, false, (phantom, level, target, position) -> phantom.step(level, phantom.validTarget(phantom.getTarget()) ? phantom.getTarget() : null));
+        register(net.ronm19.phantomism.entity.CreatorPhantom.class, "creator_phantom", "aegis", "3", Target.NONE, true, false, (phantom, level, target, position) -> phantom.aegis(level));
+        register(net.ronm19.phantomism.entity.CreatorPhantom.class, "creator_phantom", "genesis", "4", Target.ENEMY, true, false, (phantom, level, target, position) -> phantom.genesis(level, target));
+        register(net.ronm19.phantomism.entity.CreatorPhantom.class, "creator_phantom", "beam", "5", Target.NONE, true, true, (phantom, level, target, position) -> phantom.adaptiveBeam(level));
+        register(net.ronm19.phantomism.entity.CreatorPhantom.class, "creator_phantom", "instinct", "6", Target.NONE, true, false, (phantom, level, target, position) -> phantom.instinct(level));
+        register(net.ronm19.phantomism.entity.CreatorPhantom.class, "creator_phantom", "evolution", "7", Target.NONE, true, false, (phantom, level, target, position) -> phantom.evolution(level));
+        register(net.ronm19.phantomism.entity.ValentinesPhantom.class, "valentines_phantom", "bolt", "1", Target.ENEMY, true, true, (phantom, level, target, position) -> phantom.bolt(level, target));
+        register(net.ronm19.phantomism.entity.ValentinesPhantom.class, "valentines_phantom", "dash", "2", Target.NONE, true, false, (phantom, level, target, position) -> phantom.dash(level, phantom.validTarget(phantom.getTarget()) ? phantom.getTarget() : null));
+        register(net.ronm19.phantomism.entity.ValentinesPhantom.class, "valentines_phantom", "aura", "3", Target.NONE, true, false, (phantom, level, target, position) -> phantom.aura(level));
+        register(net.ronm19.phantomism.entity.ValentinesPhantom.class, "valentines_phantom", "charm", "4", Target.NONE, true, false, (phantom, level, target, position) -> phantom.charm(level));
+        register(net.ronm19.phantomism.entity.ValentinesPhantom.class, "valentines_phantom", "embrace", "5", Target.NONE, true, false, (phantom, level, target, position) -> phantom.embrace(level));
+        register(net.ronm19.phantomism.entity.ValentinesPhantom.class, "valentines_phantom", "serenade", "6", Target.NONE, true, false, (phantom, level, target, position) -> phantom.serenade(level));
+        register(net.ronm19.phantomism.entity.StPatricksPhantom.class, "st_patricks_phantom", "burst", "1", Target.ENEMY, true, true, (phantom, level, target, position) -> phantom.burst(level, target));
+        register(net.ronm19.phantomism.entity.StPatricksPhantom.class, "st_patricks_phantom", "dash", "2", Target.NONE, true, false, (phantom, level, target, position) -> phantom.dash(level, phantom.validTarget(phantom.getTarget()) ? phantom.getTarget() : null));
+        register(net.ronm19.phantomism.entity.StPatricksPhantom.class, "st_patricks_phantom", "aura", "3", Target.NONE, true, false, (phantom, level, target, position) -> phantom.aura(level));
+        register(net.ronm19.phantomism.entity.StPatricksPhantom.class, "st_patricks_phantom", "trick", "4", Target.NONE, true, false, (phantom, level, target, position) -> phantom.trick(level));
+        register(net.ronm19.phantomism.entity.StPatricksPhantom.class, "st_patricks_phantom", "sky", "5", Target.NONE, true, false, (phantom, level, target, position) -> phantom.sky(level));
+        register(net.ronm19.phantomism.entity.FireworkPhantom.class, "firework_phantom", "bolt", "2", Target.ENEMY, true, true, (phantom, level, target, position) -> phantom.bolt(level, target));
+        register(net.ronm19.phantomism.entity.FireworkPhantom.class, "firework_phantom", "rush", "3", Target.NONE, true, false, (phantom, level, target, position) -> phantom.rush(level, phantom.validTarget(phantom.getTarget()) ? phantom.getTarget() : null));
+        register(net.ronm19.phantomism.entity.FireworkPhantom.class, "firework_phantom", "starburst", "4", Target.NONE, true, false, (phantom, level, target, position) -> phantom.starburst(level));
+        register(net.ronm19.phantomism.entity.FireworkPhantom.class, "firework_phantom", "guard", "5", Target.NONE, true, false, (phantom, level, target, position) -> phantom.guard(level));
+        register(net.ronm19.phantomism.entity.FireworkPhantom.class, "firework_phantom", "finale", "6", Target.NONE, true, false, (phantom, level, target, position) -> phantom.finale(level));
         register(net.ronm19.phantomism.entity.EasterPhantom.class, "easter_phantom", "leap", "2", Target.NONE, true, false, (phantom, level, target, position) -> phantom.leap(level, phantom.validTarget(phantom.getTarget()) ? phantom.getTarget() : null));
         register(net.ronm19.phantomism.entity.EasterPhantom.class, "easter_phantom", "egg", "3", Target.ENEMY, true, true, (phantom, level, target, position) -> phantom.egg(level, target));
         register(net.ronm19.phantomism.entity.EasterPhantom.class, "easter_phantom", "renewal", "4", Target.NONE, true, false, (phantom, level, target, position) -> phantom.renewal(level));
@@ -290,6 +318,12 @@ public final class PhantomAbilities {
         return new View(ability.id().toString(), ability.nameKey(), ability.descriptionKey(), ability.target(),
                 !reason.isEmpty() ? Status.UNAVAILABLE : remaining > 0 ? Status.COOLING_DOWN : Status.READY,
                 remaining, ability.automatic(), reason);
+    }
+
+    /** A mounted shot must never shorten an existing AI/Staff recovery. */
+    public static int mountedRecoveryFloor(AbstractPhantom phantom, int riderTicks) {
+        return Math.max(riderTicks, REGISTERED.getOrDefault(phantom.getClass(), List.of()).stream()
+                .filter(Ability::shot).mapToInt(ability -> ability.remaining(phantom)).max().orElse(0));
     }
 
     public static boolean mountedReady(AbstractPhantom phantom) {

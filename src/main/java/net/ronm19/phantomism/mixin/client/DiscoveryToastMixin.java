@@ -27,7 +27,8 @@ public abstract class DiscoveryToastMixin {
             }
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, Identifier.withDefaultNamespace("toast/advancement"), 0, 0, 160, 32);
             graphics.text(font, Component.translatable("screen.phantomism.codex.discovered"), 30, 7, 0xFFE9C66A, false);
-            graphics.text(font, font.plainSubstrByWidth(discovery.entityType().getDescription().getString(), 125), 30, 18, 0xFFFFFFFF, false);
+            Component identity = discovery == PhantomDiscovery.CREATOR ? net.ronm19.phantomism.client.screen.CreatorIdentityClient.name() : discovery.entityType().getDescription();
+            graphics.text(font, Component.literal(font.plainSubstrByWidth(identity.getString(), 125)).withStyle(identity.getStyle()), 30, 18, 0xFFFFFFFF, false);
             graphics.fakeItem(discovery.icon().create(), 8, 8);
             callback.cancel();
             return;

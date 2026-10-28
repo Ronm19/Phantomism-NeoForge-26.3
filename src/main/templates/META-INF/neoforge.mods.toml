@@ -44,7 +44,7 @@ Phantomism —A World of Phantoms
 
 Phantomism is a Minecraft creature-expansion mod that transforms the familiar phantom into an entire family of unique creatures, each with its own appearance, personality, and place in the world.
 
-Featuring a planned roster of 56 distinct phantoms, the mod expands far beyond the original hostile mob. Discover phantoms inspired by different elements, environments, materials, and fantastical concepts, from fiery and frosty creatures to mysterious, colourful, and extraordinary variants.
+Featuring a roster of 58 distinct phantoms, the mod expands far beyond the original hostile mob. Discover phantoms inspired by different elements, environments, materials, and fantastical concepts, from fiery and frosty creatures to mysterious, colourful, and extraordinary variants.
 
 Every phantom is designed to feel like its own creature rather than a simple recolour. Unique textures, distinctive visual details, and optional model features help bring the roster to life while preserving Minecraft's familiar visual style.
 
@@ -52,7 +52,7 @@ Behind the scenes, Phantomism is planned around a shared model system that allow
 
 Whether you're encountering a mysterious new phantom, discovering a rare variant, or exploring the possibilities of an expanded phantom ecosystem, Phantomism aims to turn one of Minecraft's most recognizable creatures into an entire world of possibilities.
 
-One creature. Fifty-six identities. Endless possibilities.
+One creature. Fifty-eight identities. Endless possibilities.
 '''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.

@@ -316,6 +316,39 @@ public final class PhantomismContent {
             "pumpkin_gaze", net.ronm19.phantomism.entity.PumpkinGaze::new, MobCategory.MISC,
             builder -> builder.sized(.25F, .25F).clientTrackingRange(8).updateInterval(2));
     public static final DeferredItem<SpawnEggItem> HALLOWEEN_PHANTOM_SPAWN_EGG = ITEMS.registerItem("halloween_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(HALLOWEEN_PHANTOM.get())));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.NewYearsPhantom>> NEW_YEARS_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "new_years_phantom", net.ronm19.phantomism.entity.NewYearsPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(2));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.NewYearsClockProjectile>> NEW_YEARS_CLOCK_PROJECTILE = ENTITY_TYPES.registerEntityType(
+            "new_years_clock_projectile", net.ronm19.phantomism.entity.NewYearsClockProjectile::new, MobCategory.MISC,
+            builder -> builder.sized(.3F, .3F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredItem<SpawnEggItem> NEW_YEARS_PHANTOM_SPAWN_EGG = ITEMS.registerItem("new_years_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(NEW_YEARS_PHANTOM.get())));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.CreatorPhantom>> CREATOR_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "creator_phantom", net.ronm19.phantomism.entity.CreatorPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(2));
+    public static final DeferredItem<SpawnEggItem> CREATOR_PHANTOM_SPAWN_EGG = ITEMS.registerItem("creator_phantom_spawn_egg", properties -> new net.ronm19.phantomism.item.CreatorSpawnEggItem(properties.spawnEgg(CREATOR_PHANTOM.get())));
+    public static final DeferredItem<net.ronm19.phantomism.item.EyeOfCreationItem> EYE_OF_CREATION = ITEMS.registerItem("eye_of_creation", net.ronm19.phantomism.item.EyeOfCreationItem::new, properties -> properties.stacksTo(16).rarity(net.minecraft.world.item.Rarity.EPIC));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.ValentinesPhantom>> VALENTINES_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "valentines_phantom", net.ronm19.phantomism.entity.ValentinesPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(2));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.ValentinesHeartProjectile>> VALENTINES_HEART_PROJECTILE = ENTITY_TYPES.registerEntityType(
+            "valentines_heart_projectile", net.ronm19.phantomism.entity.ValentinesHeartProjectile::new, MobCategory.MISC,
+            builder -> builder.sized(.3F, .3F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredItem<SpawnEggItem> VALENTINES_PHANTOM_SPAWN_EGG = ITEMS.registerItem("valentines_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(VALENTINES_PHANTOM.get())));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.StPatricksPhantom>> ST_PATRICKS_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "st_patricks_phantom", net.ronm19.phantomism.entity.StPatricksPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(2));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.StPatricksShamrockProjectile>> ST_PATRICKS_SHAMROCK_PROJECTILE = ENTITY_TYPES.registerEntityType(
+            "st_patricks_shamrock_projectile", net.ronm19.phantomism.entity.StPatricksShamrockProjectile::new, MobCategory.MISC,
+            builder -> builder.sized(.3F, .3F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredItem<SpawnEggItem> ST_PATRICKS_PHANTOM_SPAWN_EGG = ITEMS.registerItem("st_patricks_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(ST_PATRICKS_PHANTOM.get())));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.FireworkPhantom>> FIREWORK_PHANTOM = ENTITY_TYPES.registerEntityType(
+            "firework_phantom", net.ronm19.phantomism.entity.FireworkPhantom::new, MobCategory.CREATURE,
+            builder -> builder.sized(1.4F, .9F).clientTrackingRange(12).updateInterval(2));
+    public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.FireworkRocketProjectile>> FIREWORK_ROCKET_PROJECTILE = ENTITY_TYPES.registerEntityType(
+            "firework_rocket_projectile", net.ronm19.phantomism.entity.FireworkRocketProjectile::new, MobCategory.MISC,
+            builder -> builder.sized(.25F, .25F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredItem<SpawnEggItem> FIREWORK_PHANTOM_SPAWN_EGG = ITEMS.registerItem("firework_phantom_spawn_egg", properties -> new SpawnEggItem(properties.spawnEgg(FIREWORK_PHANTOM.get())));
     public static final DeferredHolder<EntityType<?>, EntityType<net.ronm19.phantomism.entity.EasterPhantom>> EASTER_PHANTOM = ENTITY_TYPES.registerEntityType(
             "easter_phantom", net.ronm19.phantomism.entity.EasterPhantom::new, MobCategory.CREATURE,
             builder -> builder.sized(1.4F, .9F).clientTrackingRange(10).updateInterval(2));
@@ -550,6 +583,11 @@ public final class PhantomismContent {
                         output.accept(AUTUMN_PHANTOM_SPAWN_EGG.get());
                         output.accept(LUNAR_PHANTOM_SPAWN_EGG.get());
                         output.accept(HALLOWEEN_PHANTOM_SPAWN_EGG.get());
+                        output.accept(NEW_YEARS_PHANTOM_SPAWN_EGG.get());
+                        output.accept(CREATOR_PHANTOM_SPAWN_EGG.get());
+                        output.accept(VALENTINES_PHANTOM_SPAWN_EGG.get());
+                        output.accept(ST_PATRICKS_PHANTOM_SPAWN_EGG.get());
+                        output.accept(FIREWORK_PHANTOM_SPAWN_EGG.get());
                         output.accept(EASTER_PHANTOM_SPAWN_EGG.get());
                         output.accept(CHRISTMAS_PHANTOM_SPAWN_EGG.get());
                         output.accept(INFERNAL_PHANTOM_SPAWN_EGG.get());
@@ -581,6 +619,7 @@ public final class PhantomismContent {
                         output.accept(PHANTOM_CODEX.get());
                         output.accept(HEART_OF_THE_WORLD.get());
                         output.accept(ANCIENT_RELIC.get());
+                        output.accept(EYE_OF_CREATION.get());
                         output.accept(PotionContents.createItemStack(Items.POTION, FROSTBOUND_POTION));
                         output.accept(PotionContents.createItemStack(Items.SPLASH_POTION, FROSTBOUND_POTION));
                         output.accept(PotionContents.createItemStack(Items.LINGERING_POTION, FROSTBOUND_POTION));

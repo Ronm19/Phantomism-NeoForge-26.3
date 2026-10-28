@@ -20,7 +20,8 @@
     },
     "title": {
       "translate": "advancements.phantomism.discovery.infernal_phantom.title"
-    }
+    },
+    "frame": "goal"
   },
   "requirements": [
     [

@@ -274,7 +274,7 @@ public final class HuskPhantom extends AbstractPhantom {
         ExhaustionEffect.apply(this, target); Vec3 away = target.position().subtract(this.position());
         target.knockback(0.75D, -away.x, -away.z, this.damageSources().mobAttack(this), damage); target.push(0, 0.12D, 0); target.syncVelocity = true;
     }
-    private void cancelDive() { this.windupTicks = 0; this.diveTicks = 0; this.entityData.set(DIVING, false); this.setDeltaMovement(Vec3.ZERO); }
+    private void cancelDive() { boolean active = this.isHuskDiving() || this.windupTicks > 0 || this.diveTicks > 0; this.windupTicks = 0; this.diveTicks = 0; this.entityData.set(DIVING, false); if (active) { this.setDeltaMovement(Vec3.ZERO); } }
 
     private List<LivingEntity> nearbyEnemies(ServerLevel level, Vec3 center, double radius, double height) {
         return level.getEntitiesOfClass(LivingEntity.class, new AABB(center.add(-radius, -1, -radius), center.add(radius, height, radius)), this::areaTarget)
@@ -410,7 +410,7 @@ public final class HuskPhantom extends AbstractPhantom {
         output.putInt("HuskStateTicks", this.stateTicks); output.putInt("HuskGuardTicks", this.guardTicks);
     }
     @Override protected void readAdditionalSaveData(ValueInput input) {
-        super.readAdditionalSaveData(input); this.cancelDive(); this.cancelDeadLand(); this.clearRelentless(); this.getAttribute(Attributes.FOLLOW_RANGE).removeModifier(PURSUIT);
+        super.readAdditionalSaveData(input); this.cancelDive(); this.setDeltaMovement(Vec3.ZERO); this.cancelDeadLand(); this.clearRelentless(); this.getAttribute(Attributes.FOLLOW_RANGE).removeModifier(PURSUIT);
         this.biteCooldown = Math.clamp(input.getIntOr("HuskBiteCooldown", 0), 0, 120); this.meleeCooldown = Math.clamp(input.getIntOr("HuskMeleeCooldown", 0), 0, 36);
         this.diveCooldown = Math.clamp(input.getIntOr("HuskDiveCooldown", 0), 0, 280); this.stateCooldown = Math.clamp(input.getIntOr("HuskStateCooldown", 0), 0, 900);
         this.guardCooldown = Math.clamp(input.getIntOr("HuskGuardCooldown", 0), 0, 600); this.landCooldown = Math.clamp(input.getIntOr("HuskLandCooldown", 0), 0, 1400);

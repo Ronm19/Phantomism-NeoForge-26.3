@@ -130,7 +130,7 @@ public final class IllagerPhantom extends AbstractPhantom implements CooldownDis
                 || enemy instanceof Mob mob && mob.getTarget() == ward);
     }
     @Override protected boolean isSpeciesCombatTarget(LivingEntity target) {
-        return safeEnemy(target) && (target.getUUID().equals(orderedTarget) || attacking(target, this) || attacking(target, getOwner())
+        return safeEnemy(target) && (isFamilyDefenseThreat(target) || target.getUUID().equals(orderedTarget) || attacking(target, this) || attacking(target, getOwner())
                 || target instanceof Mob mob && (isTame() && IllagerCharm.hostile(this, mob) || recipient(mob.getTarget())));
     }
     public boolean validTarget(LivingEntity target) { return isSpeciesCombatTarget(target) && getAssignments().permitsDefensivePursuit(target); }

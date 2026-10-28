@@ -69,6 +69,13 @@ import net.ronm19.phantomism.entity.ai.PhantomAssignments;
 import net.ronm19.phantomism.entity.ai.PhantomAssignments.Task;
 
 public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity {
+    @Override public void tame(Player owner) {
+        super.tame(owner);
+        // Track the successful authoritative bond, including Staff and species-specific taming.
+        if (owner instanceof ServerPlayer && isTame() && isOwnedBy(owner)) {
+            net.ronm19.phantomism.progression.MasterOfPhantoms.record(this);
+        }
+    }
     private static final EntityDataAccessor<Byte> DATA_ANIMATION_FLAGS = SynchedEntityData.defineId(AbstractPhantom.class, EntityDataSerializers.BYTE);
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
     private long animationPriorityUntil;
@@ -99,6 +106,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
 
     private final Map<UUID, Long> suppressedTargets = new HashMap<>();
     private final PhantomAssignments assignments = new PhantomAssignments(this);
+    private final net.ronm19.phantomism.entity.ai.PhantomFollowNavigation ownerNavigation = new net.ronm19.phantomism.entity.ai.PhantomFollowNavigation(this);
     private Order order = Order.FOLLOW;
     private boolean divingStrike;
     private int attackCooldown;
@@ -110,6 +118,9 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
     private int idleFlightTicks;
     private Vec3 idleFlightTarget;
     private Vec3 wanderCenter;
+    // Set only while validating an authoritative family-damage notification. Never persisted.
+    private LivingEntity familyDefenseCandidate;
+    private long familyDefenseUntil;
     private int ownerHurtByTimestamp;
     private int ownerHurtTargetTimestamp;
     private int riddenProjectileAbilityCooldownTicks;
@@ -303,7 +314,8 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
                     destinationY - this.getY(),
                     destinationZ - this.getZ()
             );
-            if (this.level().noCollision(this, destinationBox)) {
+            if (this.isLoadedFlightBox(destinationBox) && !this.level().containsAnyLiquid(destinationBox)
+                    && this.level().noCollision(this, destinationBox)) {
                 this.getNavigation().stop();
                 this.setDeltaMovement(Vec3.ZERO);
                 this.snapTo(destinationX, destinationY, destinationZ, this.getYRot(), this.getXRot());
@@ -335,6 +347,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
         if (this.tickCount % 20 == 0) {
             this.getConfiguredStats().apply(this);
         }
+        if (this.getTarget() != null || this.isVehicle()) { this.ownerNavigation.reset(); }
         if (this.getControllingPassenger() instanceof Player) {
             this.resetIdleFlight();
             if (!this.preservesCombatTargetWhileRidden()) {
@@ -367,13 +380,14 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
                 || rider != this.getControllingPassenger()
                 || !this.isOwnedBy(rider)
                 || this.riddenProjectileAbilityCooldownTicks > 0
-                || !net.ronm19.phantomism.ability.PhantomAbilities.mountedReady(this)
                 || !this.performRiddenProjectileAbility(serverLevel, rider)) {
             return false;
         }
 
         this.riddenProjectileAbilityCooldownTicks = Math.max(1, this.getRiddenProjectileAbilityCooldownTicks());
-        this.staffMountedCooldown(this.riddenProjectileAbilityCooldownTicks);
+        // Keep the species' longer combat history while imposing the rider interval.
+        this.staffMountedCooldown(net.ronm19.phantomism.ability.PhantomAbilities.mountedRecoveryFloor(
+                this, this.riddenProjectileAbilityCooldownTicks));
         return true;
     }
 
@@ -421,6 +435,19 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
+        if (hand == InteractionHand.MAIN_HAND && itemStack.isEmpty() && player.isShiftKeyDown()
+                && !player.isSpectator() && this.isAlive() && this.isTame() && this.isOwnedBy(player)
+                && !this.isVehicle() && !this.isPassenger()) {
+            if (!this.level().isClientSide()) {
+                this.clearCombatTarget(true);
+                this.setTask(Task.NONE);
+                this.toggleOrder();
+                player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable(
+                        this.getOrder() == Order.STAY ? "message.phantomism.basic.stay" : "message.phantomism.basic.follow",
+                        this.getDisplayName()));
+            }
+            return InteractionResult.SUCCESS;
+        }
         if (itemStack.is(Items.PHANTOM_MEMBRANE)) {
             if (player.isShiftKeyDown()) {
                 return super.mobInteract(player, hand);
@@ -439,7 +466,8 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
             return InteractionResult.SUCCESS;
         }
 
-        if (player.getItemInHand(hand).isEmpty()
+        if (hand == InteractionHand.MAIN_HAND && !player.isShiftKeyDown() && !player.isSpectator()
+                && player.getItemInHand(hand).isEmpty()
                 && this.isTame()
                 && this.isOwnedBy(player)
                 && !this.isBaby()
@@ -672,6 +700,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
         net.ronm19.phantomism.entity.ai.PhantomHornRally.cancel(this);
         net.ronm19.phantomism.entity.ai.RoyalTactics.ownerCommand(this, order == Order.FOLLOW);
         this.order = order;
+        this.ownerNavigation.reset();
         this.entityData.set(DATA_ORDER, order.ordinal());
         this.assignments.movementChanged();
         this.resetIdleFlight();
@@ -708,6 +737,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
     }
 
     public void clearCombatTarget(boolean suppressRetaliation) {
+        this.familyDefenseUntil = 0L;
         if (suppressRetaliation) { net.ronm19.phantomism.entity.ai.RoyalTactics.ownerCommand(this, false); }
         if (suppressRetaliation) { net.ronm19.phantomism.entity.ai.PhantomDuels.end(this); }
         this.assignments.stopAreaCombat();
@@ -939,16 +969,33 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
                 && this.wantsToAttack(target, owner);
     }
 
+    /** Recent defensive evidence is independent of the attacker's current AI target. */
+    protected final boolean isFamilyDefenseThreat(LivingEntity target) {
+        return this.isTame() && target != null && (target == this.familyDefenseCandidate
+                || this.level().getGameTime() < this.familyDefenseUntil
+                && this.getBrain().getMemory(MemoryModuleType.HURT_BY_ENTITY).orElse(null) == target);
+    }
+
     public void defendFamily(LivingEntity attacker) {
-        if (!this.isTame() || this.isBaby() || this.isVehicle() || this.isPassenger()
-                || !this.isOwnerDefenceTarget(attacker, this.getOwner())
-                || this.isValidTarget(this.getTarget())
-                || !this.assignments.permitsDefensivePursuit(attacker)) {
+        if (!this.isTame() || this.isBaby() || this.isVehicle() || this.isPassenger()) {
             return;
         }
-        this.getBrain().setMemoryWithExpiry(MemoryModuleType.HURT_BY_ENTITY, attacker, 100L);
-        this.setTarget(attacker);
-        this.resetIdleFlight();
+        this.familyDefenseCandidate = attacker;
+        try {
+            // Keep species safety, suppression, direct-target priority and patrol boundaries.
+            if (!this.isOwnerDefenceTarget(attacker, this.getOwner())
+                    || this.getTarget() != attacker && this.isValidTarget(this.getTarget())
+                    || !this.assignments.permitsDefensivePursuit(attacker)) {
+                return;
+            }
+            this.familyDefenseUntil = this.level().getGameTime() + 100L;
+            this.getBrain().setMemoryWithExpiry(MemoryModuleType.HURT_BY_ENTITY, attacker, 100L);
+            if (this.getTarget() == attacker) { return; }
+            this.setTarget(attacker);
+            this.resetIdleFlight();
+        } finally {
+            this.familyDefenseCandidate = null;
+        }
     }
 
     private boolean isValidTarget(LivingEntity target) {
@@ -1019,8 +1066,12 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
                 }
                 if (distance > 100.0D) {
                     this.resetIdleFlight();
-                    this.moveControl.setWantedPosition(owner.getX(), owner.getY() + this.getFlightAltitudeOffset(3.0D), owner.getZ(), 1.8D);
+                    this.ownerNavigation.move(owner, 1.8D);
+                } else if (distance > 16.0D && !this.hasLineOfSight(owner)) {
+                    this.resetIdleFlight();
+                    this.ownerNavigation.move(owner, 1.4D);
                 } else {
+                    this.ownerNavigation.reset();
                     this.tickWandering(level, owner.position().add(0.0D, this.getFlightAltitudeOffset(3.0D), 0.0D), 4.0D, 0.65D);
                 }
             } else if (distance > 36.0D) {
@@ -1028,7 +1079,7 @@ public abstract class AbstractPhantom extends TamableAnimal implements GeoEntity
                 if (distance > 576.0D && this.tickCount % 20 == 0) {
                     this.tryToTeleportToOwner();
                 }
-                this.moveControl.setWantedPosition(owner.getX(), owner.getY() + this.getFlightAltitudeOffset(3.0D), owner.getZ(), 1.6D);
+                this.ownerNavigation.move(owner, 1.6D);
             } else {
                 this.resetIdleFlight();
                 this.orbitAngle += 0.035D;

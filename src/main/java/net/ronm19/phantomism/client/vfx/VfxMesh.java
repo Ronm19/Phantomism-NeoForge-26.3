@@ -20,7 +20,10 @@ public final class VfxMesh {
     private static ModelPart silhouette;
     private static ModelPart spectralSilhouette;
     private VfxMesh() {}
-    public record Batch(Identifier texture, float[] vertices, int[] colors, List<VfxEffect.Pose> echoes, Vec3 camera, float opacity, Identifier skin, int tint) {
+    public record Batch(Identifier texture, float[] vertices, int[] colors, List<VfxEffect.Pose> echoes, Vec3 camera, float opacity, Identifier skin, int tint, int beaconLayer) {
+        public Batch(Identifier texture, float[] vertices, int[] colors, List<VfxEffect.Pose> echoes, Vec3 camera, float opacity, Identifier skin, int tint) {
+            this(texture, vertices, colors, echoes, camera, opacity, skin, tint, 0);
+        }
         public int count() { return this.vertices.length / 5 + this.echoes.size() * 1024; }
         public boolean voidEcho() { return this.skin.getNamespace().equals(Phantomism.MOD_ID) && this.skin.getPath().equals("textures/entity/void_phantom.png"); }
         public boolean spatialEcho() { return this.skin.getNamespace().equals(Phantomism.MOD_ID) && this.skin.getPath().equals("textures/entity/rift_phantom.png"); }
@@ -28,6 +31,19 @@ public final class VfxMesh {
         public int echoColor(int index) { int alpha = this.spectralEcho() ? (int) (this.opacity * (80 + index * 18)) : this.spatialEcho() ? (int) (this.opacity * 110 * (.6F + .4F * index / 3F)) : (int) (this.opacity * (index / 3F) * 65); return (alpha << 24) | this.tint; }
         public void submit(SubmitNodeCollector collector) {
             PoseStack stack = new PoseStack();
+            if (this.beaconLayer > 0) {
+                // Match vanilla BeaconRenderer so shader-extended beacon formats receive normals.
+                // Unused overlay/normal setters are harmless on older beacon formats.
+                collector.submitCustomGeometry(stack, RenderTypes.beaconBeam(this.texture, this.beaconLayer == 2), (pose, buffer) -> {
+                    for (int index = 0; index < this.colors.length; index++) {
+                        int offset = index * 5;
+                        buffer.addVertex(pose, this.vertices[offset], this.vertices[offset + 1], this.vertices[offset + 2])
+                                .setColor(this.colors[index]).setUv(this.vertices[offset + 3], this.vertices[offset + 4])
+                                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(15728880).setNormal(pose, 0, 1, 0);
+                    }
+                });
+                return;
+            }
             collector.submitCustomGeometry(stack, this.texture.getNamespace().equals(Phantomism.MOD_ID) && ((this.texture.getPath().startsWith("textures/vfx/rift_") || this.texture.getPath().startsWith("textures/vfx/halloween_")) || this.texture.getPath().startsWith("textures/vfx/sentinel_") || this.texture.getPath().startsWith("textures/vfx/demon_") || (this.texture.getPath().startsWith("textures/vfx/spectral_") || (this.texture.getPath().startsWith("textures/vfx/angel_") || (this.texture.getPath().startsWith("textures/vfx/omen_") || (this.texture.getPath().startsWith("textures/vfx/ancient_") || (this.texture.getPath().startsWith("textures/vfx/reaper_") || (this.texture.getPath().startsWith("textures/vfx/primordial_") || (this.texture.getPath().startsWith("textures/vfx/void_") || (this.texture.getPath().startsWith("textures/vfx/dark_") || (this.texture.getPath().startsWith("textures/vfx/royal_") || (((((((((((this.texture.getPath().startsWith("textures/vfx/autumn_") || this.texture.getPath().startsWith("textures/vfx/lunar_")) || this.texture.getPath().startsWith("textures/vfx/infernal_phantom_")) || this.texture.getPath().startsWith("textures/vfx/illager_")) || this.texture.getPath().startsWith("textures/vfx/solar_")) || this.texture.getPath().startsWith("textures/vfx/spore_")) || this.texture.getPath().startsWith("textures/vfx/gale_")) || this.texture.getPath().startsWith("textures/vfx/obsidian_") || this.texture.getPath().startsWith("textures/vfx/crystal_") || this.texture.getPath().startsWith("textures/vfx/plague_")) || this.texture.getPath().startsWith("textures/vfx/shadow_")) || this.texture.getPath().startsWith("textures/vfx/eclipse_")) || this.texture.getPath().startsWith("textures/vfx/mirage_")) || this.texture.getPath().startsWith("textures/vfx/titanium_")))))))))))) ? RenderTypes.entityTranslucentEmissive(this.texture) : RenderTypes.entityTranslucent(this.texture), (pose, buffer) -> {
                 for (int index = 0; index < this.colors.length; index++) {
                     int offset = index * 5;
@@ -67,6 +83,11 @@ public final class VfxMesh {
     }
     public static List<Batch> build(VfxEffect effect, Vec3 camera, float partial, int limit) {
         if (HalloweenEffects.supports(effect.packet.effect())) { return HalloweenEffects.build(effect, camera, partial, limit); }
+        if (NewYearsEffects.supports(effect.packet.effect())) { return NewYearsEffects.build(effect, camera, partial, limit); }
+        if (CreatorEffects.supports(effect.packet.effect())) { return CreatorEffects.build(effect, camera, partial, limit); }
+        if (ValentinesEffects.supports(effect.packet.effect())) { return ValentinesEffects.build(effect, camera, partial, limit); }
+        if (StPatricksEffects.supports(effect.packet.effect())) { return StPatricksEffects.build(effect, camera, partial, limit); }
+        if (FireworkEffects.supports(effect.packet.effect())) { return FireworkEffects.build(effect, camera, partial, limit); }
         if (EasterEffects.supports(effect.packet.effect())) { return EasterEffects.build(effect, camera, partial, limit); }
         if (ChristmasEffects.supports(effect.packet.effect())) { return ChristmasEffects.build(effect, camera, partial, limit); }
         if (AutumnEffects.supports(effect.packet.effect())) { return AutumnEffects.build(effect, camera, partial, limit); }

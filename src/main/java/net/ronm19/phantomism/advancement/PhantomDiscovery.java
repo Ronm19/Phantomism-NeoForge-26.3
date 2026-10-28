@@ -72,7 +72,12 @@ public enum PhantomDiscovery {
     AUTUMN("autumn_phantom", PhantomismContent.AUTUMN_PHANTOM, PhantomismContent.AUTUMN_PHANTOM_SPAWN_EGG, Rarity.RARE),
     HALLOWEEN("halloween_phantom", PhantomismContent.HALLOWEEN_PHANTOM, PhantomismContent.HALLOWEEN_PHANTOM_SPAWN_EGG, Rarity.COMMON),
     CHRISTMAS("christmas_phantom", PhantomismContent.CHRISTMAS_PHANTOM, PhantomismContent.CHRISTMAS_PHANTOM_SPAWN_EGG, Rarity.COMMON),
-    EASTER("easter_phantom", PhantomismContent.EASTER_PHANTOM, PhantomismContent.EASTER_PHANTOM_SPAWN_EGG, Rarity.COMMON);
+    EASTER("easter_phantom", PhantomismContent.EASTER_PHANTOM, PhantomismContent.EASTER_PHANTOM_SPAWN_EGG, Rarity.COMMON),
+    FIREWORK("firework_phantom", PhantomismContent.FIREWORK_PHANTOM, PhantomismContent.FIREWORK_PHANTOM_SPAWN_EGG, Rarity.COMMON),
+    ST_PATRICKS("st_patricks_phantom", PhantomismContent.ST_PATRICKS_PHANTOM, PhantomismContent.ST_PATRICKS_PHANTOM_SPAWN_EGG, Rarity.COMMON),
+    NEW_YEARS("new_years_phantom", PhantomismContent.NEW_YEARS_PHANTOM, PhantomismContent.NEW_YEARS_PHANTOM_SPAWN_EGG, Rarity.COMMON),
+    VALENTINES("valentines_phantom", PhantomismContent.VALENTINES_PHANTOM, PhantomismContent.VALENTINES_PHANTOM_SPAWN_EGG, Rarity.COMMON),
+    CREATOR("creator_phantom", PhantomismContent.CREATOR_PHANTOM, PhantomismContent.CREATOR_PHANTOM_SPAWN_EGG, Rarity.LEGENDARY);
 
     public static final String ICON_DATA_KEY = "phantomism_discovery_icon";
     public static final String CRITERION = "discovered";
@@ -94,7 +99,7 @@ public enum PhantomDiscovery {
         return this.name;
     }
 
-    public int codexNumber() { return this == HALLOWEEN ? 52 : this == CHRISTMAS ? 53 : this == EASTER ? 54 : ordinal() + 1; }
+    public int codexNumber() { return this == HALLOWEEN ? 52 : this == CHRISTMAS ? 53 : this == EASTER ? 54 : this == FIREWORK ? 55 : this == ST_PATRICKS ? 56 : this == NEW_YEARS ? 57 : this == VALENTINES ? 58 : this == CREATOR ? 59 : ordinal() + 1; }
 
     public EntityType<?> entityType() {
         return this.entityType.get();

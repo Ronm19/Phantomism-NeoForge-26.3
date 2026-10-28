@@ -104,7 +104,7 @@ public final class ObsidianPhantom extends AbstractPhantom implements CooldownDi
         Vec3 direction=target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter());if(direction.lengthSqr()<.01D){return false;}
         ramDirection=direction.normalize();ramTarget=target.getUUID();ramTicks=16;cooldowns[1]=280;entityData.set(RAMMING,true);setDeltaMovement(Vec3.ZERO);action("ram");ObsidianVfx.emit(this,ObsidianVfx.RAM,this,position(),ramDirection,16,2);return true;
     }
-    private void stopRam(){ramTicks=0;ramTarget=null;ramDirection=null;entityData.set(RAMMING,false);setDeltaMovement(Vec3.ZERO);needsSync=true;}
+    private void stopRam(){boolean active=ramTicks>0||entityData.get(RAMMING);ramTicks=0;ramTarget=null;ramDirection=null;entityData.set(RAMMING,false);if(active){setDeltaMovement(Vec3.ZERO);needsSync=true;}}
     private void tickRam(ServerLevel level){
         if(ramTicks<=0){return;}LivingEntity target=level.getEntity(ramTarget) instanceof LivingEntity living?living:null;
         if(!validTarget(target)||--ramTicks<=0){stopRam();return;}Vec3 step=ramDirection.scale(.8D);AABB sweep=getBoundingBox().expandTowards(step);
@@ -176,7 +176,7 @@ public final class ObsidianPhantom extends AbstractPhantom implements CooldownDi
     @Override public void setTask(PhantomAssignments.Task task){super.setTask(task);if(cooldowns!=null&&task!=PhantomAssignments.Task.NONE&&task!=PhantomAssignments.Task.HUNT){endObsidian();}}
     @Override public void remove(RemovalReason reason){if(cooldowns!=null){endObsidian();}super.remove(reason);}
     @Override protected void addAdditionalSaveData(ValueOutput output){super.addAdditionalSaveData(output);for(int index=0;index<cooldowns.length;index++){output.putInt("ObsidianCooldown"+index,cooldowns[index]);}output.putInt("ObsidianMountedShard",mountedShardTicks);output.putInt("ObsidianMelee",meleeTicks);output.putInt("ObsidianVariant",variant());output.putInt("ObsidianTamingAttempts",tameAttempts);}
-    @Override protected void readAdditionalSaveData(ValueInput input){super.readAdditionalSaveData(input);endObsidian();session=UUID.randomUUID();for(int index=0;index<cooldowns.length;index++){cooldowns[index]=Math.clamp(input.getIntOr("ObsidianCooldown"+index,0),0,INTERVALS[index]);}mountedShardTicks=Math.clamp(input.getIntOr("ObsidianMountedShard",0),0,6);meleeTicks=Math.clamp(input.getIntOr("ObsidianMelee",0),0,40);setVariant(input.getIntOr("ObsidianVariant",0));tameAttempts=Math.clamp(input.getIntOr("ObsidianTamingAttempts",0),0,2);}
+    @Override protected void readAdditionalSaveData(ValueInput input){super.readAdditionalSaveData(input);endObsidian();setDeltaMovement(Vec3.ZERO);session=UUID.randomUUID();for(int index=0;index<cooldowns.length;index++){cooldowns[index]=Math.clamp(input.getIntOr("ObsidianCooldown"+index,0),0,INTERVALS[index]);}mountedShardTicks=Math.clamp(input.getIntOr("ObsidianMountedShard",0),0,6);meleeTicks=Math.clamp(input.getIntOr("ObsidianMelee",0),0,40);setVariant(input.getIntOr("ObsidianVariant",0));tameAttempts=Math.clamp(input.getIntOr("ObsidianTamingAttempts",0),0,2);}
     @Override public List<CooldownDiscipline.Slot> temporalCooldowns(){List<CooldownDiscipline.Slot> slots=new ArrayList<>();for(int index=0;index<5;index++){final int slot=index;slots.add(CooldownDiscipline.Slot.normal("obsidian_"+CLIPS[index],INTERVALS[index],()->cooldowns[slot],value->cooldowns[slot]=value));}return List.copyOf(slots);}
 
     @Override

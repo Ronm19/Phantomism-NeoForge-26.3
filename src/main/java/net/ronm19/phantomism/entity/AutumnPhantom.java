@@ -85,7 +85,7 @@ public final class AutumnPhantom extends AbstractPhantom implements CooldownDisc
             && !(target instanceof Creeper creeper && (creeper.isIgnited() || creeper.getSwellDir() > 0)); }
     private boolean attacking(LivingEntity enemy, LivingEntity ward) { return ward != null && (ward.getLastHurtByMob() == enemy && ward.tickCount - ward.getLastHurtByMobTimestamp() < 100 || enemy instanceof Mob mob && mob.getTarget() == ward); }
     private boolean engaged(LivingEntity target) { return target.getUUID().equals(orderedTarget) || attacking(target, this) || attacking(target, getOwner()) || target instanceof Mob mob && recipient(mob.getTarget()); }
-    @Override protected boolean isSpeciesCombatTarget(LivingEntity target) { return safeEnemy(target) && (engaged(target) || getControllingPassenger() instanceof Player rider && isOwnedBy(rider)); }
+    @Override protected boolean isSpeciesCombatTarget(LivingEntity target) { return safeEnemy(target) && (isFamilyDefenseThreat(target) || engaged(target) || getControllingPassenger() instanceof Player rider && isOwnedBy(rider)); }
     public boolean validTarget(LivingEntity target) { return isSpeciesCombatTarget(target) && getAssignments().permitsDefensivePursuit(target); }
     @Override protected boolean shouldHuntAutomatically(LivingEntity target, ServerLevel level) { return enabled() && validTarget(target) && line(getEyePosition(), target.getEyePosition()); }
     public boolean line(Vec3 start, Vec3 end) { return Double.isFinite(start.lengthSqr()) && Double.isFinite(end.lengthSqr()) && isLoadedFlightBox(new AABB(start, end).inflate(.1D))

@@ -133,7 +133,7 @@ public final class SporePhantom extends AbstractPhantom implements CooldownDisci
     }
 
     @Override protected boolean isSpeciesCombatTarget(LivingEntity target) {
-        return safeEnemy(target) && (target.getUUID().equals(orderedTarget) || attacking(target, this)
+        return safeEnemy(target) && (isFamilyDefenseThreat(target) || target.getUUID().equals(orderedTarget) || attacking(target, this)
                 || attacking(target, getOwner()) || target instanceof Mob mob && recipient(mob.getTarget()));
     }
 

@@ -12,7 +12,9 @@ public final class HolidayCalendar {
         return naturalSpawningAllowed(festival, today(), Config.allowOutOfSeasonHolidaySpawns(), Config.fireworkFestivalMonth());
     }
     public static boolean naturalSpawningAllowed(HolidayFestival festival, LocalDate date, boolean override, int fireworkMonth) {
-        return override || festival.active(date, fireworkMonth);
+        // Halloween remains pumpkin-gated at every natural placement/encounter path.
+        // Its environmental encounter is eligible year-round; October remains its festival month.
+        return festival == HolidayFestival.HALLOWEEN || override || festival.active(date, fireworkMonth);
     }
     public static LocalDate easter(int year) {
         if (year < 1583 || year > 9999) { throw new IllegalArgumentException("Gregorian Easter supports years 1583 through 9999"); }

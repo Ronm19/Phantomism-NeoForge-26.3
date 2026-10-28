@@ -77,7 +77,7 @@ public final class PhantomStaffScreen extends Screen {
         if (client.player != null && client.level != null) {
             client.level.getEntitiesOfClass(AbstractPhantom.class, client.player.getBoundingBox().inflate(128), phantom -> phantom.isAlive() && phantom.isOwnedBy(client.player))
                     .stream().sorted(Comparator.comparingDouble(client.player::distanceToSqr)).limit(256)
-                    .forEach(phantom -> recipients.add(new Recipient(phantom.getId(), phantom.getUUID(), phantom.getDisplayName())));
+                    .forEach(phantom -> recipients.add(new Recipient(phantom.getId(), phantom.getUUID(), phantom instanceof net.ronm19.phantomism.entity.CreatorPhantom ? CreatorIdentityClient.name() : phantom.getDisplayName())));
         }
         selectedRecipientIndex = 0;
         for (int index = 1; index < recipients.size(); index++) { if (recipients.get(index).uuid().equals(previous)) { selectedRecipientIndex = index; break; } }
@@ -121,7 +121,7 @@ public final class PhantomStaffScreen extends Screen {
         updateActivity();
     }
 
-    private Component fit(Component component, int pixels) { return Component.literal(font.plainSubstrByWidth(component.getString(), Math.max(1, pixels))); }
+    private Component fit(Component component, int pixels) { return Component.literal(font.plainSubstrByWidth(component.getString(), Math.max(1, pixels))).withStyle(component.getStyle()); }
     private void widget(String text, int left, int top, int width, Runnable action) { addRenderableWidget(Button.builder(Component.literal(text), ignored -> action.run()).bounds(left, top, width, 18).build()); }
     private void abilityButton(PhantomAbilities.View ability, int left, int top, int width) {
         Component status = ability.automatic() ? Component.translatable("staff.ability.automatic") : ability.remaining() > 0

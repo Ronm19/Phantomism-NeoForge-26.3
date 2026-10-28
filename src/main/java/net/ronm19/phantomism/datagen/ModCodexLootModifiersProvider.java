@@ -1,6 +1,5 @@
 package net.ronm19.phantomism.datagen;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import java.util.ArrayList;
@@ -31,21 +30,17 @@ public final class ModCodexLootModifiersProvider implements DataProvider {
     @Override
     public CompletableFuture<?> run(CachedOutput cache) {
         return lookup.thenCompose(registries -> {
+            // NeoForge 26.3 discovers individual modifiers directly. An old global
+            // index in this folder is parsed as an invalid modifier.
             var futures = new ArrayList<CompletableFuture<?>>();
-            JsonObject global = new JsonObject();
-            global.addProperty("replace", false);
-            JsonArray entries = new JsonArray();
             for (var chest : ModCodexLootProvider.CHESTS) {
                 String name = "codex_" + chest.name();
-                entries.add(CodexCatalog.id(name).toString());
                 var modifier = new AddTableLootModifier(Optional.of(Holder.direct(LootTableIdCondition.builder(Identifier.withDefaultNamespace("chests/" + chest.name())).build())), 0,
                         ResourceKey.create(Registries.LOOT_TABLE, CodexCatalog.id("chests/" + name)));
                 JsonObject json = AddTableLootModifier.CODEC.codec().encodeStart(RegistryOps.create(JsonOps.INSTANCE, registries), modifier).getOrThrow().getAsJsonObject();
                 json.addProperty("type", "neoforge:add_table");
                 futures.add(DataProvider.saveStable(cache, json, output.getOutputFolder().resolve("data/phantomism/loot_modifiers/" + name + ".json")));
             }
-            global.add("entries", entries);
-            futures.add(DataProvider.saveStable(cache, global, output.getOutputFolder().resolve("data/neoforge/loot_modifiers/global_loot_modifiers.json")));
             return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
         });
     }

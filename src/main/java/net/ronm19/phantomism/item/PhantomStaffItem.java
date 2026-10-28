@@ -28,6 +28,9 @@ public final class PhantomStaffItem extends Item {
             return InteractionResult.SUCCESS;
         }
 
+        if (phantom instanceof net.ronm19.phantomism.entity.CreatorPhantom && net.ronm19.phantomism.CreatorCertification.acquisitionLocked()) { return InteractionResult.FAIL; }
+        if (phantom instanceof net.ronm19.phantomism.entity.CreatorPhantom && !player.isCreative()) { player.sendOverlayMessage(Component.translatable("message.phantomism.creator.eye_required")); return InteractionResult.FAIL; }
+        if (phantom instanceof net.ronm19.phantomism.entity.CreatorPhantom && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer && !net.ronm19.phantomism.progression.CreatorBonds.get(serverPlayer.level().getServer()).claim(player.getUUID(), phantom.getUUID())) { return InteractionResult.FAIL; }
         phantom.tame(player);
         phantom.setOrder(AbstractPhantom.Order.FOLLOW);
         player.sendOverlayMessage(Component.translatable("message.phantomism.tamed", phantom.getDisplayName()));
