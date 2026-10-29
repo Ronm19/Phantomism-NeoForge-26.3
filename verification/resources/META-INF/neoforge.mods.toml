@@ -1,0 +1,11 @@
+license="All Rights Reserved"
+[[mods]]
+modId="phantomism_release_audit"
+version="1.0.0"
+displayName="Survival feedback checks (developer only)"
+[[dependencies.phantomism_release_audit]]
+modId="phantomism"
+type="required"
+versionRange="[1,)"
+ordering="AFTER"
+side="BOTH"

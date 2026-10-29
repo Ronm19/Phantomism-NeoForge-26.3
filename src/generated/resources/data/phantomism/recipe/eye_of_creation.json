@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": "minecraft:dragon_breath",
+    "E": "minecraft:ender_eye",
+    "M": "minecraft:phantom_membrane",
+    "N": "minecraft:nether_star",
+    "S": "minecraft:echo_shard"
+  },
+  "pattern": [
+    "MEM",
+    "SNS",
+    "MDM"
+  ],
+  "result": {
+    "id": "phantomism:eye_of_creation"
+  }
+}

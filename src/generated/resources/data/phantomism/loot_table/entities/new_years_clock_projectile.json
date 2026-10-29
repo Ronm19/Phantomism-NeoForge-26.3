@@ -1,0 +1,4 @@
+{
+  "type": "minecraft:entity",
+  "random_sequence": "phantomism:entities/new_years_clock_projectile"
+}

@@ -1,0 +1,4 @@
+{
+  "type": "minecraft:entity",
+  "random_sequence": "phantomism:entities/valentines_heart_projectile"
+}

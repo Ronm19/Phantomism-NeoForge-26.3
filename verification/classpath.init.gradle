@@ -1,0 +1,11 @@
+gradle.projectsEvaluated {
+    def project = gradle.rootProject
+    project.tasks.register('releaseVerificationClasspath') {
+        dependsOn project.tasks.named('classes')
+        doLast {
+            def output = project.layout.buildDirectory.file('release-verification/classpath.txt').get().asFile
+            output.parentFile.mkdirs()
+            output.text = project.sourceSets.main.runtimeClasspath.asPath
+        }
+    }
+}
